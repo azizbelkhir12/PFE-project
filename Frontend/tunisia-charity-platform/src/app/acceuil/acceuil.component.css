@@ -1,0 +1,32 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .navbar-left, .navbar-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .phone-number, .email {
+    margin-right: 20px;
+    font-size: 14px;
+  }
+  
+  .booking-button {
+    padding: 5px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .language {
+    margin-left: 20px;
+    font-size: 14px;
+  }
