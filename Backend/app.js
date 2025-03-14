@@ -1,7 +1,8 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+const routes = require('./routes/index.js');
 
 dotenv.config(); 
 const app = express();
@@ -12,18 +13,14 @@ app.use(express.json());
 
 
 //database connection 
+connectDB();
 
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => console.log('Connected to MongoDB!')).catch(err => console.error('MongoDB connection error:', err));
 
 //Routes
-app.get('/', (req, res) => {
-    res.send('Welcome to Tunisia Charity Platform API');
-  });
+app.use('/', routes);
 
-  //server
+
+//server
 
   const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

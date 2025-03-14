@@ -1,5 +1,5 @@
 {
-  "name": "tunisia-charity-platform",
+  "name": "frontend",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -17,6 +17,10 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@types/jquery": "^3.5.32",
+    "jquery": "^3.7.1",
+    "ngx-owl-carousel-o": "^19.0.0",
+    "owl.carousel": "^2.3.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
