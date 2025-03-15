@@ -1,0 +1,55 @@
+/* about-tab.component.css */
+
+/* Container for the entire tab section */
+.about-tab {
+    margin: 20px auto; /* Center the tab section and add some margin */
+    max-width: 800px; /* Limit the width for better readability */
+    padding: 20px;
+    border: 1px solid #ddd; /* Add a border for visual separation */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  }
+  
+  /* Tab navigation styling */
+  .nav {
+    display: flex;
+    justify-content: space-between; /* Space out the tabs */
+    margin-bottom: 20px; /* Add space below the tabs */
+  }
+  
+  .nav-item {
+    flex: 1; /* Make tabs take equal width */
+    text-align: center; /* Center the text in each tab */
+  }
+  
+  .nav-link {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    padding: 10px 15px; /* Add padding for better clickability */
+    border: 1px solid #ddd; /* Add a border to each tab */
+    border-radius: 4px; /* Rounded corners for tabs */
+    background-color: #f8f9fa; /* Light background for inactive tabs */
+    color: #333; /* Text color for inactive tabs */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+  }
+  
+  .nav-link.active {
+    background-color: #007bff; /* Bootstrap primary color for active tab */
+    color: white; /* Text color for active tab */
+    border-color: #007bff; /* Match border color with background */
+  }
+  
+  .nav-link:hover:not(.active) {
+    background-color: #e9ecef; /* Slightly darker background on hover */
+  }
+  
+  /* Tab content styling */
+  .tab-content {
+    padding: 20px;
+    border: 1px solid #ddd; /* Add a border around the content */
+    border-radius: 8px; /* Rounded corners for content */
+    background-color: #fff; /* White background for content */
+  }
+  
+  .container {
+    padding: 0; /* Remove default padding */
+  }

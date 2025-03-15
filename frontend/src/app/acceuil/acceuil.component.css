@@ -214,7 +214,7 @@ a:focus {
         top: 0; /* Remove top spacing */
         padding: 10px 60px; /* Adjust padding */
         background: transparent !important;
-        border-bottom: 1px solid rgba(255, 255, 255, .3);
+       /* border-bottom: 1px solid rgba(255, 255, 255, .3);*/
         z-index: 9;
     }
     
@@ -259,161 +259,36 @@ a:focus {
 /********** Hero CSS ***********/
 /*******************************/
 
-.carousel-inner .carousel-item  img {
-    height: 800px;
-}
-/* Carousel Container */
-#carouselExampleCaptions {
+.banner-container {
     position: relative;
     width: 100%;
-    min-height: 300px; /* Minimum height for the carousel */
-    margin-bottom: 45px; /* Space below the carousel */
+    text-align: center;
 }
 
-/* Carousel Image */
-#carouselExampleCaptions .carousel-item img {
-    width: 100%; /* Ensure the image covers the width */
-    height: 100%; /* Ensure the image covers the height */
-    object-fit: cover; /* Maintain aspect ratio while covering the container */
-    min-height: 300px; /* Minimum height for the image */
+.banner-image {
+    width: 100%;
+    height: auto;
 }
 
-/* Dark Overlay for Better Text Visibility */
-#carouselExampleCaptions .carousel-item::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Dark overlay with 50% opacity */
-    z-index: 1; /* Ensure the overlay is above the image */
-}
-
-/* Carousel Caption (Text Container) */
-#carouselExampleCaptions .carousel-caption {
+.banner-caption {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center the caption */
-    z-index: 2; /* Ensure the text is above the overlay */
-    text-align: center; /* Center-align text */
-    width: 100%; /* Full width */
-    max-width: 700px; /* Maximum width for the text */
+    transform: translate(-50%, -50%);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    padding: 20px;
+    border-radius: 10px;
 }
 
-/* Carousel Heading */
-#carouselExampleCaptions .carousel-caption h5 {
-    color: #ffffff; /* White text color */
-    font-size: 60px; /* Large font size */
-    font-weight: 700; /* Bold font weight */
-    margin-bottom: 20px; /* Space below the heading */
+.banner-caption h5 {
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
-/* Carousel Paragraph */
-#carouselExampleCaptions .carousel-caption p {
-    color: #ffffff; /* White text color */
-    font-size: 20px; /* Medium font size */
-    margin-bottom: 25px; /* Space below the paragraph */
+.banner-caption p {
+    font-size: 1rem;
 }
-
-/* Carousel Buttons */
-#carouselExampleCaptions .carousel-caption .btn {
-    color: #ffffff; /* White text color */
-    background: #FDBE33; /* Yellow background */
-    padding: 10px 20px; /* Button padding */
-    text-decoration: none; /* Remove underline */
-    border-radius: 5px; /* Rounded corners */
-    margin: 5px; /* Space between buttons */
-    transition: background 0.3s, color 0.3s; /* Smooth hover effect */
-}
-
-/* Button Hover Effect */
-#carouselExampleCaptions .carousel-caption .btn:hover {
-    color: #20212B; /* Dark text color on hover */
-    background: #ffffff; /* White background on hover */
-}
-
-/* Carousel Indicators */
-#carouselExampleCaptions .carousel-indicators {
-    bottom: 20px; /* Position indicators at the bottom */
-}
-
-#carouselExampleCaptions .carousel-indicators button {
-    background-color: #ffffff; /* White indicator color */
-    opacity: 0.5; /* Semi-transparent */
-    transition: opacity 0.3s; /* Smooth transition */
-}
-
-#carouselExampleCaptions .carousel-indicators button.active {
-    opacity: 1; /* Fully visible for active indicator */
-}
-
-/* Carousel Navigation Arrows */
-#carouselExampleCaptions .carousel-control-prev,
-#carouselExampleCaptions .carousel-control-next {
-    width: 60px; /* Arrow size */
-    height: 60px; /* Arrow size */
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
-    border-radius: 50%; /* Circular shape */
-    top: 50%; /* Center vertically */
-    transform: translateY(-50%); /* Center vertically */
-    z-index: 3; /* Ensure arrows are above the image */
-    transition: background 0.3s; /* Smooth hover effect */
-}
-
-#carouselExampleCaptions .carousel-control-prev {
-    left: 20px; /* Position left arrow */
-}
-
-#carouselExampleCaptions .carousel-control-next {
-    right: 20px; /* Position right arrow */
-}
-
-#carouselExampleCaptions .carousel-control-prev:hover,
-#carouselExampleCaptions .carousel-control-next:hover {
-    background: #FDBE33; /* Yellow background on hover */
-}
-
-/* Responsive Adjustments */
-@media (max-width: 991.98px) {
-    #carouselExampleCaptions .carousel-caption h5 {
-        font-size: 35px; /* Smaller font size for tablets */
-    }
-
-    #carouselExampleCaptions .carousel-caption p {
-        font-size: 16px; /* Smaller font size for tablets */
-    }
-
-    #carouselExampleCaptions .carousel-caption .btn {
-        padding: 12px 30px; /* Smaller button padding for tablets */
-        font-size: 15px; /* Smaller font size for tablets */
-    }
-}
-
-@media (max-width: 767.98px) {
-    #carouselExampleCaptions .carousel-caption h5 {
-        font-size: 30px; /* Smaller font size for mobile */
-    }
-
-    #carouselExampleCaptions .carousel-caption .btn {
-        padding: 10px 25px; /* Smaller button padding for mobile */
-        font-size: 15px; /* Smaller font size for mobile */
-    }
-}
-
-@media (max-width: 575.98px) {
-    #carouselExampleCaptions .carousel-caption h5 {
-        font-size: 25px; /* Smaller font size for small mobile devices */
-    }
-
-    #carouselExampleCaptions .carousel-caption .btn {
-        padding: 8px 20px; /* Smaller button padding for small mobile devices */
-        font-size: 14px; /* Smaller font size for small mobile devices */
-    }
-}
-
-
 
 /*******************************/
 /******* Page Header CSS *******/
@@ -576,7 +451,7 @@ a:focus {
     font-weight: 600;
     background: none;
     border-radius: 0;
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    border-bottom: 1px solid rgba(0, 0, 0, .15);    
     transition: none;
 }
 

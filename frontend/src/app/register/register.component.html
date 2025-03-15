@@ -1,0 +1,29 @@
+<div class="about-tab">
+    <!-- Tab Navigation -->
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="{'active': activeTab === 'tab-content-1'}" (click)="setActiveTab('tab-content-1')">
+          Demande bénévolat
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="{'active': activeTab === 'tab-content-2'}" (click)="setActiveTab('tab-content-2')">
+          Donateur
+        </a>
+      </li>
+      
+    </ul>
+  
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <div id="tab-content-1" class="container" *ngIf="activeTab === 'tab-content-1'">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitae pellentesque turpis. Donec in hendrerit dui, vel blandit massa. Ut vestibulum suscipit cursus. Cras quis porta nulla, ut placerat risus. Aliquam nec magna eget velit luctus dictum. Phasellus et felis sed purus tristique dignissim. Morbi sit amet leo at purus accumsan pellentesque. Vivamus fermentum nisi vel dapibus blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </div>
+      <div id="tab-content-2" class="container" *ngIf="activeTab === 'tab-content-2'">
+        Sed tincidunt, magna ut vehicula volutpat, turpis diam condimentum justo, posuere congue turpis massa in mi. Proin ornare at massa at fermentum. Nunc aliquet sed nisi iaculis ornare. Nam semper tortor eget est egestas, eu sagittis nunc sodales. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent bibendum sapien sed purus molestie malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </div>
+      <div id="tab-content-3" class="container" *ngIf="activeTab === 'tab-content-3'">
+        Aliquam dolor odio, mollis sed feugiat sit amet, feugiat ut sapien. Nunc eu dignissim lorem. Suspendisse at hendrerit enim. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed condimentum semper turpis vel facilisis. Nunc vel faucibus orci. Mauris ut mauris rhoncus, efficitur nisi at, venenatis quam. Praesent egestas pretium enim sit amet finibus. Curabitur at erat molestie, tincidunt lorem eget, consequat ligula.
+      </div>
+    </div>
+  </div>
