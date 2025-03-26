@@ -1,0 +1,244 @@
+/* ✅ Ajustement pour éviter que la sidebar masque le contenu */
+.main-container {
+  margin-left: 250px; /* Ajuste selon la largeur de ta sidebar */
+  padding: 10px;
+}
+
+/* ✅ Centrage des cartes statistiques */
+.stats-container {
+  display: flex;
+  justify-content: center; /* ✅ Centre les cartes horizontalement */
+  align-items: center; /* ✅ Centre les cartes verticalement si nécessaire */
+  margin-top: 0px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px; /* ✅ Espacement entre les cartes */
+}
+
+/* ✅ Cartes statistiques avec un effet plus moderne */
+.stats-card {
+  flex: none; /* ✅ Empêche l'étirement */
+  width: 280px; /* ✅ Ajuste la largeur pour un bon rendu */
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  color: #333;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #0056b3; /* ✅ Bordure bleue foncée */
+  transition: all 0.3s ease-in-out;
+}
+
+/* ✅ Effet au survol des cartes */
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ✅ Icônes des cartes (maintenant en jaune) */
+.icon-yellow {
+  font-size: 35px;
+  color: #ffc107 !important; /* ✅ Force la couleur jaune */
+  margin-bottom: 8px;
+}
+
+/* ✅ Organisation des formulaires */
+.forms-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* ✅ Formulaires modernisés */
+.form-card {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #0056b3; /* ✅ Bleu foncé */
+  width: 40%;
+  min-width: 400px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* ✅ Effet au survol */
+.form-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ✅ Titres des formulaires */
+.form-card h3 {
+  color: #222;
+  font-size: 22px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ✅ Champs de formulaire modernisés */
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+/* ✅ Effet focus */
+input:focus, select:focus, textarea:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 8px rgba(0, 86, 179, 0.3);
+  outline: none;
+}
+
+/* ✅ Conteneur des boutons de sélection */
+.form-toggle-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* ✅ Boutons de sélection */
+.btn-toggle {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+/* ✅ Effet hover */
+.btn-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.4);
+}
+
+/* ✅ Boutons de validation des formulaires (maintenant en jaune) */
+button {
+  background: linear-gradient(135deg, #ffc107, #e0a800); /* ✅ Jaune */
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 10px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+/* ✅ Effet au survol des boutons */
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(255, 193, 7, 0.4);
+}
+
+/* ✅ Tableau des bénéficiaires */
+.beneficiaires-table {
+  margin-top: 40px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Design du tableau */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+/* ✅ Entêtes */
+.table th {
+  background: #0056b3;
+  color: white;
+  padding: 14px;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+/* ✅ Cellules */
+.table td {
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Effet au survol des lignes */
+.table tr:hover {
+  background: rgba(0, 123, 255, 0.1);
+}
+
+/* ✅ Boutons d’action */
+.btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.btn-edit, .btn-delete {
+  background: linear-gradient(135deg, #ffb400, #e0a800);
+  color: white;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* ✅ Effet hover */
+.btn-edit:hover, .btn-delete:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(255, 165, 0, 0.4);
+}
+
+/* ✅ Statut en gras */
+.status-text {
+  color: #222;
+  font-weight: bold;
+}
+
+/* ✅ Responsive */
+@media (max-width: 1024px) {
+  .forms-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-card {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stats-card {
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+
+

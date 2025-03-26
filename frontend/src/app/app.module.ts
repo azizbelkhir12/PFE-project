@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule,  } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AcceuilComponent } from './acceuil/acceuil.component';
@@ -15,7 +15,13 @@ import { AdminCompteComponent } from './admin-compte/admin-compte.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
 import { NavbarcompteAdminComponent } from './navbarcompte-admin/navbarcompte-admin.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // Importez FontAwesomeMod
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles.component';
+import { GestionBeneficiairesComponent } from './gestion-beneficiaires/gestion-beneficiaires.component';
+import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.component';
+
+
+ // Importez FontAwesomeMod
 
 
 
@@ -34,7 +40,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // Importe
     AdminCompteComponent,
     AdminLoginComponent,
     SidebarAdminComponent,
-    NavbarcompteAdminComponent, // Le composant est bien déclaré ici
+    NavbarcompteAdminComponent,
+    GestionBenevolesComponent,
+    AdminLoginComponent,
+    GestionBenevolesComponent,
+    GestionBenevolesComponent,
+    GestionBeneficiairesComponent,
+    GestionDesDonsComponent,
+
   ],
   imports: [
     BrowserModule,
