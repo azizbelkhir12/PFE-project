@@ -1,29 +1,132 @@
+<app-navbar></app-navbar>
+
 <div class="about-tab">
-    <!-- Tab Navigation -->
-    <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link" [ngClass]="{'active': activeTab === 'tab-content-1'}" (click)="setActiveTab('tab-content-1')">
-          Demande bénévolat
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [ngClass]="{'active': activeTab === 'tab-content-2'}" (click)="setActiveTab('tab-content-2')">
-          Donateur
-        </a>
-      </li>
-      
-    </ul>
-  
-    <!-- Tab Content -->
-    <div class="tab-content">
-      <div id="tab-content-1" class="container" *ngIf="activeTab === 'tab-content-1'">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitae pellentesque turpis. Donec in hendrerit dui, vel blandit massa. Ut vestibulum suscipit cursus. Cras quis porta nulla, ut placerat risus. Aliquam nec magna eget velit luctus dictum. Phasellus et felis sed purus tristique dignissim. Morbi sit amet leo at purus accumsan pellentesque. Vivamus fermentum nisi vel dapibus blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </div>
-      <div id="tab-content-2" class="container" *ngIf="activeTab === 'tab-content-2'">
-        Sed tincidunt, magna ut vehicula volutpat, turpis diam condimentum justo, posuere congue turpis massa in mi. Proin ornare at massa at fermentum. Nunc aliquet sed nisi iaculis ornare. Nam semper tortor eget est egestas, eu sagittis nunc sodales. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent bibendum sapien sed purus molestie malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </div>
-      <div id="tab-content-3" class="container" *ngIf="activeTab === 'tab-content-3'">
-        Aliquam dolor odio, mollis sed feugiat sit amet, feugiat ut sapien. Nunc eu dignissim lorem. Suspendisse at hendrerit enim. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed condimentum semper turpis vel facilisis. Nunc vel faucibus orci. Mauris ut mauris rhoncus, efficitur nisi at, venenatis quam. Praesent egestas pretium enim sit amet finibus. Curabitur at erat molestie, tincidunt lorem eget, consequat ligula.
-      </div>
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Tab 1 Content -->
+    <div id="tab-content-1" class="container">
+      <h1 class="title">Register to help others !</h1>
+      <!-- Signup Section -->
+      <section class="contact login_box_area" id="contact">
+        <div class="row container">
+          <!-- Form -->
+          <form [formGroup]="signupForm" class="form-container">
+            <!-- Name Field -->
+            <input type="text" placeholder="Full Name" class="box" formControlName="name" />
+            <div *ngIf="signupForm.get('name')?.invalid && (signupForm.get('name')?.dirty || signupForm.get('name')?.touched)" class="errorMsg">
+              <div *ngIf="signupForm.get('name')?.errors?.['required']">Name is required</div>
+              <div *ngIf="signupForm.get('name')?.errors?.['minlength']">Must be at least 3 characters</div>
+              <div *ngIf="signupForm.get('name')?.errors?.['maxlength']">Must be at most 50 characters</div>
+            </div> <br>
+
+            <!-- Email Field -->
+            <input type="email" placeholder="Email Address" formControlName="email" class="box">
+            <span class="errorMsg">{{errorMsg}}</span>
+            <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)" class="errorMsg">
+              <div *ngIf="signupForm.get('email')?.errors?.['required']">Email is required</div>
+              <div *ngIf="signupForm.get('email')?.errors?.['pattern']">Invalid email format</div>
+            </div> <br>
+
+            <!-- Password Field -->
+            <input type="password" placeholder="Password" class="box" formControlName="password">
+            <div class="form-group" *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)">
+              <label class="col invalid_msg" [ngClass]="signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched ? 'text-danger': 'text-success'">
+                <i class="material-icons">{{ signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched ? 'cancel': 'check_circle' }}</i>
+                Password is required!
+              </label>
+              <label class="col invalid_msg" [ngClass]="signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['minlength'] ? 'text-danger': 'text-success'">
+                <i class="material-icons">{{ signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['minlength'] ? 'cancel': 'check_circle' }}</i>
+                Must be at least 8 characters!
+              </label>
+              <label class="col invalid_msg" [ngClass]="signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['hasNumber'] ? 'text-danger': 'text-success'">
+                <i class="material-icons">{{ signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['hasNumber'] ? 'cancel': 'check_circle' }}</i>
+                Must contain at least 1 number!
+              </label>
+              <label class="col invalid_msg" [ngClass]="signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['hasCapitalCase'] ? 'text-danger': 'text-success'">
+                <i class="material-icons">{{ signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['hasCapitalCase'] ? 'cancel': 'check_circle' }}</i>
+                Must contain at least 1 uppercase letter!
+              </label>
+              <label class="col invalid_msg" [ngClass]="signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['hasSmallCase'] ? 'text-danger': 'text-success'">
+                <i class="material-icons">{{ signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['hasSmallCase'] ? 'cancel': 'check_circle' }}</i>
+                Must contain at least 1 lowercase letter!
+              </label>
+              <label class="col invalid_msg" [ngClass]="signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['hasSpecialCharacters'] ? 'text-danger': 'text-success'">
+                <i class="material-icons">{{ signupForm.get('password')?.errors?.['required'] || signupForm.get('password')?.errors?.['hasSpecialCharacters'] ? 'cancel': 'check_circle' }}</i>
+                Must contain at least 1 special character!
+              </label>
+            </div> <br>
+
+            <!-- Confirm Password Field -->
+            <input type="password" placeholder="Confirm Password" class="box" formControlName="confirmPassword">
+            <div *ngIf="signupForm.get('confirmPassword')?.invalid && (signupForm.get('confirmPassword')?.dirty || signupForm.get('confirmPassword')?.touched)" class="errorMsg">
+              <div *ngIf="signupForm.get('confirmPassword')?.errors?.['required']">Confirm Password is required</div>
+              <div *ngIf="signupForm.get('confirmPassword')?.errors?.['notMatching']">Passwords do not match</div>
+            </div> <br>
+
+            <!-- Address Field -->
+            <input type="text" placeholder="Full Address" class="box" formControlName="adress">
+            <div *ngIf="signupForm.get('adress')?.invalid && (signupForm.get('adress')?.dirty || signupForm.get('adress')?.touched)" class="errorMsg">
+              <div *ngIf="signupForm.get('adress')?.errors?.['required']">Address is required</div>
+              <div *ngIf="signupForm.get('adress')?.errors?.['minlength']">Address must be at least 5 characters</div>
+              <div *ngIf="signupForm.get('adress')?.errors?.['maxlength']">Address cannot exceed 100 characters</div>
+            </div> <br>
+
+            <!-- ZIP Code Field -->
+            <input type="text" placeholder="ZIP Code" class="box" formControlName="zipCode">
+            <div *ngIf="signupForm.get('zipCode')?.invalid && (signupForm.get('zipCode')?.dirty || signupForm.get('zipCode')?.touched)" class="errorMsg">
+              <div *ngIf="signupForm.get('zipCode')?.errors?.['required']">ZIP Code is required</div>
+              <div *ngIf="signupForm.get('zipCode')?.errors?.['pattern']">Invalid ZIP Code (must be 4 digits)</div>
+            </div> <br>
+
+            <!-- Phone Field -->
+            <input type="tel" placeholder="Phone Number" class="box" formControlName="phone">
+            <div *ngIf="signupForm.get('phone')?.invalid && (signupForm.get('phone')?.dirty || signupForm.get('phone')?.touched)" class="errorMsg">
+              <div *ngIf="signupForm.get('phone')?.errors?.['required']">Phone number is required</div>
+              <div *ngIf="signupForm.get('phone')?.errors?.['pattern']">Invalid phone number (must start with +216 and have 8 digits)</div>
+            </div> <br>
+
+            <!-- Status Field -->
+             
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="radio" id="standard" name="status" value="standard" formControlName="status">
+              <label for="standard">standard</label>
+              <input type="radio" id="parrain" name="status" value="parrain" formControlName="status">
+              <label for="parrain">parrain</label>
+            </div>
+
+            <!-- Image Upload -->
+            <input type="file" style="display: none;" #filePicker (change)="onImageSelect($event)">
+            <div>
+              <button class="btn-File" (click)="filePicker.click()">Select Your Photo</button>
+            </div>
+            <div style="padding-top: 20px;">
+              <img [src]="imagePreview" alt="" width="200px">
+              <div *ngIf="signupForm.get('img')?.hasError('required')">
+                <p class="errorMsg">Please select an image</p>
+              </div>
+            </div><br>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-Flower" [disabled]="signupForm.invalid" [ngClass]="{'no-hover': signupForm.invalid}" (click)="submit()">Signup</button>
+          </form>
+
+          <!-- Side Image (Permanently on the Right Side) -->
+          <div class="image-container">
+            <div class="login_box_img">
+              <img class="img-fluid" src="assets/register.png" alt="">
+              <div class="hover">
+                <h4>New to our website?</h4>
+                <p>
+                  Already have an account? what are you waiting for ?<br>
+                </p>
+                <span><a routerLink="/login" class="btn-Flower">login</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
+</div>
+
+<app-footer></app-footer>

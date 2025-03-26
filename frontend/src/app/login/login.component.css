@@ -1,0 +1,141 @@
+/* Tab styling */
+.nav-pills .nav-link {
+  background-color: #f8f9fa; /* Inactive tab color */
+  color: #007bff;
+  border-radius: 0.25rem;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #007bff; /* Active tab color */
+  color: white;
+  font-weight: bold;
+}
+
+.nav-pills .nav-link:hover {
+  background-color: #e9ecef;
+  color: #0056b3;
+}
+
+.tab-content {
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Form styling */
+.login_box_area {
+  margin-top: 50px;
+}
+
+.login_box_img {
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.hover {
+  text-align: center;
+}
+
+.hover h4 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #007bff;
+}
+
+.hover p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.styled-input {
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.styled-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.btn-Flower {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.btn-Flower:hover {
+  background-color: #0056b3;
+}
+
+.btn-Flower:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.errorMsg {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  display: block;
+}
+
+textarea.box {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+textarea.box:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-pills .nav-link {
+    margin: 5px 0;
+  }
+
+  .tab-content {
+    padding: 20px;
+  }
+
+  .login_box_img {
+    padding: 20px;
+  }
+
+  .hover h4 {
+    font-size: 1.25rem;
+  }
+
+  .hover p {
+    font-size: 0.9rem;
+  }
+}

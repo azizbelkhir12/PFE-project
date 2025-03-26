@@ -16,23 +16,7 @@ export class AcceuilComponent {
     this.scriptsService.initializeScripts();
   }
   successMessage: string = '';
-  slides = [
-    {
-      image: 'assets/children.png',
-      title: "Let's be kind for children",
-      description: "Lorem ipsum dolor sit amet elit. Phasellus ut mollis mauris. Vivamus egestas eleifend dui ac consequat at lectus in malesuada"
-    },
-    {
-      image: 'assets/img/carousel-2.jpg',
-      title: "Get Involved with helping hand",
-      description: "Morbi sagittis turpis id suscipit feugiat. Suspendisse eu augue urna. Morbi sagittis, orci sodales varius fermentum, tortor"
-    },
-    {
-      image: 'assets/img/carousel-3.jpg',
-      title: "Bringing smiles to millions",
-      description: "Sed ultrices, est eget feugiat accumsan, dui nibh egestas tortor, ut rhoncus nibh ligula euismod quam. Proin pellentesque odio"
-    }
-  ];
+
 
   activeTab: string = 'about';
 
@@ -139,7 +123,7 @@ export class AcceuilComponent {
     }
   }
 
-  currentYear: number = new Date().getFullYear();
+  
 
   
 

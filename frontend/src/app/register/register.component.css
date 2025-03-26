@@ -1,55 +1,119 @@
-/* about-tab.component.css */
-
-/* Container for the entire tab section */
-.about-tab {
-    margin: 20px auto; /* Center the tab section and add some margin */
-    max-width: 800px; /* Limit the width for better readability */
-    padding: 20px;
-    border: 1px solid #ddd; /* Add a border for visual separation */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  }
-  
-  /* Tab navigation styling */
-  .nav {
+/* Container for the form and image */
+  .row.container {
     display: flex;
-    justify-content: space-between; /* Space out the tabs */
-    margin-bottom: 20px; /* Add space below the tabs */
-  }
-  
-  .nav-item {
-    flex: 1; /* Make tabs take equal width */
-    text-align: center; /* Center the text in each tab */
-  }
-  
-  .nav-link {
-    cursor: pointer; /* Change cursor to pointer on hover */
-    padding: 10px 15px; /* Add padding for better clickability */
-    border: 1px solid #ddd; /* Add a border to each tab */
-    border-radius: 4px; /* Rounded corners for tabs */
-    background-color: #f8f9fa; /* Light background for inactive tabs */
-    color: #333; /* Text color for inactive tabs */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-  }
-  
-  .nav-link.active {
-    background-color: #007bff; /* Bootstrap primary color for active tab */
-    color: white; /* Text color for active tab */
-    border-color: #007bff; /* Match border color with background */
-  }
-  
-  .nav-link:hover:not(.active) {
-    background-color: #e9ecef; /* Slightly darker background on hover */
-  }
-  
-  /* Tab content styling */
-  .tab-content {
+    justify-content: space-between;
+    align-items: flex-start;
     padding: 20px;
-    border: 1px solid #ddd; /* Add a border around the content */
-    border-radius: 8px; /* Rounded corners for content */
-    background-color: #fff; /* White background for content */
+    max-width: 1200px;
+    margin: 0 auto;
   }
+
   
-  .container {
-    padding: 0; /* Remove default padding */
+    .title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      color: #FDBE33;
+      margin: 20px;
+    }
+  
+    
+
+  /* Form container */
+  .form-container {
+    width: 55%; /* Adjust the width as needed */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-container input {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  /* Image container */
+  .image-container {
+    width: 40%; /* Adjust the width as needed */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Image styling */
+  /* Ensure the parent container is positioned relative */
+.login_box_img {
+  position: relative;
+  display: inline-block;
+}
+
+/* Apply the overlay effect only on the image */
+.login_box_img .hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark effect */
+  border-radius: 8px;
+  opacity: 1; /* Ensure it's visible */
+}
+
+/* Make sure the image is displayed correctly */
+.login_box_img img {
+  width: 700px;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.errorMsg {
+  font-size: 1rem;
+  color: red;
+}
+
+.text-success {
+  color: #80b85b !important;
+}
+
+
+  /* Text styling */
+  .hover h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: white;
+  }
+
+  .hover p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: white;
+  }
+
+  .hover .btn-Flower {
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .hover .btn-Flower:hover {
+    background-color: #0056b3;
   }

@@ -1,34 +1,34 @@
 
   
-  <!-- Nav Bar Start -->
-  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-    <div class="container-fluid">
-        <div class="navbar-brand">
-            <img src="assets/logo.jpg" alt="Logo">
-        </div>
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+ <!-- Nav Bar Start -->
+ <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+  <div class="container-fluid">
+      <div class="navbar-brand">
+          <img src="assets/logo.jpg" alt="Logo">
+      </div>
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-            <div class="navbar-nav">
-                <a routerLink="/" class="nav-item nav-link active">Home</a>
-                <a routerLink="/about" class="nav-item nav-link">About</a>
-                <a routerLink="/causes" class="nav-item nav-link">Causes</a>
-                <a routerLink="/events" class="nav-item nav-link">Events</a>
-                <a routerLink="/blog" class="nav-item nav-link">Blog</a>
-                <a routerLink="/contact" class="nav-item nav-link">Contact</a>
-            </div>
-            <div class="navbar-nav login">
-                <a href="#" class="nav-link">Login</a>
-                <a routerLink="/register" class="nav-link">Register</a>
-                <button type="button" class="nav-link btn btn-custom">Donate Now</button>
-            </div>
-        </div>
-        
-    </div>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+          <div class="navbar-nav">
+              <a routerLink="/" class="nav-item nav-link active">Home</a>
+              <a routerLink="/about" class="nav-item nav-link">About</a>
+              <a routerLink="/causes" class="nav-item nav-link">Causes</a>
+              <a routerLink="/events" class="nav-item nav-link">Events</a>
+              <a routerLink="/blog" class="nav-item nav-link">Blog</a>
+              <a routerLink="/benevolat" class="nav-item nav-link">bénévolat avec nous </a>
+          </div>
+          <div class="navbar-nav login">
+              <a routerLink="/login" class="nav-link">Login</a>
+              <a routerLink="/register" class="nav-link">Register</a>
+              <button type="button" class="nav-link btn btn-custom">Donate Now</button>
+          </div>
+      </div>
+      
+  </div>
 </nav>
-  <!-- Nav Bar End -->
+<!-- Nav Bar End -->
 
  <!--  Banner Section -->
 <div class="banner-container">
@@ -189,78 +189,7 @@
 </div>
 <!-- Contact End -->
 
-<!-- Footer Start -->
-<div class="footer">
-  <div class="container">
-    <div class="row">
-      <!-- Contact Info -->
-      <div class="col-lg-3 col-md-6">
-        <div class="footer-contact">
-          <h2>Our Head Office</h2>
-          <p><i class="fa fa-map-marker-alt"></i> 123 Street, New York, USA</p>
-          <p><i class="fa fa-phone-alt"></i> +012 345 67890</p>
-          <p><i class="fa fa-envelope"></i> info&#64;example.com</p>
-          <div class="footer-social">
-            <a class="btn btn-custom" href="#"><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-custom" href="#"><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-custom" href="#"><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-custom" href="#"><i class="fab fa-instagram"></i></a>
-            <a class="btn btn-custom" href="#"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Popular Links -->
-      <div class="col-lg-3 col-md-6">
-        <div class="footer-link">
-          <h2>Popular Links</h2>
-          <a href="#">About Us</a>
-          <a href="#">Contact Us</a>
-          <a href="#">Popular Causes</a>
-          <a href="#">Upcoming Events</a>
-          <a href="#">Latest Blog</a>
-        </div>
-      </div>
-
-      <!-- Useful Links -->
-      <div class="col-lg-3 col-md-6">
-        <div class="footer-link">
-          <h2>Useful Links</h2>
-          <a href="#">Terms of use</a>
-          <a href="#">Privacy policy</a>
-          <a href="#">Cookies</a>
-          <a href="#">Help</a>
-          <a href="#">FAQs</a>
-        </div>
-      </div>
-
-      <!-- Newsletter -->
-      <div class="col-lg-3 col-md-6">
-        <div class="footer-newsletter">
-          <h2>Newsletter</h2>
-          <form>
-            <input class="form-control" type="email" placeholder="Email goes here" required>
-            <button class="btn btn-custom" type="submit">Submit</button>
-            <label>Don't worry, we don't spam!</label>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Copyright Section -->
-  <div class="container copyright">
-    <div class="row">
-      <div class="col-md-6">
-        <p>&copy; {{ currentYear }} <a href="#">Your Site Name</a>, All Rights Reserved.</p>
-      </div>
-      <div class="col-md-6">
-        <p>Designed By Aziz Belkhir et Amal Ghazouani</p>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Footer End -->
+<app-footer></app-footer>
 
 
 

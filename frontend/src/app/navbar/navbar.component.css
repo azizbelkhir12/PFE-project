@@ -1,0 +1,91 @@
+/* Navbar container */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #284E7B;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Container for navbar content */
+.container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+/* Logo styling */
+.navbar-brand img {
+  height: 68px;
+  width: auto;
+}
+
+/* Navbar links */
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-item {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-item.active,
+.nav-item:hover {
+  color: #FDBE33;
+}
+
+/* Right-side actions */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Donate Button */
+.btn-donate {
+  background-color: #FDBE33;
+  color: #284E7B;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-donate:hover {
+  background-color: white;
+  color: #284E7B;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .container {
+      flex-direction: column;
+      padding: 10px 20px;
+  }
+
+  .nav-links {
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+  }
+
+  .nav-actions {
+      flex-direction: column;
+      margin-top: 10px;
+  }
+}

@@ -3,6 +3,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const routes = require('./routes/index.js');
+const donorRoutes = require('./routes/donorRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 dotenv.config(); 
 const app = express();
@@ -18,6 +20,8 @@ connectDB();
 
 //Routes
 app.use('/', routes);
+app.use('/api/donors', donorRoutes);
+app.use('/api/auth', authRoutes);
 
 
 //server

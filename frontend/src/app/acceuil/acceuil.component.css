@@ -157,6 +157,7 @@ a:focus {
     transition: .5s;
     z-index: 999;
     padding: 0; /* Remove default padding */
+    margin-bottom: 30px; /* Add margin at the bottom for spacing */
 }
 
 .navbar.nav-sticky {
@@ -168,7 +169,29 @@ a:focus {
 }
 
 .nav-link button {
-    background-color: #FDBE33;
+    color: #FDBE33;
+    border: 1px solid black;
+}
+
+.btn-custom {
+    background-color: #FDBE33; /* Vibrant orange */
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 25px; /* Rounded edges */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom:hover {
+    background-color: #E64A19; /* Darker shade on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+.btn-custom:active {
+    transform: scale(0.98); /* Press effect */
 }
 
 .navbar .navbar-brand {
@@ -253,7 +276,6 @@ a:focus {
         box-shadow: none;
     }
 }
-
 
 /*******************************/
 /********** Hero CSS ***********/
