@@ -1,0 +1,39 @@
+<div class="navbar">
+  <!-- Partie Gauche : Logo et Titre -->
+  <div class="navbar-left">
+    <button class="menu-toggle" (click)="toggleSidebar()">
+      <fa-icon [icon]="faBars"></fa-icon>
+    </button>
+    <h1>
+      <fa-icon [icon]="faUsersCog"></fa-icon> Admin Compte
+    </h1>
+  </div>
+
+  <!-- Partie Centrale : Barre de Recherche et Actions Rapides -->
+  <div class="navbar-center">
+    <div class="search-bar">
+      <input type="text" placeholder="Rechercher..." />
+      <fa-icon [icon]="faSearch"></fa-icon>
+    </div>
+
+  </div>
+
+
+  <!-- Partie Droite : Notifications et Profil -->
+  <div class="navbar-right">
+    <div class="notification">
+      <fa-icon [icon]="faBell"></fa-icon>
+      <span class="badge">3</span>
+    </div>
+    <div class="user-profile" (click)="toggleProfileMenu()">
+      <img src="https://via.placeholder.com/40" alt="Profile" />
+      <span>Admin</span>
+      <fa-icon [icon]="faChevronDown"></fa-icon>
+      <!-- Menu déroulant du profil -->
+      <div class="profile-menu" *ngIf="isProfileMenuOpen">
+        <a href="#"><fa-icon [icon]="faCog"></fa-icon> Paramètres</a>
+        <a href="#"><fa-icon [icon]="faSignOutAlt"></fa-icon> Déconnexion</a>
+      </div>
+    </div>
+  </div>
+</div>

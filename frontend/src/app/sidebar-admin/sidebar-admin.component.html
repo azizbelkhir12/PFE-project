@@ -1,0 +1,184 @@
+<div class="sidebar" [class.active]="isSidebarOpen">
+  <ul>
+    <!-- Gestion des Bénévoles -->
+    <li>
+      <a (click)="setActiveFunctionality('benevoles')">
+        <fa-icon [icon]="faUsers"></fa-icon> Gestion des Bénévoles
+      </a>
+    </li>
+
+    <!-- Gestion des Bénéficiaires -->
+    <li>
+      <a (click)="setActiveFunctionality('beneficiaires')">
+        <fa-icon [icon]="faHandHoldingHeart"></fa-icon> Gestion des Bénéficiaires
+      </a>
+    </li>
+
+    <!-- Gestion des Dons -->
+    <li>
+      <a (click)="setActiveFunctionality('dons')">
+        <fa-icon [icon]="faDonate"></fa-icon> Gestion des Dons
+      </a>
+    </li>
+
+    <!-- Gestion des Notifications -->
+    <li>
+      <a (click)="setActiveFunctionality('notifications')">
+        <fa-icon [icon]="faBell"></fa-icon> Gestion des Notifications
+      </a>
+    </li>
+
+    <!-- Gestion des Rapports -->
+    <li>
+      <a (click)="setActiveFunctionality('rapports')">
+        <fa-icon [icon]="faChartBar"></fa-icon> Gestion des Rapports
+      </a>
+    </li>
+
+    <!-- Gestion des Articles -->
+    <li>
+      <a (click)="setActiveFunctionality('articles')">
+        <fa-icon [icon]="faNewspaper"></fa-icon> Gestion des Articles
+      </a>
+    </li>
+
+    <!-- Gestion des Projets -->
+    <li>
+      <a (click)="setActiveFunctionality('projets')">
+        <fa-icon [icon]="faProjectDiagram"></fa-icon> Gestion des Projets
+      </a>
+    </li>
+
+    <!-- Gestion des Feedback -->
+    <li>
+      <a (click)="setActiveFunctionality('feedback')">
+        <fa-icon [icon]="faComments"></fa-icon> Gestion des Feedback
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- Partie principale -->
+<div class="main-content">
+  <!-- Sous-fonctionnalités pour Gestion des Bénévoles -->
+  <div *ngIf="activeFunctionality === 'benevoles'" class="sub-functionality">
+    <h2>Gestion des Bénévoles</h2>
+    <div class="buttons">
+      <button routerLink="/admin/benevoles/creer">
+        <fa-icon [icon]="faPlus"></fa-icon> Créer Bénévole
+      </button>
+      <button routerLink="/admin/benevoles/modifier">
+        <fa-icon [icon]="faEdit"></fa-icon> Modifier Bénévole
+      </button>
+      <button routerLink="/admin/benevoles/liste">
+        <fa-icon [icon]="faList"></fa-icon> Liste des Bénévoles
+      </button>
+    </div>
+  </div>
+
+  <!-- Sous-fonctionnalités pour Gestion des Bénéficiaires -->
+  <div *ngIf="activeFunctionality === 'beneficiaires'" class="sub-functionality">
+    <h2>Gestion des Bénéficiaires</h2>
+    <div class="buttons">
+      <button routerLink="/admin/beneficiaires/creer">
+        <fa-icon [icon]="faPlus"></fa-icon> Créer Bénéficiaire
+      </button>
+      <button routerLink="/admin/beneficiaires/affecter">
+        <fa-icon [icon]="faLink"></fa-icon> Affecter Bénéficiaire
+      </button>
+      <button routerLink="/admin/beneficiaires/liste">
+        <fa-icon [icon]="faList"></fa-icon> Liste des Bénéficiaires
+      </button>
+    </div>
+  </div>
+
+  <!-- Sous-fonctionnalités pour Gestion des Dons -->
+  <div *ngIf="activeFunctionality === 'dons'" class="sub-functionality">
+    <h2>Gestion des Dons</h2>
+    <div class="buttons">
+      <button routerLink="/admin/dons/liste-donateurs">
+        <fa-icon [icon]="faList"></fa-icon> Liste des Donateurs
+      </button>
+      <button routerLink="/admin/dons/liste-dons">
+        <fa-icon [icon]="faList"></fa-icon> Liste des Dons
+      </button>
+      <button routerLink="/admin/dons/modifier">
+        <fa-icon [icon]="faEdit"></fa-icon> Modifier liste Dons Internationnaux
+      </button>
+    </div>
+  </div>
+
+  <!-- Sous-fonctionnalités pour Gestion des Notifications -->
+  <div *ngIf="activeFunctionality === 'notifications'" class="sub-functionality">
+    <h2>Gestion des Notifications</h2>
+    <div class="buttons">
+      <button routerLink="/admin/notifications/envoyer">
+        <fa-icon [icon]="faEnvelope"></fa-icon> Envoyer Notification
+      </button>
+      <button routerLink="/admin/notifications/liste">
+        <fa-icon [icon]="faList"></fa-icon> Liste des Notifications
+      </button>
+    </div>
+  </div>
+
+  <!-- Sous-fonctionnalités pour Gestion des Rapports -->
+  <div *ngIf="activeFunctionality === 'rapports'" class="sub-functionality">
+    <h2>Gestion des Rapports</h2>
+    <div class="buttons">
+      <button routerLink="/admin/rapports/creer">
+        <fa-icon [icon]="faPlus"></fa-icon> Créer Rapport
+      </button>
+      <button routerLink="/admin/rapports/telecharger">
+        <fa-icon [icon]="faDownload"></fa-icon> Télécharger Rapport
+      </button>
+      <button routerLink="/admin/rapports/publier">
+        <fa-icon [icon]="faUpload"></fa-icon> Publier Rapport
+      </button>
+    </div>
+  </div>
+
+  <!-- Sous-fonctionnalités pour Gestion des Articles -->
+  <div *ngIf="activeFunctionality === 'articles'" class="sub-functionality">
+    <h2>Gestion des Articles</h2>
+    <div class="buttons">
+      <button routerLink="/admin/articles/creer">
+        <fa-icon [icon]="faPlus"></fa-icon> Créer Article
+      </button>
+      <button routerLink="/admin/articles/telecharger">
+        <fa-icon [icon]="faDownload"></fa-icon> Télécharger Article
+      </button>
+      <button routerLink="/admin/articles/publier">
+        <fa-icon [icon]="faUpload"></fa-icon> Publier Article
+      </button>
+    </div>
+  </div>
+
+  <!-- Sous-fonctionnalités pour Gestion des Projets -->
+  <div *ngIf="activeFunctionality === 'projets'" class="sub-functionality">
+    <h2>Gestion des Projets</h2>
+    <div class="buttons">
+      <button routerLink="/admin/projets/creer">
+        <fa-icon [icon]="faPlus"></fa-icon> Créer Projet
+      </button>
+      <button routerLink="/admin/projets/liste">
+        <fa-icon [icon]="faList"></fa-icon> Liste des Projets
+      </button>
+      <button routerLink="/admin/projets/modifier">
+        <fa-icon [icon]="faEdit"></fa-icon> Modifier Projet
+      </button>
+      <button routerLink="/admin/projets/supprimer">
+        <fa-icon [icon]="faTrash"></fa-icon> Supprimer Projet
+      </button>
+    </div>
+  </div>
+
+  <!-- Sous-fonctionnalités pour Gestion des Feedback -->
+  <div *ngIf="activeFunctionality === 'feedback'" class="sub-functionality">
+    <h2>Gestion des Feedback</h2>
+    <div class="buttons">
+      <button routerLink="/admin/feedback/liste">
+        <fa-icon [icon]="faList"></fa-icon> Liste des Feedback
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,144 @@
+/* Styles pour la barre de navigation (nav bar) */
+.navbar {
+  background-color: #ffffff; /* Couleur de fond de la nav bar */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  height: 60px; /* Hauteur de la nav bar */
+  position: fixed; /* Fixe la nav bar en haut */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Assure que la nav bar est au-dessus de tout */
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+}
+
+/* Styles pour la barre latérale (sidebar) */
+.sidebar {
+  background-color: #1e3a8a; /* Bleu foncé pour le fond */
+  width: 250px;
+  padding: 20px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  height: calc(100vh - 60px); /* Hauteur ajustée pour la nav bar */
+  position: fixed;
+  top: 60px; /* Décaler la sidebar sous la nav bar */
+  left: 0;
+  overflow-y: auto; /* Permet le défilement si le contenu dépasse */
+  transition: transform 0.3s ease;
+  z-index: 999; /* La sidebar est en dessous de la nav bar */
+}
+
+.sidebar.active {
+  transform: translateX(0);
+}
+
+/* Styles pour le logo dans la sidebar */
+.sidebar .logo {
+  color: #ffffff; /* Texte blanc pour le logo */
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Styles pour la liste des éléments dans la sidebar */
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0; /* Supprime les marges par défaut */
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+}
+
+/* Styles pour les liens dans la sidebar */
+.sidebar ul li a {
+  color: #ffffff; /* Texte blanc pour les liens */
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  background-color: #3b82f6; /* Bleu plus clair au survol */
+  color: #fff;
+}
+
+/* Styles pour les icônes dans la sidebar */
+.sidebar ul li a fa-icon {
+  margin-right: 10px;
+  color: #ffffff; /* Icônes blanches */
+}
+
+/* Styles pour les sous-menus dans la sidebar */
+.sidebar ul li .submenu {
+  margin-left: 20px; /* Indentation pour les sous-menus */
+}
+
+.sidebar ul li .submenu li a {
+  padding: 8px; /* Espacement pour les sous-menus */
+}
+
+/* Styles pour l'icône chevron dans la sidebar */
+.chevron {
+  margin-left: auto; /* Aligner à droite */
+}
+
+/* Styles pour le contenu principal */
+.main-content {
+  margin-left: 290px; /* 250px (largeur de la sidebar) + 40px (marge supplémentaire) */
+  padding: 20px;
+  padding-top: 80px; /* Ajouter un padding en haut pour éviter le chevauchement avec la nav bar */
+}
+
+/* Styles pour le titre principal */
+.main-content h1 {
+  color: #1e3a8a; /* Couleur bleu foncé pour le titre */
+  margin-top: 0; /* Supprimer la marge par défaut du titre */
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Styles pour la section "Gestion des feedbacks" */
+.feedback-section {
+  background-color: #ffffff; /* Fond blanc pour la section */
+  padding: 20px; /* Espacement interne */
+  border-radius: 10px; /* Coins arrondis */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  margin-top: 20px; /* Marge en haut pour l'espacement */
+}
+
+/* Styles pour le titre de la section */
+.feedback-section h2 {
+  color: #1e3a8a; /* Couleur bleu foncé pour le titre */
+  margin-bottom: 20px; /* Espacement sous le titre */
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* Styles pour les éléments de feedback */
+.feedback-item {
+  background-color: #f9fafb; /* Fond gris clair pour chaque feedback */
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px; /* Espacement entre les feedbacks */
+  border: 1px solid #e5e7eb; /* Bordure légère */
+}
+
+/* Styles pour le texte du feedback */
+.feedback-item p {
+  color: #374151; /* Couleur de texte gris foncé */
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Styles pour les informations supplémentaires (date, auteur, etc.) */
+.feedback-item .feedback-info {
+  color: #6b7280; /* Couleur de texte gris */
+  font-size: 14px;
+  margin-top: 10px;
+}

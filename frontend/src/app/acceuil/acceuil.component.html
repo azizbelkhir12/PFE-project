@@ -1,5 +1,5 @@
 
-  
+ 
  <!-- Nav Bar Start -->
  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
   <div class="container-fluid">
@@ -56,11 +56,13 @@
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitae pellentesque turpis. Nullam nec feugiat dolor. Aliquam erat volutpat. Nullam et eros in
            </p>
           </div>
-          
+
         </div>
       </div>
     </div>
  </div>
+
+
 
   <!-- About End -->
 
@@ -112,7 +114,7 @@
       <p>Popular Causes</p>
       <h2>Let's know about charity causes around the world</h2>
     </div>
-    
+
     <div class="causes-carousel">
       <div class="causes-item" *ngFor="let cause of causes">
         <div class="causes-img">
@@ -120,12 +122,12 @@
         </div>
         <div class="causes-progress">
           <div class="progress">
-            <div 
-              class="progress-bar" 
-              role="progressbar" 
-              [style.width.%]="cause.progress" 
-              [attr.aria-valuenow]="cause.progress" 
-              aria-valuemin="0" 
+            <div
+              class="progress-bar"
+              role="progressbar"
+              [style.width.%]="cause.progress"
+              [attr.aria-valuenow]="cause.progress"
+              aria-valuemin="0"
               aria-valuemax="100">
               <span>{{ cause.progress }}%</span>
             </div>
@@ -149,7 +151,7 @@
 </div>
 <!-- Causes End -->
 
- 
+
 <!-- Contact Start -->
 <div class="contact">
   <div class="container">
@@ -162,7 +164,7 @@
     </div>
     <div class="contact-form">
       <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
-      
+
       <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
         <div class="control-group">
           <input type="text" class="form-control" placeholder="Your Name" formControlName="name" required />
@@ -193,6 +195,5 @@
 
 
 
-  
-  
-  
+
+
