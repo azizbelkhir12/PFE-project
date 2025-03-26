@@ -1,5 +1,66 @@
 <app-navbarcompte-admin></app-navbarcompte-admin>
 <app-sidebar-admin></app-sidebar-admin>
 
+<!-- Contenu du Dashboard -->
+<div class="dashboard">
+
+
+  <!-- Cartes des statistiques -->
+  <div class="stat-cards">
+    <div class="card">
+      <i class="fas fa-donate"></i>
+      <h3>Total Dons</h3>
+      <p>{{ statistics.totalDons }} TND</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-users"></i>
+      <h3>Total Bénéficiaires</h3>
+      <p>{{ statistics.totalBeneficiaires }}</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-hands-helping"></i>
+      <h3>Total Bénévoles</h3>
+      <p>{{ statistics.totalBenevoles }}</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-user-friends"></i>
+      <h3>Total Donateurs</h3>
+      <p>{{ statistics.totalDonateurs }}</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-user-shield"></i>
+      <h3>Donateurs Parrains</h3>
+      <p>{{ statistics.totalParrains }}</p>
+    </div>
+    <div class="card">
+      <i class="fas fa-user"></i>
+      <h3>Donateurs Standards</h3>
+      <p>{{ statistics.totalStandardDonateurs }}</p>
+    </div>
+  </div>
+
+  <!-- Graphiques -->
+  <div class="chart-container">
+    <h3>Évolution des dons</h3>
+    <canvas id="donationChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h3>Statistiques des utilisateurs</h3>
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h3>Répartition des donateurs</h3>
+    <canvas id="pieChart"></canvas>
+  </div>
+</div>
+
+
+
+
+
+
+
 
 

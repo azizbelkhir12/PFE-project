@@ -1,144 +1,112 @@
-/* Styles pour la barre de navigation (nav bar) */
-.navbar {
-  background-color: #ffffff; /* Couleur de fond de la nav bar */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
-  height: 60px; /* Hauteur de la nav bar */
-  position: fixed; /* Fixe la nav bar en haut */
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000; /* Assure que la nav bar est au-dessus de tout */
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-}
-
-/* Styles pour la barre latérale (sidebar) */
+/* Styles pour la sidebar */
 .sidebar {
-  background-color: #1e3a8a; /* Bleu foncé pour le fond */
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6); /* Dégradé bleu */
   width: 250px;
   padding: 20px;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
-  height: calc(100vh - 60px); /* Hauteur ajustée pour la nav bar */
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  height: calc(100vh - 60px);
   position: fixed;
-  top: 60px; /* Décaler la sidebar sous la nav bar */
+  top: 60px;
   left: 0;
-  overflow-y: auto; /* Permet le défilement si le contenu dépasse */
+  overflow-y: auto;
   transition: transform 0.3s ease;
-  z-index: 999; /* La sidebar est en dessous de la nav bar */
+  z-index: 999;
 }
 
-.sidebar.active {
-  transform: translateX(0);
-}
-
-/* Styles pour le logo dans la sidebar */
+/* Style du logo */
 .sidebar .logo {
-  color: #ffffff; /* Texte blanc pour le logo */
+  color: #ffffff;
   text-align: center;
   margin-bottom: 30px;
   font-size: 24px;
   font-weight: bold;
 }
 
-/* Styles pour la liste des éléments dans la sidebar */
+/* Style des liens de la sidebar */
 .sidebar ul {
   list-style-type: none;
   padding: 0;
-  margin: 0; /* Supprime les marges par défaut */
+  margin: 0;
 }
 
 .sidebar ul li {
-  margin: 20px 0;
+  margin: 15px 0;
 }
 
-/* Styles pour les liens dans la sidebar */
 .sidebar ul li a {
-  color: #ffffff; /* Texte blanc pour les liens */
+  color: #ffffff;
   text-decoration: none;
   font-size: 16px;
-  display: block;
-  padding: 10px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* Ajout d’un effet survol cohérent avec les cartes */
 .sidebar ul li a:hover {
-  background-color: #3b82f6; /* Bleu plus clair au survol */
-  color: #fff;
+  background: rgba(255, 193, 7, 0.8); /* Jaune semi-transparent */
+  color: #ffffff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Styles pour les icônes dans la sidebar */
-.sidebar ul li a fa-icon {
+/* Style des icônes dans la sidebar */
+.sidebar ul li a i {
+  font-size: 18px;
   margin-right: 10px;
-  color: #ffffff; /* Icônes blanches */
+  background: #ffc107; /* Jaune */
+  padding: 10px;
+  border-radius: 50%;
+  color: #1e3a8a;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease;
 }
 
-/* Styles pour les sous-menus dans la sidebar */
+/* Effet au survol des icônes */
+.sidebar ul li a:hover i {
+  background: #e0a800; /* Jaune plus foncé */
+}
+
+/* Styles des sous-menus */
 .sidebar ul li .submenu {
-  margin-left: 20px; /* Indentation pour les sous-menus */
+  margin-left: 20px;
 }
 
 .sidebar ul li .submenu li a {
-  padding: 8px; /* Espacement pour les sous-menus */
+  padding: 8px;
 }
 
-/* Styles pour l'icône chevron dans la sidebar */
+/* Style du chevron */
 .chevron {
-  margin-left: auto; /* Aligner à droite */
+  margin-left: auto;
 }
 
-/* Styles pour le contenu principal */
+/* Contenu principal */
 .main-content {
-  margin-left: 290px; /* 250px (largeur de la sidebar) + 40px (marge supplémentaire) */
+  margin-left: 290px;
   padding: 20px;
-  padding-top: 80px; /* Ajouter un padding en haut pour éviter le chevauchement avec la nav bar */
+  padding-top: 80px;
 }
 
-/* Styles pour le titre principal */
+/* Style des titres */
 .main-content h1 {
-  color: #1e3a8a; /* Couleur bleu foncé pour le titre */
-  margin-top: 0; /* Supprimer la marge par défaut du titre */
+  color: #1e3a8a;
   font-size: 28px;
   font-weight: bold;
 }
 
-/* Styles pour la section "Gestion des feedbacks" */
+/* Feedback section */
 .feedback-section {
-  background-color: #ffffff; /* Fond blanc pour la section */
-  padding: 20px; /* Espacement interne */
-  border-radius: 10px; /* Coins arrondis */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
-  margin-top: 20px; /* Marge en haut pour l'espacement */
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
-/* Styles pour le titre de la section */
 .feedback-section h2 {
-  color: #1e3a8a; /* Couleur bleu foncé pour le titre */
-  margin-bottom: 20px; /* Espacement sous le titre */
+  color: #1e3a8a;
   font-size: 22px;
   font-weight: bold;
-}
-
-/* Styles pour les éléments de feedback */
-.feedback-item {
-  background-color: #f9fafb; /* Fond gris clair pour chaque feedback */
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 15px; /* Espacement entre les feedbacks */
-  border: 1px solid #e5e7eb; /* Bordure légère */
-}
-
-/* Styles pour le texte du feedback */
-.feedback-item p {
-  color: #374151; /* Couleur de texte gris foncé */
-  margin: 0;
-  font-size: 16px;
-}
-
-/* Styles pour les informations supplémentaires (date, auteur, etc.) */
-.feedback-item .feedback-info {
-  color: #6b7280; /* Couleur de texte gris */
-  font-size: 14px;
-  margin-top: 10px;
 }

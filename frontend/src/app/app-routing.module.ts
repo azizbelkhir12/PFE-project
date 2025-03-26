@@ -8,10 +8,17 @@ import { BenevoleCompteComponent } from './benevole-compte/benevole-compte.compo
 import { BeneficiaireCompteComponent } from './beneficiaire-compte/beneficiaire-compte.component';
 import { DonateurParrainCompteComponent } from './donateur-parrain-compte/donateur-parrain-compte.component';
 import { DonateurStandardCompteComponent } from './donateur-standard-compte/donateur-standard-compte.component';
-import { AdminLoginComponent } from './admin-login/admin-login.component';  // Ajoutez ici la route pour AdminLogin
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminCompteComponent } from './admin-compte/admin-compte.component';
+import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles.component';
+import { GestionBeneficiairesComponent } from './gestion-beneficiaires/gestion-beneficiaires.component';
+import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.component';
+
+
+
 
 const routes: Routes = [
+
   { path: '', component: AcceuilComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
@@ -20,8 +27,13 @@ const routes: Routes = [
   { path: 'beneficiaire-compte', component: BeneficiaireCompteComponent },
   { path: 'donateur-parrain-compte', component: DonateurParrainCompteComponent },
   { path: 'donateur-standard-compte', component: DonateurStandardCompteComponent },
-  { path: 'admin-login', component: AdminLoginComponent },  // Route pour la connexion administrateur
-  { path: 'admin-compte', component: AdminCompteComponent },  // Route pour l'interface admin après connexion
+  { path: 'admin-login', component: AdminLoginComponent },
+  { path: 'admin-compte', component: AdminCompteComponent },
+  { path: 'gestion-benevoles', component: GestionBenevolesComponent },
+  { path: 'gestion-beneficiaires', component: GestionBeneficiairesComponent },
+  { path: 'gestion-des-dons', component: GestionDesDonsComponent },
+
+   // Correction ici
 ];
 
 @NgModule({
