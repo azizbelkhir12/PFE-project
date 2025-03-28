@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+
 import { AppComponent } from './app.component';
 import { AcceuilComponent } from './acceuil/acceuil.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { BenevolatComponent } from './benevolat/benevolat.component';
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule } from '@angular/common/http';
 import { DonateurComponent } from './donateur/donateur.component';
 import { BenevoleCompteComponent } from './benevole-compte/benevole-compte.component';
 import { BeneficiaireCompteComponent } from './beneficiaire-compte/beneficiaire-compte.component';
@@ -20,15 +22,9 @@ import { AdminCompteComponent } from './admin-compte/admin-compte.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
 import { NavbarcompteAdminComponent } from './navbarcompte-admin/navbarcompte-admin.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles.component';
 import { GestionBeneficiairesComponent } from './gestion-beneficiaires/gestion-beneficiaires.component';
 import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.component';
-
-
- // Importez FontAwesomeMod
-
-
 
 @NgModule({
   declarations: [
@@ -40,15 +36,6 @@ import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.com
     BenevolatComponent,
     LoginComponent,
     DonateurComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule, 
-    ReactiveFormsModule, 
-    FormsModule, 
-    FontAwesomeModule,
-    HttpClientModule,
-    LoginComponent,
     BenevoleCompteComponent,
     BeneficiaireCompteComponent,
     DonateurParrainCompteComponent,
@@ -58,19 +45,17 @@ import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.com
     SidebarAdminComponent,
     NavbarcompteAdminComponent,
     GestionBenevolesComponent,
-    AdminLoginComponent,
-    GestionBenevolesComponent,
-    GestionBenevolesComponent,
     GestionBeneficiairesComponent,
     GestionDesDonsComponent,
-
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    FontAwesomeModule, // FontAwesomeModule est bien importé ici
+    FontAwesomeModule,
+    HttpClientModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent],

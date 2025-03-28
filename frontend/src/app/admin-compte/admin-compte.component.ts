@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
+//import { Chart } from 'chart.js';
 import { faHome, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -32,7 +32,7 @@ export class AdminCompteComponent implements OnInit {
     this.statisticsService.getStatistics().subscribe(
       (data: any) => {
         this.statistics = data;
-        this.createCharts();
+        //this.createCharts();
       },
       (error: any) => {
         console.error('Erreur de récupération des statistiques', error);
@@ -40,7 +40,7 @@ export class AdminCompteComponent implements OnInit {
     );
   }
 
-  createCharts() {
+  /*createCharts() {
     new Chart('donationChart', {
       type: 'line',
       data: {
@@ -88,5 +88,5 @@ export class AdminCompteComponent implements OnInit {
         ]
       }
     });
-  }
+  }*/
 }

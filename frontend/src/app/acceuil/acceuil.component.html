@@ -165,7 +165,7 @@
     <div class="contact-form">
       <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
 
-      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="contactForm" (ngSubmit)=" onSubmitForm()">
         <div class="control-group">
           <input type="text" class="form-control" placeholder="Your Name" formControlName="name" required />
           <p *ngIf="contactForm.controls['name'].invalid && contactForm.controls['name'].touched" class="text-danger">Please enter your name</p>

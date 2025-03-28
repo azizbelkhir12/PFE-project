@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const routes = require('./routes/index.js');
 const donorRoutes = require('./routes/donorRoutes');
 const authRoutes = require('./routes/authRoutes');
+const contactRoutes = require("./routes/contactRoutes");
 
 dotenv.config(); 
 const app = express();
@@ -22,6 +23,8 @@ connectDB();
 app.use('/', routes);
 app.use('/api/donors', donorRoutes);
 app.use('/api/auth', authRoutes);
+app.use("/api/contact", contactRoutes);
+
 
 
 //server
