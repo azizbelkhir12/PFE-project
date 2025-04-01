@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 import { AppComponent } from './app.component';
@@ -25,6 +26,7 @@ import { NavbarcompteAdminComponent } from './navbarcompte-admin/navbarcompte-ad
 import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles.component';
 import { GestionBeneficiairesComponent } from './gestion-beneficiaires/gestion-beneficiaires.component';
 import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.com
     GestionBenevolesComponent,
     GestionBeneficiairesComponent,
     GestionDesDonsComponent,
+    ContactComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.com
     FormsModule,
     FontAwesomeModule,
     HttpClientModule,
+    GoogleMapsModule,
     
   ],
   providers: [],

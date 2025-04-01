@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-admin-login',
@@ -8,41 +9,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin-login.component.css'],
 })
 export class AdminLoginComponent {
-  email: string = '';
-  password: string = '';
-  emailError: string = '';
+  loginData = { 
+    email: '', 
+    password: '',
+    userType: 'admin'
+  };
+  loginErrorMsg = ' veuillez remplir les champs';
+  loginSuccessMsg = 'Connexion réussie';
+  isLoading = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService : AuthService ) {}
 
-  validateEmail() {
-    if (!this.email) {
-      this.emailError = "L'email est requis.";
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    this.emailError = emailRegex.test(this.email) ? "" : "Veuillez entrer un email valide.";
+
+  submitLogin() {
+    this.isLoading = true;
+    this.loginErrorMsg = '';
+
+    this.authService.login(this.loginData).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        this.router.navigate(['/admin-compte']);
+      },
+      error: (error) => {
+        this.loginErrorMsg = error.error?.message || 'Admin login failed';
+        this.isLoading = false;
+      }
+    })
   }
 
-  isFormValid(): boolean {
-    return this.password.length >= 6 && this.emailError === "";
-  }
-
-  onLogin() {
-    this.validateEmail();
-
-    if (!this.isFormValid()) {
-      console.log("Erreur de saisie :", this.emailError);
-      return;
-    }
-
-    console.log('Connexion administrateur avec:', this.email, this.password);
-
-    // Stocker l'information de l'admin connecté dans le localStorage
-    localStorage.setItem('userRole', 'admin');
-
-    // Rediriger vers la page admin-compte après connexion réussie
-    this.router.navigate(['/admin-compte']);
-  }
 }
-
 

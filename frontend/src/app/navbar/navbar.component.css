@@ -1,91 +1,103 @@
-/* Navbar container */
+/* Navbar Base Styles */
 .navbar {
-  position: sticky;
+  position: relative;
+  transition: 0.5s;
+  z-index: 999;
+  padding: 0;
+  margin-bottom: 30px;
+  background-color: #284E7B !important; /* Your requested color */
+}
+
+.navbar.nav-sticky {
+  position: fixed;
   top: 0;
-  z-index: 1000;
-  background-color: #284E7B;
-  height: 80px;
-  display: flex;
-  align-items: center;
   width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: 0.5s;
 }
 
-/* Container for navbar content */
-.container {
-  width: 100%;
-  max-width: 1300px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
+/* Logo Styles */
+.navbar .navbar-brand {
+  margin: 0;
+  color: #ffffff;
+  font-size: 45px;
+  line-height: 0;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
 }
 
-/* Logo styling */
-.navbar-brand img {
-  height: 68px;
+.navbar .navbar-brand img {
   width: auto;
+  height: 100px;
+  object-fit: contain;
 }
 
-/* Navbar links */
-.nav-links {
-  display: flex;
-  gap: 25px;
-}
-
-.nav-item {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
+/* Navigation Links */
+.navbar-dark .navbar-nav .nav-link,
+.navbar-dark .navbar-nav .nav-link:focus,
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+  padding: 10px 15px 8px 15px;
+  color: #ffffff !important;
   font-weight: 500;
-  transition: color 0.3s ease;
 }
 
-.nav-item.active,
-.nav-item:hover {
-  color: #FDBE33;
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+  color: #FDBE33 !important;
 }
 
-/* Right-side actions */
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* Donate Button */
-.btn-donate {
+/* Custom Button */
+.btn-custom {
   background-color: #FDBE33;
-  color: #284E7B;
-  font-weight: bold;
+  color: white;
   border: none;
-  border-radius: 5px;
-  padding: 8px 16px;
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.btn-donate:hover {
-  background-color: white;
-  color: #284E7B;
+.btn-custom:hover {
+  background-color: #E64A19;
+  transform: scale(1.05);
 }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-  .container {
-      flex-direction: column;
-      padding: 10px 20px;
-  }
+.btn-custom:active {
+  transform: scale(0.98);
+}
 
-  .nav-links {
-      flex-direction: column;
-      text-align: center;
-      gap: 10px;
-  }
+/* Dropdown Menu */
+.navbar .dropdown-menu {
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
+  background: #f8f9fa;
+}
 
-  .nav-actions {
-      flex-direction: column;
-      margin-top: 10px;
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+  .navbar .navbar-brand img {
+      height: 80px;
+  }
+  
+  .navbar-collapse {
+      background-color: #1a3a5a;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 5px;
+  }
+  
+  .dropdown-menu {
+      background-color: transparent !important;
+      border: none !important;
+  }
+  
+  .dropdown-item {
+      color: white !important;
+      padding: 8px 15px !important;
   }
 }

@@ -11,6 +11,11 @@
         <div class="row container">
           <!-- Form -->
           <form [formGroup]="signupForm" class="form-container">
+            <!-- Success Message -->
+            <div *ngIf="successMessage" class="successMsg" style="color: green; font-weight: bold; margin-bottom: 10px;">
+              {{ successMessage }}
+            </div>
+
             <!-- Name Field -->
             <input type="text" placeholder="Full Name" class="box" formControlName="name" />
             <div *ngIf="signupForm.get('name')?.invalid && (signupForm.get('name')?.dirty || signupForm.get('name')?.touched)" class="errorMsg">

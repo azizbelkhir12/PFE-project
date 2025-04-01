@@ -1,18 +1,19 @@
 const jwt = require('jsonwebtoken');
 const Donor = require('../models/Donor');
-const volunteer = require('../models/Volunteer');
-const Beneficiary = require('../models/Beneficiary'); 
+const Volunteer = require('../models/Volunteer');
+const Beneficiary = require('../models/Beneficiary');
+const Admin = require('../models/Admin'); 
 const bcrypt = require('bcryptjs');
 
 exports.login = async (req, res) => {
     try {
       const { email, password, userType } = req.body;
 
-       // Validate userType
-    const validTypes = ['donor', 'volunteer', 'beneficiary'];
-    if (!validTypes.includes(userType)) {
-      return res.status(400).json({ message: 'Invalid user type' });
-    }
+      // Validate userType
+      const validTypes = ['donor', 'volunteer', 'beneficiary', 'admin']; // Added admin
+      if (!validTypes.includes(userType)) {
+        return res.status(400).json({ message: 'Invalid user type' });
+      }
       
       // Determine which model to use based on userType
       let Model;
@@ -21,44 +22,92 @@ exports.login = async (req, res) => {
           Model = Donor;
           break;
         case 'volunteer':
-          Model = volunteer;
+          Model = Volunteer;
           break;
         case 'beneficiary':
           Model = Beneficiary;
           break;
+        case 'admin':
+          Model = Admin;
+          break;
         default:
           return res.status(400).json({ message: 'Invalid user type' });
       }
+
       // Check if user exists
-      const user = await Model.findOne({ email });
-      if (!user) return res.status(400).json({ message: 'User not found' });
+      const user = await Model.findOne({ email }).select('+password');
+      if (!user) return res.status(400).json({ message: `${userType} not found` });
       
       // Check if password is correct
       const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return res.status(400).json({ message: 'Invalid password' });
+      if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
       
-      // Create and sign JWT token
-      const token= {
-        id: user.id,
+      // Create token payload
+      const tokenPayload = {
+        id: user._id,
         email: user.email,
-        userType: userType
+        userType: userType,
+        role: userType === 'admin' ? 'admin' : 'user' // Add role distinction
       };
       
-      jwt.sign(token, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
-        if (err) throw err;
+      // Generate token
+      const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        // Return user data (without password) and token
-        const userData = user.toObject();
-        delete userData.password;
+      // Return user data (without password) and token
+      const userData = user.toObject();
+      delete userData.password;
 
-        res.status(200).json({
-          message: 'Login successful',
-          token,
-          user: userData
-        });
+      res.status(200).json({
+        message: 'Login successful',
+        token,
+        user: userData
       });
+      
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Server error' });
     }
+
+    exports.registerAdmin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Check if admin already exists
+        const existingAdmin = await Admin.findOne({ email });
+        if (existingAdmin) {
+            return res.status(400).json({ message: 'Admin already exists' });
+        }
+
+        // Create new admin
+        const newAdmin = new Admin({ email, password });
+        await newAdmin.save();
+
+        res.status(201).json({ message: 'Admin registered successfully' });
+    } catch (error) {
+        console.error('Admin registration error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+}
+
+exports.registerAdmin = async (req, res) => {
+  try {
+      const { email, password } = req.body;
+
+      // Check if admin already exists
+      const existingAdmin = await Admin.findOne({ email });
+      if (existingAdmin) {
+          return res.status(400).json({ message: 'Admin already exists' });
+      }
+
+      // Create new admin
+      const newAdmin = new Admin({ email, password });
+      await newAdmin.save();
+
+      res.status(201).json({ message: 'Admin registered successfully' });
+  } catch (error) {
+      console.error('Admin registration error:', error);
+      res.status(500).json({ message: 'Server error' });
+  }
 };

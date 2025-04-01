@@ -1,6 +1,6 @@
-const Contact = require("../models/Contact");
+const Contact = require("../models/Feedback");
 
-exports.submitContactForm = async (req, res) => {
+exports.submitFeedbackForm = async (req, res) => {
   try {
     const contact = new Contact(req.body);
     await contact.save();

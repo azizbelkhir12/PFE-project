@@ -1,23 +1,35 @@
 <!-- Nav Bar Start -->
-<nav class="navbar">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <!-- Logo -->
         <a href="/" class="navbar-brand">
-            <img src="assets/logo.jpg" alt="Logo">
+            <img src="assets/logo.jpg" alt="Logo" class="img-fluid">
         </a>
 
-        <div class="nav-links">
-            <a routerLink="/" class="nav-item active">Home</a>
-            <a routerLink="/about" class="nav-item">About</a>
-            <a routerLink="/causes" class="nav-item">Causes</a>
-            <a routerLink="/events" class="nav-item">Events</a>
-            <a routerLink="/blog" class="nav-item">Blog</a>
-            <a routerLink="/volunteer" class="nav-item">bénévolat avec nous</a>
-        </div>
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <div class="nav-actions">
-            <a routerLink="/login" class="nav-item">Login</a>
-            <a routerLink="/register" class="nav-item">Register</a>
-            <button class="btn-donate">Donate Now</button>
+        <!-- Navbar content -->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav me-auto">
+                <a routerLink="/" class="nav-link active">Home</a>
+                <a routerLink="/contact" class="nav-link">Contact</a>
+                <a routerLink="/causes" class="nav-link">Causes</a>
+                <a routerLink="/events" class="nav-link">Events</a>
+                <a routerLink="/blog" class="nav-link">Blog</a>
+                <a routerLink="/benevolat" class="nav-link">Benevolent avec nous</a>
+            </div>
+
+            <div class="navbar-nav ms-auto">
+                <a routerLink="/login" class="nav-link">Login</a>
+                <a routerLink="/register" class="nav-link">Register</a>
+                <button class="btn-custom ms-2">Donate Now</button>
+                
+                
+               
+            </div>
         </div>
     </div>
 </nav>
