@@ -1,20 +1,44 @@
-<div class="login-container">
-  <div class="login-box">
-    <h2>Connexion Administrateur</h2>
 
-    <form #form="ngForm" (ngSubmit)="onLogin()">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" [(ngModel)]="email" name="email" class="form-control" (input)="validateEmail()">
-        <small class="text-danger" *ngIf="emailError">{{ emailError }}</small>
+
+<div class="about">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Content Section -->
+      <div class="container">
+        <h3 style="text-align: center; font-size: 40px;">Login Admin</h3>
+
+        <!-- Form 1: Login Form -->
+        <section class="contact login_box_area" id="contact" style="margin-top: 50px;">
+          <div class="row container align-self-center" style="padding-top: 60px;">
+            <form #loginForm="ngForm" (ngSubmit)="submitLogin()" class="col-lg-6">
+              <input type="email" placeholder="Enter your email" class="box styled-input" [(ngModel)]="loginData.email" name="email" required/>
+              
+              <input type="password" placeholder="Password" class="box styled-input" [(ngModel)]="loginData.password" name="password" required/>
+              <button type="submit" class="btn-Flower" [disabled]="loginForm.invalid" (click)="submitLogin()">Login</button>
+
+              <div style="padding-top: 10px;">
+                <span class="errorMsg">{{ loginErrorMsg }}</span>
+              </div>
+            </form>
+
+            <!-- Welcome Message -->
+            <div class="image col-lg-5">
+              <div class="login_box_area">
+                <div class="login_box_img">
+                  <div class="hover">
+                    <h4>bienvenue Admin </h4>
+                    <p>Continuez à faire du bon travail !!</p>
+                    <div class="button-group">
+                      <a routerLink="/" class="btn-Flower">Home</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-
-      <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control">
-      </div>
-
-      <button type="submit" class="btn btn-primary btn-block mt-3" [disabled]="!isFormValid()">Se connecter</button>
-    </form>
+    </div>
   </div>
 </div>
+

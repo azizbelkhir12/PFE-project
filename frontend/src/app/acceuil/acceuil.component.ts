@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { ContactService } from '../services/contact/contact.service';
 //import { ScriptsService } from '../services/scripts.service';
-;
 
 @Component({
   selector: 'app-acceuil',
@@ -11,13 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AcceuilComponent {
   scriptsService: any;
-
-  ngOnInit() {  
-    this.scriptsService.initializeScripts();
-  }
   successMessage: string = '';
-
-
   activeTab: string = 'about';
 
   services = [
@@ -29,36 +24,12 @@ export class AcceuilComponent {
     { icon: 'flaticon-social-care', title: 'Social Care', description: 'Helping individuals in difficult situations.' }
   ];
 
-
   facts = [
     { icon: 'flaticon-home', value: 150, text: 'Countries' },
     { icon: 'flaticon-charity', value: 400, text: 'Volunteers' },
-    { icon: 'flaticon-kindness', value: 10000, text: 'Our Goal', prefix: `$`},
+    { icon: 'flaticon-kindness', value: 10000, text: 'Our Goal', prefix: `$` },
     { icon: 'flaticon-donation', value: 5000, text: 'Raised', prefix: `$` }
   ];
-
-  ngAfterViewInit() {
-    this.animateNumbers();
-  }
-
-  animateNumbers() {
-    this.facts.forEach((fact, index) => {
-      let start = 0;
-      const end = fact.value;
-      const duration = 2000; // Animation en 2 secondes
-      const stepTime = Math.abs(Math.floor(duration / end));
-
-      const timer = setInterval(() => {
-        if (start < end) {
-          start += Math.ceil(end / 100); // Incrémentation progressive
-          this.facts[index].value = start;
-        } else {
-          this.facts[index].value = end; // S'assurer que la valeur finale est correcte
-          clearInterval(timer);
-        }
-      }, stepTime);
-    });
-  }
 
   causes = [
     { 
@@ -95,11 +66,15 @@ export class AcceuilComponent {
     }
   ];
 
-
   donateForm: FormGroup;
   contactForm: FormGroup;
   donationAmounts = [10, 20, 30];
-  constructor(private fb: FormBuilder) {
+
+  constructor(
+    private fb: FormBuilder,
+    private contactService: ContactService,
+    private http: HttpClient
+  ) {
     this.donateForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -114,19 +89,44 @@ export class AcceuilComponent {
     });
   }
 
-  onSubmit() {
-    if (this.contactForm.valid) {
-      console.log('Contact Data:', this.contactForm.value);
-      this.successMessage = `Thank you, ${this.contactForm.value.name}! Your message has been sent.`;
-      this.contactForm.reset();
-      setTimeout(() => (this.successMessage = ''), 5000); // Cache le message après 5 sec
-    }
+  ngOnInit() {  
+    this.scriptsService.initializeScripts();
   }
 
-  
+  ngAfterViewInit() {
+    this.animateNumbers();
+  }
 
-  
+  animateNumbers() {
+    this.facts.forEach((fact, index) => {
+      let start = 0;
+      const end = fact.value;
+      const duration = 2000; // Animation en 2 secondes
+      const stepTime = Math.abs(Math.floor(duration / end));
 
-  
+      const timer = setInterval(() => {
+        if (start < end) {
+          start += Math.ceil(end / 100); // Incrémentation progressive
+          this.facts[index].value = start;
+        } else {
+          this.facts[index].value = end; // S'assurer que la valeur finale est correcte
+          clearInterval(timer);
+        }
+      }, stepTime);
+    });
+  }
 
+  onSubmitForm() {
+    if (this.contactForm.valid) {
+      this.contactService.submitContactForm(this.contactForm.value).subscribe({
+        next: (response: { message: string }) => {
+          this.successMessage = response.message;
+          this.contactForm.reset();
+        },
+        error: (error: any) => {
+          console.error('Error submitting form:', error);
+        }
+      });
+    }
+  }
 }

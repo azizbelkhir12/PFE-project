@@ -2,8 +2,15 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 84558ce77200efaa23ce8eade5f2a1518a166617
 import { AppRoutingModule } from './app-routing.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GoogleMapsModule } from '@angular/google-maps';
+
+
 import { AppComponent } from './app.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -26,6 +33,10 @@ import { NavbarcompteAdminComponent } from './navbarcompte-admin/navbarcompte-ad
 import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles.component';
 import { GestionBeneficiairesComponent } from './gestion-beneficiaires/gestion-beneficiaires.component';
 import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.component';
+<<<<<<< HEAD
+=======
+import { ContactComponent } from './contact/contact.component';
+>>>>>>> 84558ce77200efaa23ce8eade5f2a1518a166617
 
 @NgModule({
   declarations: [
@@ -48,6 +59,10 @@ import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.com
     GestionBenevolesComponent,
     GestionBeneficiairesComponent,
     GestionDesDonsComponent,
+<<<<<<< HEAD
+=======
+    ContactComponent,
+>>>>>>> 84558ce77200efaa23ce8eade5f2a1518a166617
   ],
   imports: [
     BrowserModule,
@@ -56,6 +71,11 @@ import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.com
     FormsModule,
     FontAwesomeModule,
     HttpClientModule,
+<<<<<<< HEAD
+=======
+    GoogleMapsModule,
+    
+>>>>>>> 84558ce77200efaa23ce8eade5f2a1518a166617
   ],
   providers: [],
   bootstrap: [AppComponent],

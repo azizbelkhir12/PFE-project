@@ -13,6 +13,7 @@ import { AdminCompteComponent } from './admin-compte/admin-compte.component';
 import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles.component';
 import { GestionBeneficiairesComponent } from './gestion-beneficiaires/gestion-beneficiaires.component';
 import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.component';
+import { ContactComponent } from './contact/contact.component';
 
 
 
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'gestion-benevoles', component: GestionBenevolesComponent },
   { path: 'gestion-beneficiaires', component: GestionBeneficiairesComponent },
   { path: 'gestion-des-dons', component: GestionDesDonsComponent },
+  { path: 'contact', component: ContactComponent },
 
    // Correction ici
 ];
