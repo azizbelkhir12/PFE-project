@@ -30,8 +30,8 @@
   <!-- Sélection du formulaire -->
   <div class="form-toggle-container">
     <button class="btn-toggle" (click)="afficherFormulaire('benevole')">Créer un Bénévole</button>
-    <button class="btn-toggle" (click)="afficherFormulaire('statut')">Changer Statut</button>
     <button class="btn-toggle" (click)="afficherFormulaire('demandes')">Voir Demandes</button>
+    <button class="btn-toggle" (click)="afficherFormulaire('listeBenevoles')">Voir Liste des Bénévoles</button>
   </div>
 
   <!-- Formulaires et section des demandes -->
@@ -41,54 +41,49 @@
       <div class="form-card">
         <h3>Créer un compte bénévole</h3>
         <form #benevoleForm="ngForm" (ngSubmit)="creerBenevole()">
-          <label>Email :</label>
-          <input type="email" [(ngModel)]="nouveauBenevole.email" name="email" required />
+          <label for="email">Email :</label>
+          <input id="email" type="email" [(ngModel)]="nouveauBenevole.email" name="email" required />
 
-          <label>Nom :</label>
-          <input type="text" [(ngModel)]="nouveauBenevole.nom" name="nom" required />
+          <label for="nom">Nom :</label>
+          <input id="nom" type="text" [(ngModel)]="nouveauBenevole.nom" name="nom" required />
 
-          <label>Prénom :</label>
-          <input type="text" [(ngModel)]="nouveauBenevole.prenom" name="prenom" required />
+          <label for="prenom">Prénom :</label>
+          <input id="prenom" type="text" [(ngModel)]="nouveauBenevole.prenom" name="prenom" required />
 
-          <label>Mot de passe :</label>
-          <input type="password" [(ngModel)]="nouveauBenevole.motDePasse" name="motDePasse" required />
+          <label for="motDePasse">Mot de passe :</label>
+          <input id="motDePasse" type="password" [(ngModel)]="nouveauBenevole.motDePasse" name="motDePasse" required />
 
-          <label>Gouvernorat :</label>
-          <select [(ngModel)]="nouveauBenevole.gouvernorat" name="gouvernorat" required>
+          <label for="gouvernorat">Gouvernorat :</label>
+          <select id="gouvernorat" [(ngModel)]="nouveauBenevole.gouvernorat" name="gouvernorat" required>
             <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
           </select>
 
-          <label>Âge :</label>
-          <input type="number" [(ngModel)]="nouveauBenevole.age" name="age" required />
+          <label for="age">Âge :</label>
+          <input id="age" type="number" [(ngModel)]="nouveauBenevole.age" name="age" required />
 
           <button class="btn-blue" type="submit" [disabled]="benevoleForm.invalid">Créer le compte</button>
         </form>
       </div>
     </div>
 
-    <!-- Formulaire de changement de statut -->
-    <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'statut'">
-      <div class="form-card">
-        <h3>Changer le statut d'un bénévole</h3>
-        <form #statutForm="ngForm" (ngSubmit)="changerStatutBenevole()">
-          <label>ID du bénévole :</label>
-          <input type="number" [(ngModel)]="benevoleStatut.id" name="id" required />
-
-          <label>Statut :</label>
-          <select [(ngModel)]="benevoleStatut.statut" name="statut" required>
-            <option value="actif">Actif</option>
-            <option value="inactif">Inactif</option>
-          </select>
-
-          <button class="btn-blue" type="submit" [disabled]="statutForm.invalid">Modifier le statut</button>
-        </form>
-      </div>
-    </div>
 
     <!-- Section des demandes de bénévolat -->
     <div class="col-lg-6 col-md-8 col-12" *ngIf="formulaireActif === 'demandes'">
       <div class="form-card">
         <h3>Demandes de Bénévolat</h3>
+
+        <!-- Filtres et barre de recherche -->
+        <div class="filters">
+          <input type="text" placeholder="Rechercher par nom..." [(ngModel)]="searchTerm" />
+          <select [(ngModel)]="selectedGouvernorat">
+            <option value="">Tous les gouvernorats</option>
+            <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
+          </select>
+
+          <!-- Nouveau filtre par téléphone -->
+          <input type="text" placeholder="Rechercher par téléphone..." [(ngModel)]="searchTermTelephone" />
+        </div>
+
         <table class="table table-striped">
           <thead>
             <tr>
@@ -103,7 +98,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let demande of demandesBenevolat">
+            <tr *ngFor="let demande of getFilteredDemandes()">
               <td>{{ demande.nom }}</td>
               <td>{{ demande.prenom }}</td>
               <td>{{ demande.email }}</td>
@@ -118,7 +113,74 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Boutons d'exportation sous la liste -->
+        <div class="export-buttons">
+          <button class="btn-export" (click)="exportToXLSX()">Exporter en XLSX</button>
+          <button class="btn-export" (click)="exportToPDF()">Exporter en PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Liste des Bénévoles -->
+    <div class="col-lg-6 col-md-8 col-12" *ngIf="formulaireActif === 'listeBenevoles'">
+      <div class="form-card">
+        <h3>Liste des Bénévoles</h3>
+
+        <!-- Filtres et barre de recherche -->
+        <div class="filters">
+          <input type="text" placeholder="Rechercher par nom..." [(ngModel)]="searchTerm" />
+          <select [(ngModel)]="selectedGouvernorat">
+            <option value="">Tous les gouvernorats</option>
+            <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
+          </select>
+
+          <!-- Filtre par statut -->
+          <select [(ngModel)]="selectedStatut">
+            <option value="">Tous les statuts</option>
+            <option value="actif">Actif</option>
+            <option value="inactif">Inactif</option>
+          </select>
+
+          <!-- Filtre par âge -->
+          <input type="number" placeholder="Filtrer par âge..." [(ngModel)]="selectedAge" />
+        </div>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Email</th>
+              <th>Âge</th>
+              <th>Gouvernorat</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let benevole of getFilteredBenevoles()">
+              <td>{{ benevole.nom }}</td>
+              <td>{{ benevole.prenom }}</td>
+              <td>{{ benevole.email }}</td>
+              <td>{{ benevole.age }}</td>
+              <td>{{ benevole.gouvernorat }}</td>
+              <td>{{ benevole.statut }}</td>
+              <td>
+                <button (click)="activerBenevole(benevole.id)">Activer</button>
+<button (click)="desactiverBenevole(benevole.id)">Désactiver</button></td>
+
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Boutons d'exportation sous la liste -->
+        <div class="export-buttons">
+          <button class="btn-export" (click)="exportToXLSX()">Exporter en XLSX</button>
+          <button class="btn-export" (click)="exportToPDF()">Exporter en PDF</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+

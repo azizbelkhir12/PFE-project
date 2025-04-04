@@ -9,10 +9,10 @@ body {
 }
 
 h1,
-h2, 
-h3, 
+h2,
+h3,
 h4,
-h5, 
+h5,
 h6 {
     color: #4a4c70;
 }
@@ -32,7 +32,7 @@ a:focus {
 
 .btn.btn-custom {
     padding: 12px 20px;
-    text-align: center; 
+    text-align: center;
    font-size: 16px;
     font-weight: 500;
     color: #777777;
@@ -59,7 +59,7 @@ a:focus {
 }
 
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
-[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {
     font-size: inherit;
     margin-left: 0;
 }
@@ -240,17 +240,17 @@ a:focus {
        /* border-bottom: 1px solid rgba(255, 255, 255, .3);*/
         z-index: 9;
     }
-    
+
     .navbar.nav-sticky {
         padding: 10px 60px;
         background: #20212B !important;
         border-bottom: none;
     }
-    
+
     .page .navbar {
         background: #20212B !important;
     }
-    
+
     .navbar a.nav-link {
         padding: 8px 15px;
         font-size: 16px;
@@ -262,16 +262,16 @@ a:focus {
     }
 }
 
-@media (max-width: 991.98px) {   
+@media (max-width: 991.98px) {
     .navbar {
         padding: 15px;
         background: #20212B !important;
     }
-    
+
     .navbar a.nav-link {
         padding: 5px;
     }
-    
+
     .navbar .dropdown-menu {
         box-shadow: none;
     }
@@ -376,11 +376,11 @@ a:focus {
     .page-header {
         padding: 60px 0;
     }
-    
+
     .page-header h2 {
         font-size: 45px;
     }
-    
+
     .page-header a {
         font-size: 20px;
     }
@@ -390,11 +390,11 @@ a:focus {
     .page-header {
         padding: 45px 0;
     }
-    
+
     .page-header h2 {
         font-size: 35px;
     }
-    
+
     .page-header a {
         font-size: 18px;
     }
@@ -473,7 +473,7 @@ a:focus {
     font-weight: 600;
     background: none;
     border-radius: 0;
-    border-bottom: 1px solid rgba(0, 0, 0, .15);    
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
     transition: none;
 }
 
@@ -1176,29 +1176,29 @@ a:focus {
     .event .event-content {
         flex-direction: column;
     }
-    
+
     .event .event-meta {
         flex-direction: row;
     }
-    
+
     .event .event-meta p {
         font-size: 14px;
         padding-right: 7px;
     }
-    
+
     .event .event-meta p:last-child {
         border-bottom: 1px solid rgba(0, 0, 0, .15);
     }
-    
+
     .event .event-meta i {
         width: 18px;
     }
-    
+
     .event .event-text {
         margin: 0;
         padding: 0;
     }
-    
+
     .event .event-text::before,
     .event .event-text::after {
         display: none;
@@ -1747,11 +1747,11 @@ a:focus {
 }
 
 .sidebar .category-widget ul li {
-    margin: 0 0 12px 22px; 
+    margin: 0 0 12px 22px;
 }
 
 .sidebar .category-widget ul li:last-child {
-    margin-bottom: 0; 
+    margin-bottom: 0;
 }
 
 .sidebar .category-widget ul li a {
