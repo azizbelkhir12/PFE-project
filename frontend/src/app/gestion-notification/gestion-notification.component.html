@@ -1,0 +1,92 @@
+<app-navbarcompte-admin></app-navbarcompte-admin>
+<app-sidebar-admin></app-sidebar-admin>
+
+<div class="main-container">
+  <!-- ✅ Cartes de statistiques -->
+  <div class="stats-container">
+    <!-- Carte 1 : Envoyer une Notification -->
+    <div class="stats-card">
+      <i class="fas fa-bell icon-yellow"></i>
+      <h4>Envoyer une Notification</h4>
+    </div>
+
+    <!-- Carte 2 : Total Notifications -->
+    <div class="stats-card">
+      <i class="fas fa-paper-plane icon-yellow"></i>
+      <h4>Total Notifications</h4>
+      <p>{{ totalNotifications }}</p>
+    </div>
+
+    <!-- Carte 3 : Total Bénéficiaires -->
+    <div class="stats-card">
+      <i class="fas fa-users icon-yellow"></i>
+      <h4>Total Bénéficiaires</h4>
+      <p>{{ listeBeneficiaires.length }}</p>
+    </div>
+
+
+
+    <!-- Carte 5 : Dernière Notification -->
+    <div class="stats-card">
+      <i class="fas fa-comment-alt icon-yellow"></i>
+      <h4>Dernière Notification</h4>
+      <p>{{ derniereNotification?.titre || 'Aucune' }}</p>
+    </div>
+  </div>
+
+  <!-- ✅ Message de succès -->
+  <div *ngIf="message" class="message-box">
+    {{ message }}
+  </div>
+
+  <!-- ✅ Formulaire d'envoi de notification -->
+  <div class="forms-container">
+    <div class="form-card">
+      <h3>Notification pour un Bénéficiaire</h3>
+
+      <!-- Barre de recherche -->
+      <input
+        type="text"
+        placeholder="Rechercher un bénéficiaire..."
+        [(ngModel)]="recherche"
+        (input)="filtrerBeneficiaires()"
+        class="search-input"
+      />
+
+      <form #notificationForm="ngForm" (ngSubmit)="envoyerNotification()">
+        <label for="beneficiaire">Sélectionner un Bénéficiaire :</label>
+        <select
+          id="beneficiaire"
+          [(ngModel)]="notification.idBeneficiaire"
+          name="beneficiaire"
+          required
+        >
+          <option *ngFor="let b of beneficiairesFiltres" [value]="b.id">
+            {{ b.nom }} {{ b.prenom }}
+          </option>
+        </select>
+
+        <label for="titre">Titre :</label>
+        <input
+          id="titre"
+          type="text"
+          [(ngModel)]="notification.titre"
+          name="titre"
+          required
+        />
+
+        <label for="contenu">Contenu :</label>
+        <textarea
+          id="contenu"
+          [(ngModel)]="notification.contenu"
+          name="contenu"
+          required
+        ></textarea>
+
+        <button class="btn-blue" type="submit" [disabled]="notificationForm.invalid">
+          Envoyer
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -14,6 +14,9 @@ import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles
 import { GestionBeneficiairesComponent } from './gestion-beneficiaires/gestion-beneficiaires.component';
 import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.component';
 import { ContactComponent } from './contact/contact.component';
+import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
+import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
+import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
 
 
 
@@ -23,7 +26,7 @@ const routes: Routes = [
   { path: '', component: AcceuilComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'benevolat', component: BenevolatComponent}, 
+  { path: 'benevolat', component: BenevolatComponent},
   { path: 'benevole-compte', component: BenevoleCompteComponent },
   { path: 'beneficiaire-compte', component: BeneficiaireCompteComponent },
   { path: 'donateur-parrain-compte', component: DonateurParrainCompteComponent },
@@ -34,6 +37,9 @@ const routes: Routes = [
   { path: 'gestion-beneficiaires', component: GestionBeneficiairesComponent },
   { path: 'gestion-des-dons', component: GestionDesDonsComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'gestion-notification', component: GestionNotificationComponent },
+  { path: 'gestion-des-rapports', component: GestionDesRapportsComponent },
+  { path: 'gestion-des-articles', component: GestionDesArticlesComponent },
 
    // Correction ici
 ];

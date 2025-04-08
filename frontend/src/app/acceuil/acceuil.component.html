@@ -1,76 +1,67 @@
-
-
- <!-- Nav Bar Start -->
- <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+<!-- Nav Bar Start -->
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
   <div class="container-fluid">
-      <div class="navbar-brand">
-          <img src="assets/logo.jpg" alt="Logo">
-      </div>
-      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-          <span class="navbar-toggler-icon"></span>
-      </button>
+    <!-- Logo -->
+    <div class="navbar-brand">
+      <img src="assets/logo.jpg" alt="Logo">
+    </div>
+    <!-- Navbar Toggle -->
+    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
-          <div class="navbar-nav">
-              <a routerLink="/" class="nav-item nav-link active">Home</a>
-<<<<<<< HEAD
-              <a routerLink="/about" class="nav-item nav-link">A propos</a>
-=======
-              <a routerLink="/contact" class="nav-item nav-link">Contact</a>
->>>>>>> 84558ce77200efaa23ce8eade5f2a1518a166617
-              <a routerLink="/causes" class="nav-item nav-link">Causes</a>
-              <a routerLink="/events" class="nav-item nav-link">Evénements</a>
-              <a routerLink="/blog" class="nav-item nav-link">Blog</a>
-              <a routerLink="/benevolat" class="nav-item nav-link">Rejoignez-nous </a>
-          </div>
-          <div class="navbar-nav login">
-              <a routerLink="/login" class="nav-link">Se Connecter</a>
-              <a routerLink="/register" class="nav-link">Créer un compte</a>
-              <button type="button" class="nav-link btn btn-custom">Faire un don maintenant</button>
-          </div>
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+      <div class="navbar-nav">
+        <a routerLink="/" class="nav-item nav-link active">Home</a>
+        <a routerLink="/contact" class="nav-item nav-link">Contact</a>
+        <a routerLink="/Rapports" class="nav-item nav-link">Rapports</a>
+        <a routerLink="/events" class="nav-item nav-link">Evénements</a>
+        <a routerLink="/blog" class="nav-item nav-link">Blog</a>
+        <a routerLink="/benevolat" class="nav-item nav-link">Rejoignez-nous</a>
       </div>
-
+      <div class="navbar-nav login">
+        <a routerLink="/login" class="nav-link">Se Connecter</a>
+        <a routerLink="/register" class="nav-link">Créer un compte</a>
+        <button type="button" class="nav-link btn btn-custom">Faire un don maintenant</button>
+      </div>
+    </div>
   </div>
 </nav>
 <!-- Nav Bar End -->
 
- <!--  Banner Section -->
 <!-- Banner Section -->
 <div class="banner-container">
   <img src="assets/banner.jpg" alt="Banner" class="banner-image">
   <div class="banner-caption">
-      <h5>Ensemble, apportons l'espoir et le changement. Chaque geste compte</h5>
+    <h5>Ensemble, apportons l'espoir et le changement. Chaque geste compte</h5>
   </div>
 </div>
 
-  <!-- About Start -->
+<!-- About Start -->
 <div class="about">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6">
-            <div class="about-img" [style.backgroundImage]="'url(assets/aboutR.jpg)'" data-parallax="scroll"></div>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="about-img" [style.backgroundImage]="'url(assets/aboutR.jpg)'" data-parallax="scroll"></div>
+      </div>
+      <div class="col-lg-6">
+        <div class="section-header">
+          <p>Learn About Us</p>
+          <h2>Worldwide non-profit charity organization</h2>
         </div>
-        <div class="col-lg-6">
-          <div class="section-header">
-            <p>Learn About Us</p>
-            <h2>Worldwide non-profit charity organization</h2>
-          </div>
-          <div class="about-text">
-            <p>L’association TUNISIA CHARITY تونس الخيرية est une organisation non gouvernementale à but non lucratif. Elle vise à servir la société en mobilisant les efforts des bienfaiteurs pour résoudre les problèmes de leurs communautés et venir en aide aux personnes dans le besoin. <br>
-              L’association intervient dans le domaine du secours aux sinistrés en cas d’urgence, du développement durable et de la lutte contre la pauvreté. Elle œuvre également à promouvoir l’esprit de coopération et de solidarité au sein de la société, tout en encourageant les initiatives individuelles et le bénévolat des membres de la société civile.
-            </p>
-          </div>
-
+        <div class="about-text">
+          <p>L’association TUNISIA CHARITY تونس الخيرية est une organisation non gouvernementale à but non lucratif. Elle vise à servir la société en mobilisant les efforts des bienfaiteurs pour résoudre les problèmes de leurs communautés et venir en aide aux personnes dans le besoin. <br>
+            L’association intervient dans le domaine du secours aux sinistrés en cas d’urgence, du développement durable et de la lutte contre la pauvreté. Elle œuvre également à promouvoir l’esprit de coopération et de solidarité au sein de la société, tout en encourageant les initiatives individuelles et le bénévolat des membres de la société civile.
+          </p>
         </div>
       </div>
     </div>
- </div>
+  </div>
+</div>
+<!-- About End -->
 
-
-
-  <!-- About End -->
-
-  <!-- Service Start -->
+<!-- Service Start -->
 <div class="service">
   <div class="container">
     <div class="section-header text-center">
@@ -93,6 +84,7 @@
   </div>
 </div>
 <!-- Service End -->
+
 <!-- Facts Start -->
 <div class="facts" style="background-image: url('assets/facts.jpg');">
   <div class="container">
@@ -155,7 +147,6 @@
 </div>
 <!-- Causes End -->
 
-
 <!-- Contact Start -->
 <div class="contact">
   <div class="container">
@@ -196,8 +187,5 @@
 <!-- Contact End -->
 
 <app-footer></app-footer>
-
-
-
 
 

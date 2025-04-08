@@ -2,17 +2,12 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-<<<<<<< HEAD
-
-=======
->>>>>>> 84558ce77200efaa23ce8eade5f2a1518a166617
 import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GoogleMapsModule } from '@angular/google-maps';
-
+import { QuillModule } from 'ngx-quill';
 
 import { AppComponent } from './app.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // Composants
 import { AcceuilComponent } from './acceuil/acceuil.component';
@@ -33,10 +28,10 @@ import { NavbarcompteAdminComponent } from './navbarcompte-admin/navbarcompte-ad
 import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles.component';
 import { GestionBeneficiairesComponent } from './gestion-beneficiaires/gestion-beneficiaires.component';
 import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.component';
-<<<<<<< HEAD
-=======
 import { ContactComponent } from './contact/contact.component';
->>>>>>> 84558ce77200efaa23ce8eade5f2a1518a166617
+import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
+import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
+import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
 
 @NgModule({
   declarations: [
@@ -59,10 +54,10 @@ import { ContactComponent } from './contact/contact.component';
     GestionBenevolesComponent,
     GestionBeneficiairesComponent,
     GestionDesDonsComponent,
-<<<<<<< HEAD
-=======
     ContactComponent,
->>>>>>> 84558ce77200efaa23ce8eade5f2a1518a166617
+    GestionNotificationComponent,
+    GestionDesRapportsComponent,
+    GestionDesArticlesComponent,  // Vérifie que ce composant existe bien et que le chemin est correct
   ],
   imports: [
     BrowserModule,
@@ -71,11 +66,9 @@ import { ContactComponent } from './contact/contact.component';
     FormsModule,
     FontAwesomeModule,
     HttpClientModule,
-<<<<<<< HEAD
-=======
     GoogleMapsModule,
-    
->>>>>>> 84558ce77200efaa23ce8eade5f2a1518a166617
+    QuillModule.forRoot(),
+
   ],
   providers: [],
   bootstrap: [AppComponent],
