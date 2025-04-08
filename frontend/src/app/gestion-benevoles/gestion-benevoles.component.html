@@ -29,7 +29,7 @@
 
   <!-- Sélection du formulaire -->
   <div class="form-toggle-container">
-    <button class="btn-toggle" (click)="afficherFormulaire('benevole')">Créer un Bénévole</button>
+    <button class="btn-toggle" (click)="afficherFormulaire('benevole')">Liste des bénévole</button>
     <button class="btn-toggle" (click)="afficherFormulaire('statut')">Changer Statut</button>
     <button class="btn-toggle" (click)="afficherFormulaire('demandes')">Voir Demandes</button>
   </div>
@@ -39,30 +39,43 @@
     <!-- Formulaire de création de bénévole -->
     <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'benevole'">
       <div class="form-card">
-        <h3>Créer un compte bénévole</h3>
-        <form #benevoleForm="ngForm" (ngSubmit)="creerBenevole()">
-          <label>Email :</label>
-          <input type="email" [(ngModel)]="nouveauBenevole.email" name="email" required />
-
-          <label>Nom :</label>
-          <input type="text" [(ngModel)]="nouveauBenevole.nom" name="nom" required />
-
-          <label>Prénom :</label>
-          <input type="text" [(ngModel)]="nouveauBenevole.prenom" name="prenom" required />
-
-          <label>Mot de passe :</label>
-          <input type="password" [(ngModel)]="nouveauBenevole.motDePasse" name="motDePasse" required />
-
-          <label>Gouvernorat :</label>
-          <select [(ngModel)]="nouveauBenevole.gouvernorat" name="gouvernorat" required>
-            <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
-          </select>
-
-          <label>Âge :</label>
-          <input type="number" [(ngModel)]="nouveauBenevole.age" name="age" required />
-
-          <button class="btn-blue" type="submit" [disabled]="benevoleForm.invalid">Créer le compte</button>
-        </form>
+        <h3>Liste des bénévole</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Âge</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+              <th>Adresse</th>
+              <th>Gouvernorat</th>
+              <th>Statut</th>
+              <th>Date d'adhésion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let volunteer of volunteers">
+              <td>{{ volunteer.name }}</td>
+              <td>{{ volunteer.lastName }}</td>
+              <td>{{ volunteer.age }}</td>
+              <td>{{ volunteer.email }}</td>
+              <td>{{ volunteer.phone }}</td>
+              <td>{{ volunteer.address }}</td>
+              <td>{{ volunteer.gouvernorat }}</td>
+              <td>
+                <span class="status-text" [ngClass]="{ 
+                  'active-status': volunteer.status === 'active', 
+                  'inactive-status': volunteer.status === 'inactive' 
+                }">
+                  {{ volunteer.status }}
+                </span>
+              </td>
+              <td>{{ volunteer.joinedAt | date:'dd/MM/yyyy' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        
       </div>
     </div>
 
@@ -88,36 +101,41 @@
     <!-- Section des demandes de bénévolat -->
     <div class="col-lg-6 col-md-8 col-12" *ngIf="formulaireActif === 'demandes'">
       <div class="form-card">
-        <h3>Demandes de Bénévolat</h3>
+      <h3>Demandes de Bénévolat</h3>
+      <div *ngIf="demandesBenevolat && demandesBenevolat.length > 0; else noDemandes">
         <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Prénom</th>
-              <th>Email</th>
-              <th>Âge</th>
-              <th>Gouvernorat</th>
-              <th>Raison</th>
-              <th>Téléphone</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let demande of demandesBenevolat">
-              <td>{{ demande.nom }}</td>
-              <td>{{ demande.prenom }}</td>
-              <td>{{ demande.email }}</td>
-              <td>{{ demande.age }}</td>
-              <td>{{ demande.gouvernorat }}</td>
-              <td>{{ demande.raison }}</td>
-              <td>{{ demande.telephone }}</td>
-              <td>
-                <button class="btn-accept" (click)="accepterDemande(demande)">Accepter</button>
-                <button class="btn-reject" (click)="refuserDemande(demande.email)">Refuser</button>
-              </td>
-            </tr>
-          </tbody>
+        <thead>
+          <tr>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Email</th>
+          <th>Âge</th>
+          <th>Gouvernorat</th>
+          <th>Raison</th>
+          <th>Téléphone</th>
+          <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let demande of demandesBenevolat">
+          <td>{{ demande.name }}</td>
+          <td>{{ demande.prenom }}</td>
+          <td>{{ demande.email }}</td>
+          <td>{{ demande.age }}</td>
+          <td>{{ demande.gouvernorat }}</td>
+          <td>{{ demande.reason }}</td>
+          <td>{{ demande.phone }}</td>
+          <td>
+            <button class="btn-accept" (click)="accepterDemande(demande)">Accepter</button>
+            <button class="btn-reject" (click)="refuserDemande(demande)">Refuser</button>
+          </td>
+          </tr>
+        </tbody>
         </table>
+      </div>
+      <ng-template #noDemandes>
+        <p class="text-center">Pas de demandes pour le moment</p>
+      </ng-template>
       </div>
     </div>
   </div>

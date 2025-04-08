@@ -13,11 +13,27 @@
           <!-- Form -->
           <form [formGroup]="signupForm" class="form-container">
             <!-- Name Field -->
-            <input type="text" placeholder="Nom et Prénom" class="box" formControlName="name" />
+            <input type="text" placeholder="Nom" class="box" formControlName="name" />
             <div *ngIf="signupForm.get('name')?.invalid && (signupForm.get('name')?.dirty || signupForm.get('name')?.touched)" class="errorMsg">
               <div *ngIf="signupForm.get('name')?.errors?.['required']">Name is required</div>
               <div *ngIf="signupForm.get('name')?.errors?.['minlength']">Must be at least 3 characters</div>
               <div *ngIf="signupForm.get('name')?.errors?.['maxlength']">Must be at most 50 characters</div>
+            </div> <br>
+
+            <!-- First Name Field -->
+            <input type="text" placeholder="Prénom" class="box" formControlName="Prenom">
+            <div *ngIf="signupForm.get('Prenom')?.invalid && (signupForm.get('Prenom')?.dirty || signupForm.get('Prenom')?.touched)" class="errorMsg">
+              <div *ngIf="signupForm.get('Prenom')?.errors?.['required']">Prénom is required</div>
+              <div *ngIf="signupForm.get('Prenom')?.errors?.['minlength']">Must be at least 3 characters</div>
+              <div *ngIf="signupForm.get('Prenom')?.errors?.['maxlength']">Must be at most 50 characters</div>
+            </div> <br>
+
+            <!-- Age Field -->
+            <input type="number" placeholder="Âge" class="box" formControlName="age" min="18" max="99">
+            <div *ngIf="signupForm.get('age')?.invalid && (signupForm.get('age')?.dirty || signupForm.get('age')?.touched)" class="errorMsg">
+              <div *ngIf="signupForm.get('age')?.errors?.['required']">Age is required</div>
+              <div *ngIf="signupForm.get('age')?.errors?.['min']">You must be at least 18 years old</div>
+             <div *ngIf="signupForm.get('age')?.errors?.['max']">Age cannot exceed 99</div>
             </div> <br>
 
             <!-- Email Field -->
@@ -64,6 +80,9 @@
               <div *ngIf="signupForm.get('confirmPassword')?.errors?.['notMatching']">Passwords do not match</div>
             </div> <br>
 
+            
+
+
             <!-- Address Field -->
             <input type="text" placeholder="Addresse complete " class="box" formControlName="address">
             <div *ngIf="signupForm.get('address')?.invalid && (signupForm.get('address')?.dirty || signupForm.get('address')?.touched)" class="errorMsg">
@@ -100,7 +119,7 @@
               </div>
             </form>
             
-
+            
             
 
             <!-- Submit Button -->

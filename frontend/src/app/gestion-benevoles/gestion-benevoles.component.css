@@ -42,23 +42,34 @@
 /* ✅ Organisation des formulaires */
 .forms-container {
   display: flex;
+  width: 100%;
   justify-content: center; /* ✅ Centre les formulaires */
   gap: 40px; /* ✅ Espace entre les deux formulaires */
   margin-top: 20px; /* ✅ Réduction de l’espace au-dessus */
 }
 
 /* ✅ Formulaires modernisés */
+/* Adjust the form card containing the table */
 .form-card {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #0056b3; /* ✅ Bleu foncé */
-  width: 40%; /* ✅ Plus large */
-  min-width: 400px; /* ✅ Taille minimum pour éviter un écrasement */
-  transition: all 0.3s ease-in-out;
+  width: 100%; /* Take full available width */
+  max-width: none; /* Remove any max-width restriction */
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
+  padding: 20px; /* Ensure proper spacing */
 }
 
+/* Make the table fit its content */
+.table {
+  width: auto; /* Let table determine its own width */
+  min-width: 100%; /* But at least full container width */
+  white-space: nowrap; /* Prevent line breaks in cells */
+}
+
+/* Specific adjustment for the benevole list container */
+.col-lg-5.col-md-6.col-12 {
+  width: 100%; /* Take full width */
+  max-width: 100%; /* No max-width restriction */
+  flex: 0 0 100%; /* Override column sizing */
+}
 /* ✅ Effet au survol */
 .form-card:hover {
   transform: translateY(-4px);
@@ -210,6 +221,8 @@ button:hover {
   color: #222;
   font-weight: bold;
 }
+
+
 
 /* ✅ Responsive */
 @media (max-width: 1024px) {

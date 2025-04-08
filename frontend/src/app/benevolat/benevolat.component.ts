@@ -29,6 +29,11 @@ export class BenevolatComponent {
       Validators.minLength(3),
       Validators.maxLength(50),
     ]),
+    Prenom: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50)
+    ]),
     email: new FormControl('', [
       Validators.required,
       Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
@@ -60,6 +65,12 @@ export class BenevolatComponent {
       Validators.pattern(/^\+216\d{8}$/)
     ]),
     reason: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]), 
+
+    age : new FormControl('', [
+      Validators.required,
+      Validators.min(18),
+      Validators.max(99)
+    ])
     
   }, { validators: ConfirmPasswordService.matchingPassword() });
 
@@ -94,7 +105,11 @@ export class BenevolatComponent {
       return;
     }
   
-    const formData = { ...this.signupForm.value };
+    const formData = { 
+      ...this.signupForm.value,
+      Prenom: this.signupForm.value.Prenom.trim(), // Ensure Prenom is trimmed
+      age: Number(this.signupForm.value.age) // Ensure age is a number
+    };
     delete formData.confirmPassword;
   
     this.isLoading = true;
