@@ -1,47 +1,57 @@
 import { Component } from '@angular/core';
+import * as XLSX from 'xlsx';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-gestion-beneficiaires',
   templateUrl: './gestion-beneficiaires.component.html',
+  styleUrls: ['./gestion-beneficiaires.component.css'],
   standalone: false,
-  styleUrls: ['./gestion-beneficiaires.component.css']
 })
 export class GestionBeneficiairesComponent {
+  modifierBeneficiaire(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
+  supprimerBeneficiaire(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
 
-  // ✅ Liste des bénéficiaires et donateurs (données simulées pour test)
+  // Liste des bénéficiaires et donateurs (données simulées pour test)
   listeBeneficiaires: any[] = [
     { id: 1, nom: 'Ahmed', prenom: 'Ben Ali', age: 25, telephone: '12345678', gouvernorat: 'Tunis', besoin: 'Aide financière' },
     { id: 2, nom: 'Fatma', prenom: 'Trabelsi', age: 30, telephone: '98765432', gouvernorat: 'Sfax', besoin: 'Soins médicaux' }
   ];
 
+  // Liste des donateurs
   listeDonateurs: any[] = [
     { id: 1, nom: 'Mohamed', prenom: 'Saidi' },
     { id: 2, nom: 'Leila', prenom: 'Jebali' }
   ];
 
+  // Liste des gouvernorats
   gouvernorats: string[] = ['Tunis', 'Sfax', 'Sousse', 'Nabeul', 'Gabès'];
 
-  // ✅ Variables pour gérer les formulaires et les messages
+  // Variables pour les formulaires et les messages
   totalBeneficiaires: number = this.listeBeneficiaires.length;
-  formulaireActif: string = 'ajout';
-  message: string = ''; // Message affiché après une action
+  formulaireActif: string = 'beneficiaire';  // Formulaire de création affiché par défaut
+  message: string = '';
 
-  // ✅ Modèles de données pour les formulaires
+  // Modèles de données pour les formulaires
   nouveauBeneficiaire: any = { nom: '', prenom: '', age: 0, telephone: '', gouvernorat: '', besoin: '' };
   affectation: any = { idBeneficiaire: 0, idDonateur: 0 };
-  beneficiaireSelectionne: number | null = null;  // ✅ Initialisation correcte
+  beneficiaireSelectionne: number | null = null;
 
-  /**
-   * ✅ Changer le formulaire affiché
-   */
+  // Variables pour le filtrage
+  filtreNom: string = ''; // Filtre par nom
+  filtreAge: number | null = null; // Filtre par âge
+
+  // Changer le formulaire affiché
   afficherFormulaire(formulaire: string) {
     this.formulaireActif = formulaire;
     this.message = ''; // Réinitialise les messages à chaque changement de formulaire
   }
 
-  /**
-   * ✅ Ajouter un nouveau bénéficiaire
-   */
+  // Ajouter un nouveau bénéficiaire
   creerBeneficiaire() {
     if (!this.nouveauBeneficiaire.nom || !this.nouveauBeneficiaire.age || !this.nouveauBeneficiaire.telephone) {
       this.message = "⚠️ Veuillez remplir tous les champs requis.";
@@ -58,36 +68,7 @@ export class GestionBeneficiairesComponent {
     this.nouveauBeneficiaire = { nom: '', prenom: '', age: 0, telephone: '', gouvernorat: '', besoin: '' };
   }
 
-  /**
-   * ✅ Supprimer un bénéficiaire avec vérification
-   */
-  confirmerSuppression(id: number | null) {
-    if (id === null) {
-      this.message = "⚠️ Aucun bénéficiaire sélectionné.";
-      return;
-    }
-
-    const index = this.listeBeneficiaires.findIndex(b => b.id === id);
-    if (index !== -1) {
-      this.listeBeneficiaires.splice(index, 1);
-      this.totalBeneficiaires = this.listeBeneficiaires.length;
-      this.message = `❌ Bénéficiaire supprimé avec succès.`;
-    } else {
-      this.message = "⚠️ Erreur : Bénéficiaire introuvable.";
-    }
-  }
-
-  /**
-   * ✅ Modifier un bénéficiaire
-   */
-  modifierBeneficiaire(beneficiaire: any) {
-    this.nouveauBeneficiaire = { ...beneficiaire };
-    this.message = `✏️ Modification du bénéficiaire ${beneficiaire.nom} en cours...`;
-  }
-
-  /**
-   * ✅ Affecter un bénéficiaire à un donateur avec conversion correcte
-   */
+  // Affecter un bénéficiaire à un donateur
   affecterBeneficiaire() {
     const idBeneficiaire = Number(this.affectation.idBeneficiaire);
     const idDonateur = Number(this.affectation.idDonateur);
@@ -108,4 +89,33 @@ export class GestionBeneficiairesComponent {
 
     this.affectation = { idBeneficiaire: 0, idDonateur: 0 };
   }
+
+  // Fonction de filtrage
+  filtrerBeneficiaires() {
+    return this.listeBeneficiaires.filter(b => {
+      const correspondNom = this.filtreNom ? b.nom.toLowerCase().includes(this.filtreNom.toLowerCase()) : true;
+      const correspondAge = this.filtreAge ? b.age === this.filtreAge : true;
+      return correspondNom && correspondAge;
+    });
+  }
+
+  // Fonction d'exportation en XLSX
+  exportToXLSX() {
+    const worksheet = XLSX.utils.json_to_sheet(this.listeBeneficiaires);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Bénéficiaires');
+    XLSX.writeFile(workbook, 'beneficiaires.xlsx');
+  }
+
+  // Fonction d'exportation en PDF
+  exportToPDF() {
+    const doc = new jsPDF();
+    doc.text('Liste des Bénéficiaires', 10, 10);
+    this.listeBeneficiaires.forEach((beneficiaire, index) => {
+      doc.text(`${beneficiaire.nom} ${beneficiaire.prenom} - Age: ${beneficiaire.age} - Tel: ${beneficiaire.telephone}`, 10, 20 + (index * 10));
+    });
+    doc.save('beneficiaires.pdf');
+  }
 }
+
+

@@ -7,15 +7,15 @@
     <div class="stats-card">
       <i class="fas fa-users icon-yellow"></i>
       <h4>Total Bénéficiaires</h4>
-      <!--<p>{{ listeBeneficiaires?.length || 0 }}</p>-->
+      <p>{{ totalBeneficiaires }}</p>
     </div>
   </div>
 
   <!-- ✅ Sélection du formulaire -->
   <div class="form-toggle-container">
-    <button class="btn-toggle" (click)="afficherFormulaire('ajout')">Créer un bénéficiaire</button>
-    <button class="btn-toggle" (click)="afficherFormulaire('suppression')">Supprimer un bénéficiaire</button>
-    <button class="btn-toggle" (click)="afficherFormulaire('affectation')">Affecter à un donateur</button>
+    <button class="btn-toggle" (click)="afficherFormulaire('beneficiaire')">Créer un Bénéficiaire</button>
+    <button class="btn-toggle" (click)="afficherFormulaire('affectation')">Affecter un Bénéficiaire</button>
+    <button class="btn-toggle" (click)="afficherFormulaire('listeBeneficiaires')">Voir Liste des Bénéficiaires</button>
   </div>
 
   <!-- ✅ Message d'alerte -->
@@ -25,116 +25,102 @@
 
   <!-- ✅ Formulaires -->
   <div class="row forms-container">
-    <!-- ✅ Formulaire d'ajout -->
-    <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'ajout'">
+    <!-- Formulaire de création de bénéficiaire -->
+    <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'beneficiaire'">
       <div class="form-card">
-        <h3>Créer un bénéficiaire</h3>
-        <form (ngSubmit)="creerBeneficiaire()">
-          <label>Nom :</label>
-          <input type="text" [(ngModel)]="nouveauBeneficiaire.nom" name="nom" required />
+        <h3>Créer un compte Bénéficiaire</h3>
+        <form #beneficiaireForm="ngForm" (ngSubmit)="creerBeneficiaire()">
+          <label for="email">Email :</label>
+          <input id="email" type="email" [(ngModel)]="nouveauBeneficiaire.email" name="email" required />
 
-          <label>Prénom :</label>
-          <input type="text" [(ngModel)]="nouveauBeneficiaire.prenom" name="prenom" required />
+          <label for="nom">Nom :</label>
+          <input id="nom" type="text" [(ngModel)]="nouveauBeneficiaire.nom" name="nom" required />
 
-          <label>Âge :</label>
-          <input type="number" [(ngModel)]="nouveauBeneficiaire.age" name="age" required />
+          <label for="prenom">Prénom :</label>
+          <input id="prenom" type="text" [(ngModel)]="nouveauBeneficiaire.prenom" name="prenom" required />
 
-          <label>Téléphone :</label>
-          <input type="text" [(ngModel)]="nouveauBeneficiaire.telephone" name="telephone" required />
+          <label for="motDePasse">Mot de passe :</label>
+          <input id="motDePasse" type="password" [(ngModel)]="nouveauBeneficiaire.motDePasse" name="motDePasse" required />
 
-          <label>Gouvernorat :</label>
-          <select [(ngModel)]="nouveauBeneficiaire.gouvernorat" name="gouvernorat" required>
-            <option *ngFor="let gov of gouvernorats" [value]="gov">{{ gov }}</option>
+          <label for="gouvernorat">Gouvernorat :</label>
+          <select id="gouvernorat" [(ngModel)]="nouveauBeneficiaire.gouvernorat" name="gouvernorat" required>
+            <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
           </select>
 
-          <label>Besoins :</label>
-          <input type="text" [(ngModel)]="nouveauBeneficiaire.besoin" name="besoin" required />
+          <label for="age">Âge :</label>
+          <input id="age" type="number" [(ngModel)]="nouveauBeneficiaire.age" name="age" required />
 
-          <button class="btn-blue" type="submit">Ajouter</button>
+          <button class="btn-blue" type="submit" [disabled]="beneficiaireForm.invalid">Créer le compte</button>
         </form>
       </div>
     </div>
 
-    <!-- ✅ Formulaire de suppression -->
-    <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'suppression' && listeBeneficiaires.length > 0">
+    <!-- Formulaire d'affectation d'un bénéficiaire à un donateur -->
+    <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'affectation'">
       <div class="form-card">
-        <h3>Supprimer un bénéficiaire</h3>
-        <label>Sélectionner un bénéficiaire :</label>
-        <select [(ngModel)]="beneficiaireSelectionne" name="beneficiaireSelectionne" required>
-          <option *ngFor="let beneficiaire of listeBeneficiaires" [value]="beneficiaire.id">
-            {{ beneficiaire.nom }} {{ beneficiaire.prenom }} ({{ beneficiaire.age }} ans)
-          </option>
-        </select>
-
-        <button class="btn-red" (click)="confirmerSuppression(beneficiaireSelectionne)" [disabled]="!beneficiaireSelectionne">
-          Supprimer
-        </button>
-      </div>
-    </div>
-
-    <!-- ✅ Formulaire d'affectation -->
-    <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'affectation' && listeBeneficiaires.length > 0 && listeDonateurs.length > 0">
-      <div class="form-card">
-        <h3>Affecter un bénéficiaire à un donateur</h3>
-        <form (ngSubmit)="affecterBeneficiaire()">
-          <label>Bénéficiaire :</label>
-          <select [(ngModel)]="affectation.idBeneficiaire" name="idBeneficiaire" required>
-            <option *ngFor="let b of listeBeneficiaires" [value]="b.id">
-              {{ b.nom }} {{ b.prenom }}
+        <h3>Affecter un Bénéficiaire à un Donateur</h3>
+        <form #affectationForm="ngForm" (ngSubmit)="affecterBeneficiaire()">
+          <label for="idBeneficiaire">Sélectionner un Bénéficiaire :</label>
+          <select id="idBeneficiaire" [(ngModel)]="affectation.idBeneficiaire" name="idBeneficiaire" required>
+            <option *ngFor="let beneficiaire of listeBeneficiaires" [value]="beneficiaire.id">
+              {{ beneficiaire.nom }} {{ beneficiaire.prenom }}
             </option>
           </select>
 
-          <label>Donateur :</label>
-          <select [(ngModel)]="affectation.idDonateur" name="idDonateur" required>
-            <option *ngFor="let d of listeDonateurs" [value]="d.id">
-              {{ d.nom }} {{ d.prenom }}
+          <label for="idDonateur">Sélectionner un Donateur :</label>
+          <select id="idDonateur" [(ngModel)]="affectation.idDonateur" name="idDonateur" required>
+            <option *ngFor="let donateur of listeDonateurs" [value]="donateur.id">
+              {{ donateur.nom }} {{ donateur.prenom }}
             </option>
           </select>
 
-          <button class="btn-blue" type="submit">Affecter</button>
+          <button class="btn-blue" type="submit" [disabled]="affectationForm.invalid">Affecter le Bénéficiaire</button>
         </form>
       </div>
     </div>
-  </div>
 
-  <!-- ✅ Liste des bénéficiaires -->
-  <div class="beneficiaires-table" *ngIf="listeBeneficiaires.length > 0">
-    <h3>Liste des Bénéficiaires</h3>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nom</th>
-          <th>Prénom</th>
-          <th>Âge</th>
-          <th>Téléphone</th>
-          <th>Gouvernorat</th>
-          <th>Besoins</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let beneficiaire of listeBeneficiaires">
-          <td>{{ beneficiaire.id }}</td>
-          <td>{{ beneficiaire.nom }}</td>
-          <td>{{ beneficiaire.prenom }}</td>
-          <td>{{ beneficiaire.age }}</td>
-          <td>{{ beneficiaire.telephone }}</td>
-          <td>{{ beneficiaire.gouvernorat }}</td>
-          <td>{{ beneficiaire.besoin }}</td>
-          <td>
-            <button class="btn-edit" (click)="modifierBeneficiaire(beneficiaire)">Modifier</button>
-            <button class="btn-delete" (click)="confirmerSuppression(beneficiaire.id)">
-              Supprimer
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <!-- Section Liste des Bénéficiaires -->
+    <div class="col-lg-6 col-md-8 col-12" *ngIf="formulaireActif === 'listeBeneficiaires'">
+      <div class="form-card">
+        <h3>Liste des Bénéficiaires</h3>
 
-  <!-- ✅ Message si aucun bénéficiaire -->
-  <div *ngIf="listeBeneficiaires.length === 0" class="no-data-message">
-    Aucun bénéficiaire enregistré.
+        <!-- Filtres et barre de recherche -->
+        <div class="filters">
+          <input type="text" placeholder="Rechercher par nom..." [(ngModel)]="filtreNom" />
+          <input type="number" placeholder="Filtrer par âge..." [(ngModel)]="filtreAge" />
+        </div>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Numéro de téléphone</th>
+              <th>Âge</th>
+              <th>Gouvernorat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let beneficiaire of filtrerBeneficiaires()">
+              <td>{{ beneficiaire.nom }}</td>
+              <td>{{ beneficiaire.prenom }}</td>
+              <td>{{ beneficiaire.telephone }}</td>
+              <td>{{ beneficiaire.age }}</td>
+              <td>{{ beneficiaire.gouvernorat }}</td>
+              <td>
+                <button (click)="modifierBeneficiaire(beneficiaire.id)">Modifier</button>
+                <button (click)="supprimerBeneficiaire(beneficiaire.id)">Supprimer</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Boutons d'exportation sous la liste -->
+        <div class="export-buttons">
+          <button class="btn-export" (click)="exportToXLSX()">Exporter en XLSX</button>
+          <button class="btn-export" (click)="exportToPDF()">Exporter en PDF</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,10 +1,10 @@
+<!-- Navbar et Sidebar -->
 <app-navbarcompte-admin></app-navbarcompte-admin>
 <app-sidebar-admin></app-sidebar-admin>
 
 <div class="main-container">
   <!-- Statistiques en ligne -->
   <div class="stats-container row d-flex justify-content-between">
-    <!-- Total des Dons -->
     <div class="col-lg-3 col-md-5 col-12">
       <div class="stats-card">
         <i class="fas fa-dollar-sign icon-yellow"></i>
@@ -12,59 +12,67 @@
         <p>{{ totalDons }}</p>
       </div>
     </div>
-
-    <!-- Donateurs Actifs -->
+    <div class="col-lg-3 col-md-5 col-12">
+      <div class="stats-card">
+        <i class="fas fa-hand-holding-usd icon-yellow"></i>
+        <h4>Dons Reçus</h4>
+        <p>{{ totalDonsRecus }}</p>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-5 col-12">
+      <div class="stats-card">
+        <i class="fas fa-credit-card icon-yellow"></i>
+        <h4>Dons en Attente</h4>
+        <p>{{ totalDonsEnAttente }}</p>
+      </div>
+    </div>
     <div class="col-lg-3 col-md-5 col-12">
       <div class="stats-card">
         <i class="fas fa-users icon-yellow"></i>
-        <h4>Donateurs Actifs</h4>
-        <p>{{ totalDonateursActifs }}</p>
-      </div>
-    </div>
-
-    <!-- Dons par Période -->
-    <div class="col-lg-3 col-md-5 col-12">
-      <div class="stats-card">
-        <i class="fas fa-calendar icon-yellow"></i>
-        <h4>Dons par Période</h4>
-        <select [(ngModel)]="periodeSelectionnee" (change)="filtrerDonsParPeriode()">
-          <option value="quotidienne">Quotidienne</option>
-          <option value="hebdomadaire">Hebdomadaire</option>
-          <option value="mensuelle">Mensuelle</option>
-          <option value="annuelle">Annuelle</option>
-        </select>
-        <p>{{ totalDonsParPeriode }}</p>
+        <h4>Total des Donateurs</h4>
+        <p>{{ totalDonateurs }}</p>
       </div>
     </div>
   </div>
 
   <!-- Sélection du formulaire -->
   <div class="form-toggle-container">
-    <button class="btn-toggle" (click)="afficherFormulaire('modifier')">Modifier un Don</button>
-    <button class="btn-toggle" (click)="afficherFormulaire('ajouter')">Ajouter un Don</button>
-    <button class="btn-toggle" (click)="afficherFormulaire('liste')">Liste des Dons Internationaux</button>
+    <button class="btn-toggle" (click)="afficherFormulaire('don')">Ajouter un Don</button>
+    <button class="btn-toggle" (click)="afficherFormulaire('donateurs')">Voir Liste des Donateurs</button>
+    <button class="btn-toggle" (click)="afficherFormulaire('liste')">Voir Dons</button>
   </div>
 
   <!-- Formulaires et section des dons -->
   <div class="row forms-container">
-    <!-- Formulaire d'ajout de don -->
-    <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'ajouter'">
+    <!-- Formulaire d'ajout d'un don -->
+    <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'don'">
       <div class="form-card">
         <h3>Ajouter un Don</h3>
         <form #donForm="ngForm" (ngSubmit)="ajouterDon()">
-          <label>Nom du Donateur :</label>
+          <label>Donateur :</label>
           <input type="text" [(ngModel)]="nouveauDon.donateur" name="donateur" required />
 
           <label>Montant :</label>
-          <input type="number" [(ngModel)]="nouveauDon.montant" name="montant" required />
+          <input type="number" [(ngModel)]="nouveauDon.montant" name="montant" required min="1" />
 
-          <label>Date du Don :</label>
-          <input type="date" [(ngModel)]="nouveauDon.date" name="date" required />
+          <label>Mode de Paiement :</label>
+          <select [(ngModel)]="nouveauDon.modePaiement" name="modePaiement" required>
+            <option value="Carte">Carte</option>
+            <option value="Virement">Virement</option>
+            <option value="Espèces">Espèces</option>
+          </select>
 
+          <label>Statut :</label>
+          <select [(ngModel)]="nouveauDon.statut" name="statut" required>
+            <option value="En Attente">En Attente</option>
+            <option value="Confirmé">Confirmé</option>
+          </select>
+
+          <!-- Ajout du champ "Type de Don" -->
           <label>Type de Don :</label>
           <select [(ngModel)]="nouveauDon.typeDon" name="typeDon" required>
-            <option value="international">International</option>
-            <option value="local">Local</option>
+            <option value="Local">Local</option>
+            <option value="International">International</option>
           </select>
 
           <button class="btn-blue" type="submit" [disabled]="donForm.invalid">Ajouter le Don</button>
@@ -72,62 +80,84 @@
       </div>
     </div>
 
-    <!-- Formulaire de modification de don -->
-    <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'modifier'">
+    <!-- Section Liste des Donateurs -->
+    <div class="col-lg-6 col-md-8 col-12" *ngIf="formulaireActif === 'donateurs'">
       <div class="form-card">
-        <h3>Modifier un Don</h3>
-        <form #modificationForm="ngForm" (ngSubmit)="modifierDon()">
-          <label>ID du Don :</label>
-          <input type="number" [(ngModel)]="donAModifier.id" name="id" required />
+        <h3>Liste des Donateurs</h3>
 
-          <label>Montant :</label>
-          <input type="number" [(ngModel)]="donAModifier.montant" name="montant" required />
+        <!-- Barre de recherche -->
+        <input type="text" [(ngModel)]="searchDonateurs" placeholder="Rechercher un donateur" class="search-input">
 
-          <label>Type de Don :</label>
-          <select [(ngModel)]="donAModifier.typeDon" name="typeDon" required>
-            <option value="international">International</option>
-            <option value="local">Local</option>
-          </select>
+        <table #tableDonateurs class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Nombre de Dons</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let donateur of filteredDonateurs()">
+              <td>{{ donateur.nom }}</td>
+              <td>{{ donateur.email }}</td>
+              <td>{{ donateur.nombreDons }}</td>
+            </tr>
+          </tbody>
+        </table>
 
-          <button class="btn-blue" type="submit" [disabled]="modificationForm.invalid">Modifier le Don</button>
-        </form>
+        <!-- Boutons pour exporter en PDF et Excel -->
+        <div class="ex">
+          <button class="ex" (click)="exporterPDF()">Exporter en PDF</button>
+          <button class="ex" (click)="exporterExcel()">Exporter en Excel</button>
+        </div>
       </div>
     </div>
 
-    <!-- Liste des Dons Internationaux -->
+    <!-- Section Liste des Dons -->
     <div class="col-lg-6 col-md-8 col-12" *ngIf="formulaireActif === 'liste'">
       <div class="form-card">
-        <h3>Dons Internationaux</h3>
+        <h3>Liste des Dons</h3>
+
+        <!-- Barre de recherche -->
+        <input type="text" [(ngModel)]="searchDons" placeholder="Rechercher un don" class="search-input">
+
         <table class="table table-striped">
           <thead>
             <tr>
               <th>Donateur</th>
               <th>Montant</th>
-              <th>Date</th>
               <th>Type de Don</th>
+              <th>Mode de Paiement</th>
+              <th>Statut</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let don of donsInternationaux">
+            <tr *ngFor="let don of filteredDons()">
               <td>{{ don.donateur }}</td>
-              <td>{{ don.montant }}</td>
-              <td>{{ don.date | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ don.montant }} TND</td>
               <td>{{ don.typeDon }}</td>
+              <td>{{ don.modePaiement }}</td>
+              <td>{{ don.statut }}</td>
               <td>
-                <button class="btn-edit" (click)="donAModifier = don; afficherFormulaire('modifier')">Modifier</button>
-                <button class="btn-delete" (click)="supprimerDon(don)">Supprimer</button>
+                <button class="btn-edit" (click)="modifierDon(don)">Modifier</button>
+                <button class="btn-delete" (click)="supprimerDon(don.id)">Supprimer</button>
               </td>
             </tr>
           </tbody>
         </table>
+
+        <!-- Boutons pour exporter en PDF et Excel -->
+        <div class="ex">
+          <button class="ex" (click)="exporterPDF()">Exporter en PDF</button>
+          <button class="ex" (click)="exporterExcel()">Exporter en Excel</button>
+        </div>
       </div>
     </div>
   </div>
-
-  <!-- Graphique des Dons -->
-  <div class="graph-container">
-    <h3>Évolution des Dons</h3>
-    <canvas id="donChart"></canvas>
-  </div>
 </div>
+
+
+
+
+

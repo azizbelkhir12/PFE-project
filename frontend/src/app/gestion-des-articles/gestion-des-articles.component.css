@@ -1,0 +1,235 @@
+.main-container {
+  margin-left: 250px;
+  padding: 20px;
+}
+
+/* ✅ STATISTIQUES */
+.stats-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.stats-card {
+  flex: 1;
+  max-width: 280px;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  color: #333;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #0056b3;
+  transition: transform 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+}
+
+.icon-yellow {
+  font-size: 36px;
+  color: #ffc107;
+  margin-bottom: 10px;
+}
+
+/* ✅ BOUTONS DE SÉLECTION */
+.form-toggle-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.btn-toggle {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.4);
+}
+
+/* ✅ FORMULAIRE */
+.forms-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.form-card {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #0056b3;
+  width: 100%;
+  max-width: 600px;
+}
+
+.form-card h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+input, textarea {
+  width: 100%;
+  margin: 10px 0 20px;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+}
+
+input:focus, textarea:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 8px rgba(0, 86, 179, 0.3);
+  outline: none;
+}
+
+/* ✅ CHAMP ngx-editor */
+.editor-wrapper {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 200px;
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+
+ngx-editor {
+  display: block;
+  width: 100%;
+  min-height: 150px;
+}
+
+/* ✅ BOUTON */
+button {
+  background: linear-gradient(135deg, #ffc107, #e0a800);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* ✅ ARTICLES */
+.card-article {
+  background: white;
+  padding: 20px;
+  margin: 15px;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.card-article:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-article img {
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.card-article h5 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.card-article p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.card-article .date {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+/* ✅ ACTIONS (MODIFIER / SUPPRIMER) */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.actions .btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-modifier {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+}
+
+.btn-modifier:hover {
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.3);
+}
+
+.btn-supprimer {
+  background: linear-gradient(135deg, #ff4040, #e01f1f);
+}
+
+.btn-supprimer:hover {
+  box-shadow: 0 6px 14px rgba(255, 64, 64, 0.3);
+}
+
+/* ✅ RESPONSIVE */
+@media (max-width: 992px) {
+  .stats-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .forms-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-card {
+    width: 90%;
+  }
+
+  .card-article {
+    width: 90%;
+    margin: 10px auto;
+  }
+}

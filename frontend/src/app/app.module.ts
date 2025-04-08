@@ -5,9 +5,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GoogleMapsModule } from '@angular/google-maps';
-
+import { QuillModule } from 'ngx-quill';
 
 import { AppComponent } from './app.component';
+
+// Composants
 import { AcceuilComponent } from './acceuil/acceuil.component';
 import { RegisterComponent } from './register/register.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -27,6 +29,9 @@ import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles
 import { GestionBeneficiairesComponent } from './gestion-beneficiaires/gestion-beneficiaires.component';
 import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.component';
 import { ContactComponent } from './contact/contact.component';
+import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
+import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
+import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +55,9 @@ import { ContactComponent } from './contact/contact.component';
     GestionBeneficiairesComponent,
     GestionDesDonsComponent,
     ContactComponent,
+    GestionNotificationComponent,
+    GestionDesRapportsComponent,
+    GestionDesArticlesComponent,  // Vérifie que ce composant existe bien et que le chemin est correct
   ],
   imports: [
     BrowserModule,
@@ -59,7 +67,8 @@ import { ContactComponent } from './contact/contact.component';
     FontAwesomeModule,
     HttpClientModule,
     GoogleMapsModule,
-    
+    QuillModule.forRoot(),
+
   ],
   providers: [],
   bootstrap: [AppComponent],
