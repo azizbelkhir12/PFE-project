@@ -1,5 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DemandeService } from '../services/demande/demande.service';
 import { VolunteerService } from '../services/volunteer/volunteer.service';
 
@@ -9,7 +10,7 @@ import * as XLSX from 'xlsx';
 
 
 interface Benevole {
-  id: number;
+  _id: String;
   nom: string;
   prenom: string;
   email: string;
@@ -17,7 +18,7 @@ interface Benevole {
   telephone?: string;
   age: number;
   gouvernorat: string;
-  statut: 'actif' | 'inactif';
+  status: 'active' | 'inactive'; 
 }
 
 @Component({
@@ -32,7 +33,7 @@ export class GestionBenevolesComponent {
   volunteers: any[] = [];
   demandesBenevolat: any[] = [];
 
-  totalBenevoles = 0;
+  totalBenevoles = this.volunteers.length;
   totalBenevolesActifs = 0;
   totalBenevolesInactifs = 0;
 
@@ -63,14 +64,13 @@ export class GestionBenevolesComponent {
     statut: 'actif'
   };
 
-  constructor(
-    private demandeService: DemandeService,
-    private volunteerService: VolunteerService
-  ) {}
+  constructor(private volunteerService: VolunteerService,private snackBar: MatSnackBar, private demandeService: DemandeService  ) {}
 
   ngOnInit(): void {
     this.loadDemandes();
     this.fetchVolunteers();
+
+    
   }
 
   afficherFormulaire(type: string) {
@@ -79,8 +79,8 @@ export class GestionBenevolesComponent {
 
   mettreAJourStatistiques() {
     this.totalBenevoles = this.benevoles.length;
-    this.totalBenevolesActifs = this.benevoles.filter(b => b.statut === 'actif').length;
-    this.totalBenevolesInactifs = this.benevoles.filter(b => b.statut === 'inactif').length;
+    this.totalBenevolesActifs = this.benevoles.filter(b => b.status === 'active').length;
+    this.totalBenevolesInactifs = this.benevoles.filter(b => b.status === 'inactive').length;
   }
 
   getFilteredBenevoles(): Benevole[] {
@@ -88,7 +88,7 @@ export class GestionBenevolesComponent {
     return this.benevoles.filter(b =>
       b.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
       (this.selectedGouvernorat ? b.gouvernorat === this.selectedGouvernorat : true) &&
-      (this.selectedStatut ? b.statut === this.selectedStatut : true) &&
+      (this.selectedStatut ? b.status === this.selectedStatut : true) &&
       (this.selectedAge ? b.age === this.selectedAge : true) &&
       (normalizedSearchTerm ? b.telephone?.replace(/\D/g, '').includes(normalizedSearchTerm) : true)
     );
@@ -179,6 +179,55 @@ export class GestionBenevolesComponent {
       }
     });
   }
+
+  activateVolunteer(volunteer: Benevole) {
+    if (!volunteer?._id) {
+      console.error('Invalid volunteer or missing ID', volunteer);
+      return;
+    }
+
+    if (!confirm(`Activer le bénévole ${volunteer.nom} ${volunteer.prenom}?`)) return;
+    
+    this.changeStatus(String(volunteer._id), 'active');
+  }
+
+  deactivateVolunteer(volunteer: Benevole) {
+   
+    if (!volunteer?._id) {
+      console.error('Invalid volunteer or missing ID', volunteer);
+      return;
+    }
+   
+    if (!confirm(`Désactiver le bénévole ${volunteer.nom} ${volunteer.prenom}?`)) return;
+    
+    this.changeStatus(String(volunteer._id), 'inactive');
+  }
+
+  private changeStatus(volunteerId: string, newStatus: 'active' | 'inactive') {
+    this.isLoading = true;
+    this.volunteerService.changeVolunteerStatus(volunteerId, newStatus).subscribe({
+      next: (updatedVolunteer) => {
+        // Update the local volunteers array
+        const index = this.volunteers.findIndex(v => v._id === volunteerId);
+        if (index !== -1) {
+          this.volunteers[index].status = newStatus;
+        }
+        this.snackBar.open(`Statut mis à jour avec succès`, 'Fermer', {
+          duration: 3000,
+        });
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error changing status:', err);
+        this.snackBar.open('Erreur lors de la mise à jour du statut', 'Fermer', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+        this.isLoading = false;
+      }
+    });
+  }
+
 
   fetchVolunteers() {
     this.volunteerService.getVolunteers().subscribe(

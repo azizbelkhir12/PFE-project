@@ -14,4 +14,10 @@ export class VolunteerService {
   getVolunteers(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/volunteers`);
   }
+
+  changeVolunteerStatus(id: string, status: 'active' | 'inactive') {
+    return this.http.put(`${this.apiUrl}/${id}/status`, { status });
+  }
+  
+
 }

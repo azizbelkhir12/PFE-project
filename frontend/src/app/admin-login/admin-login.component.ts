@@ -27,16 +27,34 @@ export class AdminLoginComponent {
 
     this.authService.login(this.loginData).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        this.router.navigate(['/admin-compte']);
+
+        console.log('Login response:', response); // Add check
+        console.log('Login successful, user:', response.data.user); // Add check
+    
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          console.log(localStorage.getItem('currentUser'));
+          this.authService.currentUser.next(response.data.user);
+    
+          this.router.navigate(['/admin-compte']).then(success => {
+            if (!success) {
+              console.error('Navigation to /admin-compte failed.');
+            }
+          });
+        } else {
+          console.error('Invalid login response structure:', response);
+          this.loginErrorMsg = 'Réponse invalide du serveur.';
+        }
+    
+        this.isLoading = false;
       },
       error: (error) => {
-        this.loginErrorMsg = error.error?.message || 'Admin login failed';
+        console.error('Login error:', error);
+        this.loginErrorMsg = error.error?.message || 'Échec de connexion';
         this.isLoading = false;
       }
-    })
+    });
+    
   }
-
 }
 

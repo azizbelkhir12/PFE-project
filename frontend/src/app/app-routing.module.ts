@@ -17,31 +17,35 @@ import { ContactComponent } from './contact/contact.component';
 import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
 import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
 import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
-
-
-
+import { AuthGuard } from './guard/auth.guard';
+import { AdminGuard } from './guard/admin.guard';
 
 const routes: Routes = [
-
   { path: '', component: AcceuilComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'benevolat', component: BenevolatComponent},
-  { path: 'benevole-compte', component: BenevoleCompteComponent },
-  { path: 'beneficiaire-compte', component: BeneficiaireCompteComponent },
-  { path: 'donateur-parrain-compte', component: DonateurParrainCompteComponent },
-  { path: 'donateur-standard-compte', component: DonateurStandardCompteComponent },
+  { path: 'benevolat', component: BenevolatComponent },
+  { path: 'benevole-compte', component: BenevoleCompteComponent, canActivate: [AuthGuard] },
+  { path: 'beneficiaire-compte', component: BeneficiaireCompteComponent, canActivate: [AuthGuard] },
+  { path: 'donateur-parrain-compte', component: DonateurParrainCompteComponent, canActivate: [AuthGuard] },
+  { path: 'donateur-standard-compte', component: DonateurStandardCompteComponent, canActivate: [AuthGuard] },
   { path: 'admin-login', component: AdminLoginComponent },
-  { path: 'admin-compte', component: AdminCompteComponent },
-  { path: 'gestion-benevoles', component: GestionBenevolesComponent },
-  { path: 'gestion-beneficiaires', component: GestionBeneficiairesComponent },
-  { path: 'gestion-des-dons', component: GestionDesDonsComponent },
   { path: 'contact', component: ContactComponent },
-  { path: 'gestion-notification', component: GestionNotificationComponent },
-  { path: 'gestion-des-rapports', component: GestionDesRapportsComponent },
-  { path: 'gestion-des-articles', component: GestionDesArticlesComponent },
-
-   // Correction ici
+  
+  // Admin routes group (protected)
+  { 
+    path: 'admin-compte', 
+    canActivate: [AuthGuard, AdminGuard], // Protect the entire admin section
+    children: [
+      { path: '', component: AdminCompteComponent }, // Main admin dashboard
+      { path: 'gestion-benevoles', component: GestionBenevolesComponent },
+      { path: 'gestion-beneficiaires', component: GestionBeneficiairesComponent },
+      { path: 'gestion-des-dons', component: GestionDesDonsComponent },
+      { path: 'gestion-notification', component: GestionNotificationComponent },
+      { path: 'gestion-des-rapports', component: GestionDesRapportsComponent },
+      { path: 'gestion-des-articles', component: GestionDesArticlesComponent }
+    ]
+  }
 ];
 
 @NgModule({

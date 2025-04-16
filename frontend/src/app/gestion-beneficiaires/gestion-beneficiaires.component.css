@@ -79,6 +79,57 @@
   font-weight: 600;
   text-transform: uppercase;
 }
+/* ✅ Liste des enfants - version sans scroll */
+.table td ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+/* ✅ Tableau responsive sans scroll horizontal */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* important pour une répartition homogène */
+  word-wrap: break-word;
+}
+
+/* ✅ En-têtes du tableau */
+.table th {
+  background: #0056b3;
+  color: white;
+  padding: 14px;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+/* ✅ Cellules du tableau */
+.table td {
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  vertical-align: top;
+}
+
+/* ✅ Supprime le scroll horizontal */
+.benevoles-table {
+  margin-top: 40px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+}
+
+/* ✅ Empêche le scroll horizontal globalement */
+html, body {
+  overflow-x: hidden;
+}
+
+
 
 /* ✅ Champs de formulaire modernisés */
 input, select {
@@ -204,6 +255,222 @@ button:hover {
   transition: all 0.3s ease-in-out;
 }
 
+.btn-export {
+  background: linear-gradient(135deg, #ffc107, #e0a800);
+  color: #212529;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  margin-right: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.form-card {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  border: none;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.form-card h3 {
+  color: #222;
+  font-size: 22px;
+  margin-bottom: 18px;
+  text-align: center;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.filters input,
+.filters select {
+  padding: 10px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #fff;
+  color: #333;
+  width: 270px;
+  transition: border 0.2s;
+}
+
+.filters input:focus,
+.filters select:focus {
+  border-color: #0056b3;
+  outline: none;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Table header styling */
+.table th {
+  background-color: #0056b3; /* Light gray background */
+  color: white; /* Dark text color */
+  padding: 12px 15px; /* Vertical and horizontal padding */
+  text-align: center; /* Left-aligned text */
+  font-weight: 600; /* Semi-bold font */
+  font-size: 14px;
+  border-bottom: 2px solid #dee2e6; /* Bottom border */
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 0.5px; /* Slight letter spacing */
+}
+
+/* Remove the border radius from previous styling */
+.table th {
+  border-radius: 0;
+}
+
+
+
+.table th:first-child {
+  text-align: left;
+}
+
+.table th:not(:first-child) {
+  text-align: center;
+}
+
+/* For the specific table in your image */
+.table thead tr {
+  background-color: transparent;
+}
+
+/* Remove any box shadows or gradients from headers */
+.table th {
+  box-shadow: none;
+  background-image: none;
+}
+
+.table tr:hover {
+  background: #eaf1fb;
+}
+
+.btn-accept {
+  background: linear-gradient(135deg, #28a745, #218838);
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  margin-right: 5px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-reject {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.status-active {
+  color: #28a745;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.status-inactive {
+  color: #6c757d;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: none;
+}
+
+.btn-primary {
+  background: #28a745;
+  color: #fff;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-primary i,
+.btn-danger i {
+  font-size: 16px;
+}
+
+.btn-primary:hover,
+.btn-danger:hover {
+  opacity: 0.9;
+  transform: scale(1.04);
+}
+
+.export-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+  justify-content: flex-start;
+}
+
+.btn-export {
+  background: #ffc107;
+  width: 200px;
+  color: #222;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  transition: all 0.2s;
+}
+
+.btn-export:hover {
+  background: #e0a800;
+  color: #fff;
+  transform: scale(1.04);
+}
+
+
+
+
 /* ✅ Effet hover */
 .btn-edit:hover, .btn-delete:hover {
   transform: scale(1.1);
@@ -214,6 +481,20 @@ button:hover {
 .status-text {
   color: #222;
   font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.success-msg {
+  color: green;
+  font-size: 30px;
+  margin-top: 10px;
+  text-align: center;
 }
 
 /* ✅ Responsive */

@@ -4,10 +4,19 @@ const bcrypt = require('bcryptjs');
 
 const BeneficiarySchema = new mongoose.Schema({
     name: { type: String, required: true },
+    lastname: { type: String, required: true },
+    address : { type: String, required: true },
+    Age: { type: Number, required: true },
+    gouvernorat: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phoneNumber: { type: String, required: true },
-    familySize: { type: Number, default: 1 }
+    children: [
+        {
+            name: { type: String, required: true },
+            age: { type: Number, required: true }
+        }
+    ]
 });
 
 // Hash the password before saving it to the database
