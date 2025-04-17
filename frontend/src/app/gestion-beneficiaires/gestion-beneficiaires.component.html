@@ -29,20 +29,20 @@
     <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'beneficiaire'">
       <div class="form-card">
         <h3>Créer un compte Bénéficiaire</h3>
-        <form #beneficiaireForm="ngForm" (ngSubmit)="creerBeneficiaire()">
+        <form #beneficiaireForm="ngForm" (ngSubmit)="creerBeneficiaire()" class="formulaire-beneficiaire">
           <!-- Beneficiary Fields -->
           <label for="email">Email :</label>
           <input id="email" type="email" [(ngModel)]="nouveauBeneficiaire.email" name="email" required email #email="ngModel" />
           <div *ngIf="email.invalid && email.touched" class="error-message">
             Veuillez entrer un email valide.
           </div>
-        
+
           <label for="nom">Nom :</label>
           <input id="nom" type="text" [(ngModel)]="nouveauBeneficiaire.name" name="nom" required minlength="2" #nom="ngModel" />
           <div *ngIf="nom.invalid && nom.touched" class="error-message">
             Le nom doit contenir au moins 2 caractères.
           </div>
-        
+
           <label for="prenom">Prénom :</label>
           <input id="prenom" type="text" [(ngModel)]="nouveauBeneficiaire.lastname" name="prenom" required minlength="2" #prenom="ngModel" />
           <div *ngIf="prenom.invalid && prenom.touched" class="error-message">
@@ -54,19 +54,19 @@
           <div *ngIf="telephone.invalid && telephone.touched" class="error-message">
             Le prénom doit contenir au moins 2 caractères.
           </div>
-        
+
             <label for="motDePasse">Mot de passe :</label>
             <input id="motDePasse" type="password" [(ngModel)]="nouveauBeneficiaire.password" name="motDePasse" required minlength="6" pattern="(?=.*[A-Z])(?=.*[!@#$%^&*]).*" #motDePasse="ngModel" />
             <div *ngIf="motDePasse.invalid && motDePasse.touched" class="error-message">
             Le mot de passe doit contenir au moins 6 caractères, une majuscule et un caractère spécial.
             </div>
-        
+
           <label for="addresse">Adresse :</label>
           <input id="addresse" type="text" [(ngModel)]="nouveauBeneficiaire.address" name="addresse" required #addresse="ngModel" />
           <div *ngIf="addresse.invalid && addresse.touched" class="error-message">
             L'adresse est obligatoire.
           </div>
-        
+
           <label for="gouvernorat">Gouvernorat :</label>
           <select id="gouvernorat" [(ngModel)]="nouveauBeneficiaire.gouvernorat" name="gouvernorat" required #gouvernorat="ngModel">
             <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
@@ -74,39 +74,39 @@
           <div *ngIf="gouvernorat.invalid && gouvernorat.touched" class="error-message">
             Veuillez sélectionner un gouvernorat.
           </div>
-        
+
           <label for="age">Âge :</label>
           <input id="age" type="number" [(ngModel)]="nouveauBeneficiaire.Age" name="age" required min="18" max="100" #age="ngModel" />
           <div *ngIf="age.invalid && age.touched" class="error-message">
             L'âge doit être compris entre 18 et 100 ans.
           </div>
-        
+
           <!-- Children Section -->
           <h4>Enfants</h4>
-        
+
           <div *ngFor="let child of nouveauBeneficiaire.children; let i = index" class="child-entry">
             <label for="childName{{i}}">Nom de l'enfant :</label>
             <input id="childName{{i}}" type="text" [(ngModel)]="child.name" name="childName{{i}}" required minlength="2" #childName="ngModel" />
             <div *ngIf="childName.invalid && childName.touched" class="error-message">
               Le nom de l'enfant doit contenir au moins 2 caractères.
             </div>
-        
+
             <label for="childAge{{i}}">Âge de l'enfant :</label>
             <input id="childAge{{i}}" type="number" [(ngModel)]="child.age" name="childAge{{i}}" required min="0" max="18" #childAge="ngModel" />
             <div *ngIf="childAge.invalid && childAge.touched" class="error-message">
               L'âge de l'enfant doit être compris entre 0 et 18 ans.
             </div>
           </div>
-        
+
           <!-- Add Child Button -->
           <button type="button" (click)="ajouterEnfant()">Ajouter un enfant</button>
           <!-- Add Child Button -->
           <button type="button" (click)="supprimerEnfant(index)" class="remove-child-btn">Supprimer un enfant</button>
-        
+
           <!-- Submit -->
           <button class="btn-blue" type="submit" [disabled]="beneficiaireForm.invalid">Créer le compte</button>
         </form>
-        
+
       </div>
     </div>
 
@@ -125,7 +125,7 @@
           <label for="idDonateur">Sélectionner un Donateur :</label>
           <select id="idDonateur" [(ngModel)]="affectation.idDonateur" name="idDonateur" required>
             <option >
-              
+
             </option>
           </select>
 
@@ -142,9 +142,9 @@
     <!-- Filtres et barre de recherche -->
     <div class="filters">
       <input type="text" placeholder="Rechercher par nom..." [(ngModel)]="filtreNom" />
-      
+
       <input type="number" placeholder="Filtrer par âge..." [(ngModel)]="filtreAge" />
-    
+
     </div>
 
     <div class="table-responsive">
@@ -182,9 +182,9 @@
               </ng-template>
             </td>
             <td>
-              <button class="btn btn-primary btn-sm" 
-               (click)="ouvrirModalModification(beneficiaire)" 
-               data-bs-toggle="modal" 
+              <button class="btn btn-primary btn-sm"
+               (click)="ouvrirModalModification(beneficiaire)"
+               data-bs-toggle="modal"
                data-bs-target="#updateBeneficiaryModal">
               <i class="fas fa-edit"></i> Modifier
               </button>
@@ -211,12 +211,12 @@
 <div class="modal fade" id="updateBeneficiaryModal" tabindex="-1" aria-labelledby="updateBeneficiaryModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      
+
       <div class="modal-header">
         <h5 class="modal-title" id="updateBeneficiaryModalLabel">Modifier le Bénéficiaire</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
       </div>
-      
+
       <div class="modal-body">
         <form (ngSubmit)="updateBeneficiaire()">
           <div class="mb-3">
@@ -256,6 +256,6 @@
 </div>
 
 
-        
+
     </div>
   </div>

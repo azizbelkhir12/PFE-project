@@ -116,6 +116,28 @@ benevole: any;
       (normalizedSearchTermTelephone ? d.telephone.replace(/\D/g, '').includes(normalizedSearchTermTelephone) : true)
     );
   }
+  exportbenevolesToXLSX() {
+    if (!this.benevoles || this.benevoles.length === 0) {
+      alert('Aucun bénévole à exporter.');
+      return;
+    }
+
+    // On peut éventuellement filtrer ou transformer les données ici
+    const data = this.benevoles.map(b => ({
+      Nom: b.name || 'Non précisé',
+      Prénom: b.lastName || 'Non précisé',
+      Email: b.email || 'Non précisé',
+      Âge: b.age !== undefined ? b.age : 'Non précisé',
+      Gouvernorat: b.gouvernorat || 'Non précisé',
+      Téléphone: b.phone || 'Non précisé',
+      Statut: b.status || 'Non précisé'
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const wb: XLSX.WorkBook = { Sheets: { 'Bénévoles': ws }, SheetNames: ['Bénévoles'] };
+    XLSX.writeFile(wb, 'liste_benevoles.xlsx');
+  }
+
 
   exportToXLSX() {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.demandesBenevolat);
@@ -124,20 +146,57 @@ benevole: any;
   }
 
   exportToPDF() {
+    if (!this.demandesBenevolat || this.demandesBenevolat.length === 0) {
+      alert('Aucune demande à exporter.');
+      return;
+    }
+
     const doc = new jsPDF();
-    doc.text('Liste des demandes de bénévolat', 20, 20);
+    doc.setFontSize(12);
+    let y = 20;
+
+    doc.text('Liste des demandes de bénévolat', 20, y);
+    y += 10;
+
     this.demandesBenevolat.forEach((demande, index) => {
-      const startY = 30 + index * 60;
-      doc.text(`Nom: ${demande.nom} ${demande.prenom}`, 20, startY);
-      doc.text(`Email: ${demande.email}`, 20, startY + 10);
-      doc.text(`Âge: ${demande.age}`, 20, startY + 20);
-      doc.text(`Gouvernorat: ${demande.gouvernorat}`, 20, startY + 30);
-      doc.text(`Téléphone: ${demande.telephone}`, 20, startY + 40);
-      doc.text(`Raison: ${demande.raison}`, 20, startY + 50);
-      doc.text('--------------------------------------------', 20, startY + 60);
+      if (y > 250) {
+        doc.addPage();
+        y = 20;
+      }
+
+      const nom = demande.name || 'Non précisé';
+      const prenom = demande.prenom || 'Non précisé';
+      const email = demande.email || 'Non précisé';
+      const age = demande.age !== undefined ? demande.age : 'Non précisé';
+      const gouvernorat = demande.gouvernorat || 'Non précisé';
+      const telephone = demande.phone || 'Non précisé';
+      const raison = demande.reason || 'Non précisée';
+
+      doc.text(`Nom : ${nom}`, 20, y);
+      y += 8;
+      doc.text(`Prénom : ${prenom}`, 20, y);
+      y += 8;
+      doc.text(`Email : ${email}`, 20, y);
+      y += 8;
+      doc.text(`Âge : ${age}`, 20, y);
+      y += 8;
+      doc.text(`Gouvernorat : ${gouvernorat}`, 20, y);
+      y += 8;
+      doc.text(`Téléphone : ${telephone}`, 20, y);
+      y += 8;
+      doc.text(`Raison : ${raison}`, 20, y);
+      y += 10;
+
+      // Ligne de séparation
+      doc.setDrawColor(200);
+      doc.line(20, y, 190, y);
+      y += 10;
     });
-    doc.save('demandes_benevolat_sans_tableau.pdf');
+
+    doc.save('demandes_benevolat.pdf');
   }
+
+
 
   loadDemandes(): void {
     this.isLoading = true;
@@ -153,6 +212,59 @@ benevole: any;
       }
     });
   }
+  exportBenevolesToPDF() {
+    if (!this.benevoles || this.benevoles.length === 0) {
+      alert('Aucun bénévole à exporter.');
+      return;
+    }
+
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    let y = 20;
+
+    doc.text('Liste des bénévoles', 20, y);
+    y += 10;
+
+    this.benevoles.forEach((benevole, index) => {
+      // Ajouter une nouvelle page si nécessaire
+      if (y > 250) {
+        doc.addPage();
+        y = 20;
+      }
+
+      const nom = benevole.name || 'Non précisé';
+      const prenom = benevole.lastName || 'Non précisé';
+      const email = benevole.email || 'Non précisé';
+      const age = benevole.age !== undefined ? benevole.age : 'Non précisé';
+      const gouvernorat = benevole.gouvernorat || 'Non précisé';
+      const telephone = benevole.phone || 'Non précisé';
+      const statut = benevole.status || 'Non précisé';
+
+      // Affichage bien espacé
+      doc.text(`Nom : ${nom}`, 20, y);
+      y += 8;
+      doc.text(`Prénom : ${prenom}`, 20, y);
+      y += 8;
+      doc.text(`Email : ${email}`, 20, y);
+      y += 8;
+      doc.text(`Âge : ${age}`, 20, y);
+      y += 8;
+      doc.text(`Gouvernorat : ${gouvernorat}`, 20, y);
+      y += 8;
+      doc.text(`Téléphone : ${telephone}`, 20, y);
+      y += 8;
+      doc.text(`Statut : ${statut}`, 20, y);
+      y += 10;
+
+      // Ligne de séparation discrète
+      doc.setDrawColor(200); // gris clair
+      doc.line(20, y, 190, y);
+      y += 10;
+    });
+
+    doc.save('liste_benevoles.pdf');
+  }
+
 
   accepterDemande(demande: { _id: string }): void {
     if (!confirm('Voulez-vous vraiment accepter cette demande ?')) return;
@@ -170,6 +282,21 @@ benevole: any;
       }
     });
   }
+  loadBenevoles(): void {
+    this.isLoading = true;
+    this.volunteerService.getVolunteers().subscribe({
+      next: (benevoles: any) => {
+        this.benevoles = benevoles;
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        console.error('Erreur lors du chargement des bénévoles', err);
+        this.isLoading = false;
+        alert('Erreur lors du chargement des bénévoles');
+      }
+    });
+  }
+
 
   refuserDemande(demande: any): void {
     if (!demande || !demande._id) {
