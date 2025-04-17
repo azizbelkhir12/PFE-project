@@ -278,7 +278,7 @@ a:focus {
 }
 
 /*******************************/
-/********** Hero CSS ***********/
+/********** Banner CSS ***********/
 /*******************************/
 
 .banner-container {
@@ -295,13 +295,12 @@ a:focus {
 .banner-caption {
     position: absolute;
     top: 50%;
-    left: 10%; /* Changed from 50% to 10% to position on the left */
-    transform: translateY(-50%); /* Removed X-axis translation */
+    left: 10%;
+    transform: translateY(-50%);
     color: white;
-    
     padding: 20px;
     border-radius: 10px;
-    max-width: 40%; /* Optional: prevents caption from being too wide */
+    max-width: 40%;
 }
 
 .banner-caption h5 {
@@ -313,6 +312,46 @@ a:focus {
 
 .banner-caption p {
     font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+    .banner-caption h5 {
+        font-size: 3rem;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .banner-caption h5 {
+        font-size: 3.5rem;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .banner-caption h5 {
+        font-size: 4rem;
+    }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+    .banner-caption {
+        left: 5%;
+        max-width: 90%; /* More width on mobile */
+        padding: 10px;
+    }
+    
+    .banner-caption h5 {
+        font-size: 1.8rem; /* Even smaller for very small devices */
+    }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .banner-caption h5 {
+        font-size: 1.5rem;
+    }
 }
 
 /*******************************/

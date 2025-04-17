@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const demandeController = require('../controllers/demandeController');
 const upload = require('../utils/upload');
+const {auth} = require('../utils/auth'); 
+
+
 
 router.post('/demande', upload.single('img'), demandeController.Demande);
 router.get('/pending', demandeController.getAllDemandes);

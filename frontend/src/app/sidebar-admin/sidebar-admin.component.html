@@ -2,57 +2,56 @@
   <ul>
     <!-- Gestion des Bénévoles -->
     <li routerLinkActive="active">
-      <a routerLink="/gestion-benevoles" routerLinkActive="active">
-
+      <a routerLink="/admin-compte/gestion-benevoles" routerLinkActive="active">
         <fa-icon [icon]="faUsers"></fa-icon> Gestion des Bénévoles
       </a>
     </li>
 
     <!-- Gestion des Bénéficiaires -->
     <li routerLinkActive="active">
-      <a routerLink="/gestion-beneficiaires" routerLinkActive="active">
+      <a routerLink="/admin-compte/gestion-beneficiaires" routerLinkActive="active">
         <fa-icon [icon]="faHandHoldingHeart"></fa-icon> Gestion des Bénéficiaires
       </a>
     </li>
 
     <!-- Gestion des Dons -->
     <li routerLinkActive="active">
-      <a routerLink="/gestion-des-dons" routerLinkActive="active">
+      <a routerLink="/admin-compte/gestion-des-dons" routerLinkActive="active">
         <fa-icon [icon]="faDonate"></fa-icon> Gestion des Dons
       </a>
     </li>
 
     <!-- Gestion des Notifications -->
     <li routerLinkActive="active">
-      <a routerLink="/gestion-notification">
+      <a routerLink="/admin-compte/gestion-notification">
         <fa-icon [icon]="faBell"></fa-icon> Gestion des Notifications
       </a>
     </li>
 
     <!-- Gestion des Rapports -->
     <li routerLinkActive="active">
-      <a routerLink="/gestion-des-rapports">
+      <a routerLink="/admin-compte/gestion-des-rapports">
         <fa-icon [icon]="faChartBar"></fa-icon> Gestion des Rapports
       </a>
     </li>
 
     <!-- Gestion des Articles -->
     <li routerLinkActive="active">
-      <a routerLink="/gestion-des-articles">
+      <a routerLink="/admin-compte/gestion-des-articles">
         <fa-icon [icon]="faNewspaper"></fa-icon> Gestion des Articles
       </a>
     </li>
 
     <!-- Gestion des Projets -->
     <li routerLinkActive="active">
-      <a routerLink="/gestion-des-projets">
+      <a routerLink="/admin-compte/projets">
         <fa-icon [icon]="faProjectDiagram"></fa-icon> Gestion des Projets
       </a>
     </li>
 
     <!-- Gestion des Feedback -->
     <li routerLinkActive="active">
-      <a routerLink="/admin/feedback">
+      <a routerLink="/admin-compte/feedback">
         <fa-icon [icon]="faComments"></fa-icon> Gestion des Feedback
       </a>
     </li>
@@ -61,5 +60,5 @@
 
 <!-- Partie principale -->
 <div class="main-content">
-
+  <router-outlet></router-outlet> <!-- This is CRUCIAL for child routes to appear -->
 </div>

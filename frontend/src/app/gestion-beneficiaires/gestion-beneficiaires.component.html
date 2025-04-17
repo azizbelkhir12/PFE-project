@@ -19,7 +19,7 @@
   </div>
 
   <!-- ✅ Message d'alerte -->
-  <div *ngIf="message" class="message-box">
+  <div *ngIf="message" class="success-msg">
     {{ message }}
   </div>
 
@@ -30,28 +30,83 @@
       <div class="form-card">
         <h3>Créer un compte Bénéficiaire</h3>
         <form #beneficiaireForm="ngForm" (ngSubmit)="creerBeneficiaire()">
+          <!-- Beneficiary Fields -->
           <label for="email">Email :</label>
-          <input id="email" type="email" [(ngModel)]="nouveauBeneficiaire.email" name="email" required />
-
+          <input id="email" type="email" [(ngModel)]="nouveauBeneficiaire.email" name="email" required email #email="ngModel" />
+          <div *ngIf="email.invalid && email.touched" class="error-message">
+            Veuillez entrer un email valide.
+          </div>
+        
           <label for="nom">Nom :</label>
-          <input id="nom" type="text" [(ngModel)]="nouveauBeneficiaire.nom" name="nom" required />
-
+          <input id="nom" type="text" [(ngModel)]="nouveauBeneficiaire.name" name="nom" required minlength="2" #nom="ngModel" />
+          <div *ngIf="nom.invalid && nom.touched" class="error-message">
+            Le nom doit contenir au moins 2 caractères.
+          </div>
+        
           <label for="prenom">Prénom :</label>
-          <input id="prenom" type="text" [(ngModel)]="nouveauBeneficiaire.prenom" name="prenom" required />
+          <input id="prenom" type="text" [(ngModel)]="nouveauBeneficiaire.lastname" name="prenom" required minlength="2" #prenom="ngModel" />
+          <div *ngIf="prenom.invalid && prenom.touched" class="error-message">
+            Le prénom doit contenir au moins 2 caractères.
+          </div>
 
-          <label for="motDePasse">Mot de passe :</label>
-          <input id="motDePasse" type="password" [(ngModel)]="nouveauBeneficiaire.motDePasse" name="motDePasse" required />
-
+          <label for="telephone">Telephone :</label>
+          <input id="telephone" type="text" [(ngModel)]="nouveauBeneficiaire.phoneNumber" name="telephone" required minlength="2" #telephone="ngModel" />
+          <div *ngIf="telephone.invalid && telephone.touched" class="error-message">
+            Le prénom doit contenir au moins 2 caractères.
+          </div>
+        
+            <label for="motDePasse">Mot de passe :</label>
+            <input id="motDePasse" type="password" [(ngModel)]="nouveauBeneficiaire.password" name="motDePasse" required minlength="6" pattern="(?=.*[A-Z])(?=.*[!@#$%^&*]).*" #motDePasse="ngModel" />
+            <div *ngIf="motDePasse.invalid && motDePasse.touched" class="error-message">
+            Le mot de passe doit contenir au moins 6 caractères, une majuscule et un caractère spécial.
+            </div>
+        
+          <label for="addresse">Adresse :</label>
+          <input id="addresse" type="text" [(ngModel)]="nouveauBeneficiaire.address" name="addresse" required #addresse="ngModel" />
+          <div *ngIf="addresse.invalid && addresse.touched" class="error-message">
+            L'adresse est obligatoire.
+          </div>
+        
           <label for="gouvernorat">Gouvernorat :</label>
-          <select id="gouvernorat" [(ngModel)]="nouveauBeneficiaire.gouvernorat" name="gouvernorat" required>
+          <select id="gouvernorat" [(ngModel)]="nouveauBeneficiaire.gouvernorat" name="gouvernorat" required #gouvernorat="ngModel">
             <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
           </select>
-
+          <div *ngIf="gouvernorat.invalid && gouvernorat.touched" class="error-message">
+            Veuillez sélectionner un gouvernorat.
+          </div>
+        
           <label for="age">Âge :</label>
-          <input id="age" type="number" [(ngModel)]="nouveauBeneficiaire.age" name="age" required />
-
+          <input id="age" type="number" [(ngModel)]="nouveauBeneficiaire.Age" name="age" required min="18" max="100" #age="ngModel" />
+          <div *ngIf="age.invalid && age.touched" class="error-message">
+            L'âge doit être compris entre 18 et 100 ans.
+          </div>
+        
+          <!-- Children Section -->
+          <h4>Enfants</h4>
+        
+          <div *ngFor="let child of nouveauBeneficiaire.children; let i = index" class="child-entry">
+            <label for="childName{{i}}">Nom de l'enfant :</label>
+            <input id="childName{{i}}" type="text" [(ngModel)]="child.name" name="childName{{i}}" required minlength="2" #childName="ngModel" />
+            <div *ngIf="childName.invalid && childName.touched" class="error-message">
+              Le nom de l'enfant doit contenir au moins 2 caractères.
+            </div>
+        
+            <label for="childAge{{i}}">Âge de l'enfant :</label>
+            <input id="childAge{{i}}" type="number" [(ngModel)]="child.age" name="childAge{{i}}" required min="0" max="18" #childAge="ngModel" />
+            <div *ngIf="childAge.invalid && childAge.touched" class="error-message">
+              L'âge de l'enfant doit être compris entre 0 et 18 ans.
+            </div>
+          </div>
+        
+          <!-- Add Child Button -->
+          <button type="button" (click)="ajouterEnfant()">Ajouter un enfant</button>
+          <!-- Add Child Button -->
+          <button type="button" (click)="supprimerEnfant(index)" class="remove-child-btn">Supprimer un enfant</button>
+        
+          <!-- Submit -->
           <button class="btn-blue" type="submit" [disabled]="beneficiaireForm.invalid">Créer le compte</button>
         </form>
+        
       </div>
     </div>
 
@@ -59,7 +114,7 @@
     <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'affectation'">
       <div class="form-card">
         <h3>Affecter un Bénéficiaire à un Donateur</h3>
-        <form #affectationForm="ngForm" (ngSubmit)="affecterBeneficiaire()">
+        <form #affectationForm="ngForm" >
           <label for="idBeneficiaire">Sélectionner un Bénéficiaire :</label>
           <select id="idBeneficiaire" [(ngModel)]="affectation.idBeneficiaire" name="idBeneficiaire" required>
             <option *ngFor="let beneficiaire of listeBeneficiaires" [value]="beneficiaire.id">
@@ -69,8 +124,8 @@
 
           <label for="idDonateur">Sélectionner un Donateur :</label>
           <select id="idDonateur" [(ngModel)]="affectation.idDonateur" name="idDonateur" required>
-            <option *ngFor="let donateur of listeDonateurs" [value]="donateur.id">
-              {{ donateur.nom }} {{ donateur.prenom }}
+            <option >
+              
             </option>
           </select>
 
@@ -79,48 +134,128 @@
       </div>
     </div>
 
-    <!-- Section Liste des Bénéficiaires -->
-    <div class="col-lg-6 col-md-8 col-12" *ngIf="formulaireActif === 'listeBeneficiaires'">
-      <div class="form-card">
-        <h3>Liste des Bénéficiaires</h3>
+   <!-- Section Liste des Bénéficiaires -->
+<div class="col-12" *ngIf="formulaireActif === 'listeBeneficiaires'">
+  <div class="form-card">
+    <h3>Liste des Bénéficiaires</h3>
 
-        <!-- Filtres et barre de recherche -->
-        <div class="filters">
-          <input type="text" placeholder="Rechercher par nom..." [(ngModel)]="filtreNom" />
-          <input type="number" placeholder="Filtrer par âge..." [(ngModel)]="filtreAge" />
-        </div>
+    <!-- Filtres et barre de recherche -->
+    <div class="filters">
+      <input type="text" placeholder="Rechercher par nom..." [(ngModel)]="filtreNom" />
+      
+      <input type="number" placeholder="Filtrer par âge..." [(ngModel)]="filtreAge" />
+    
+    </div>
 
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Prénom</th>
-              <th>Numéro de téléphone</th>
-              <th>Âge</th>
-              <th>Gouvernorat</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let beneficiaire of filtrerBeneficiaires()">
-              <td>{{ beneficiaire.nom }}</td>
-              <td>{{ beneficiaire.prenom }}</td>
-              <td>{{ beneficiaire.telephone }}</td>
-              <td>{{ beneficiaire.age }}</td>
-              <td>{{ beneficiaire.gouvernorat }}</td>
-              <td>
-                <button (click)="modifierBeneficiaire(beneficiaire.id)">Modifier</button>
-                <button (click)="supprimerBeneficiaire(beneficiaire.id)">Supprimer</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Âge</th>
+            <th>Téléphone</th>
+            <th>Adresse</th>
+            <th>Gouvernorat</th>
+            <th>Enfants</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let beneficiaire of filtrerBeneficiaires()">
+            <td>{{ beneficiaire.name }}</td>
+            <td>{{ beneficiaire.lastname }}</td>
+            <td>{{ beneficiaire.email }}</td>
+            <td>{{ beneficiaire.Age }}</td>
+            <td>{{ beneficiaire.phoneNumber }}</td>
+            <td>{{ beneficiaire.address }}</td>
+            <td>{{ beneficiaire.gouvernorat }}</td>
+            <td>
+              <ul *ngIf="beneficiaire.children.length > 0; else noChildren">
+                <li *ngFor="let child of beneficiaire.children">
+                  {{ child.name }} ({{ child.age }} ans)
+                </li>
+              </ul>
+              <ng-template #noChildren>
+                <em>Aucun enfant</em>
+              </ng-template>
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" 
+               (click)="ouvrirModalModification(beneficiaire)" 
+               data-bs-toggle="modal" 
+               data-bs-target="#updateBeneficiaryModal">
+              <i class="fas fa-edit"></i> Modifier
+              </button>
 
-        <!-- Boutons d'exportation sous la liste -->
-        <div class="export-buttons">
-          <button class="btn-export" (click)="exportToXLSX()">Exporter en XLSX</button>
-          <button class="btn-export" (click)="exportToPDF()">Exporter en PDF</button>
-        </div>
+              <button class="btn btn-danger btn-sm" (click)="deleteBeneficiaire(beneficiaire._id)">
+                <i class="fas fa-trash-alt"></i> Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="export-buttons">
+    <button class="btn-export" (click)="exportToXLSX()">Exporter en XLSX</button>
+    <button class="btn-export" (click)="exportToPDF()">Exporter en PDF</button>
+  </div>
+</div>
+
+
+
+<!-- Update Beneficiary Modal -->
+<div class="modal fade" id="updateBeneficiaryModal" tabindex="-1" aria-labelledby="updateBeneficiaryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateBeneficiaryModalLabel">Modifier le Bénéficiaire</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
       </div>
+      
+      <div class="modal-body">
+        <form (ngSubmit)="updateBeneficiaire()">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" id="nom" [(ngModel)]="nouveauBeneficiaire.name" name="nom" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="prenom" class="form-label">Prénom</label>
+            <input type="text" id="prenom" [(ngModel)]="nouveauBeneficiaire.lastname" name="prenom" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" [(ngModel)]="nouveauBeneficiaire.email" name="email" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">telephone</label>
+            <input type="text" id="phoneNumber" [(ngModel)]="nouveauBeneficiaire.phoneNumber" name="phoneNumber" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Adresse</label>
+            <input type="text" id="address" [(ngModel)]="nouveauBeneficiaire.address" name="address" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Gouvernorat</label>
+            <select id="gouvernorat" [(ngModel)]="nouveauBeneficiaire.gouvernorat" name="gouvernorat" class="form-control" required>
+              <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
+            </select>
+          <!-- Ajoute d'autres champs si nécessaire -->
+
+          <button type="submit" class="btn btn-primary" (click)="updateBeneficiaire()">Enregistrer</button>
+        </div>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>
+
+
+        
+    </div>
+  </div>

@@ -1,112 +1,39 @@
-/* ✅ Ajustement pour éviter que la sidebar masque le contenu */
+/* Main container adjustment */
 .main-container {
-  margin-left: 250px; /* Ajuste selon la largeur de ta sidebar */
-  padding: 10px;
+  margin-left: 250px;
+  padding: 20px;
 }
 
-/* ✅ Suppression de l’espace entre la navbar et les cartes */
+/* Stats cards styling */
 .stats-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 0px; /* ✅ Supprime l’espace en haut */
-  margin-bottom: 40px; /* ✅ Plus d’espace entre les stats et les formulaires */
+  margin-bottom: 30px;
 }
 
-/* ✅ Cartes statistiques avec un effet plus moderne */
 .stats-card {
-  flex: 1;
-  max-width: 250px;
   background: linear-gradient(135deg, #ffffff, #f8f9fa);
   color: #333;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #0056b3; /* ✅ Bordure bleue foncée */
-  transition: all 0.3s ease-in-out;
+  border-top: 4px solid #0056b3;
+  transition: all 0.3s ease;
 }
 
-/* ✅ Effet au survol des cartes */
 .stats-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ✅ Icônes des cartes */
 .icon-yellow {
   font-size: 35px;
   color: #ffc107;
   margin-bottom: 8px;
 }
 
-/* ✅ Organisation des formulaires */
-.forms-container {
-  display: flex;
-  width: 100%;
-  justify-content: center; /* ✅ Centre les formulaires */
-  gap: 40px; /* ✅ Espace entre les deux formulaires */
-  margin-top: 20px; /* ✅ Réduction de l’espace au-dessus */
-}
-
-/* ✅ Formulaires modernisés */
-/* Adjust the form card containing the table */
-.form-card {
-  width: 100%; /* Take full available width */
-  max-width: none; /* Remove any max-width restriction */
-  overflow-x: auto; /* Enable horizontal scrolling if needed */
-  padding: 20px; /* Ensure proper spacing */
-}
-
-/* Make the table fit its content */
-.table {
-  width: auto; /* Let table determine its own width */
-  min-width: 100%; /* But at least full container width */
-  white-space: nowrap; /* Prevent line breaks in cells */
-}
-
-/* Specific adjustment for the benevole list container */
-.col-lg-5.col-md-6.col-12 {
-  width: 100%; /* Take full width */
-  max-width: 100%; /* No max-width restriction */
-  flex: 0 0 100%; /* Override column sizing */
-}
-/* ✅ Effet au survol */
-.form-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* ✅ Titres des formulaires & tableaux */
-.form-card h3,
-.benevoles-table h3 {
-  color: #222;
-  font-size: 22px;
-  margin-bottom: 15px;
-  text-align: center;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-/* ✅ Champs de formulaire modernisés */
-input, select {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 16px;
-  background: white;
-  color: #333;
-  transition: all 0.3s ease;
-}
-
-/* ✅ Effet focus */
-input:focus, select:focus {
-  border-color: #0056b3;
-  box-shadow: 0 0 8px rgba(0, 86, 179, 0.3);
-  outline: none;
-}
- /* ✅ Conteneur des boutons de sélection */
+/* Form toggle buttons */
 .form-toggle-container {
   display: flex;
   justify-content: center;
@@ -114,7 +41,6 @@ input:focus, select:focus {
   margin-bottom: 20px;
 }
 
-/* ✅ Boutons de sélection */
 .btn-toggle {
   background: linear-gradient(135deg, #007bff, #0056b3);
   color: white;
@@ -122,117 +48,208 @@ input:focus, select:focus {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 15px;
   font-weight: bold;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease;
 }
 
-/* ✅ Effet hover */
 .btn-toggle:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 14px rgba(0, 123, 255, 0.4);
 }
 
-/* ✅ Boutons modernisés avec effet gradient */
-button {
-  background: linear-gradient(135deg, #ffc107, #e0a800);
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  margin-top: 10px;
+/* Forms container */
+.forms-container {
   width: 100%;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
-  transition: all 0.3s ease-in-out;
 }
 
-/* ✅ Effet au survol des boutons */
-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.4);
-}
-
-/* ✅ Tableau modernisé */
-.benevoles-table {
-  margin-top: 40px;
-  padding: 20px;
+/* Form card styling */
+.form-card {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-/* ✅ Design du tableau */
+.form-card h3 {
+  color: #222;
+  font-size: 22px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Filters styling */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters input, 
+.filters select {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Table styling */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* ✅ Entêtes */
 .table th {
   background: #0056b3;
   color: white;
-  padding: 14px;
-  text-align: center;
-  font-size: 14px;
-  border-radius: 10px;
-}
-
-/* ✅ Cellules */
-.table td {
   padding: 12px;
   text-align: center;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ Effet au survol des lignes */
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
 .table tr:hover {
-  background: rgba(0, 123, 255, 0.1);
+  background-color: #f5f5f5;
 }
 
-/* ✅ Boutons d’action modernisés */
-.btn-container {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-}
-
-.btn-edit, .btn-delete {
-  background: linear-gradient(135deg, #ffb400, #e0a800);
+/* Action buttons styling */
+.btn-accept {
+  background: linear-gradient(135deg, #28a745, #218838);
   color: white;
-  padding: 6px 10px;
+  padding: 8px 15px;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s ease-in-out;
-}
-
-/* ✅ Effet hover */
-.btn-edit:hover, .btn-delete:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 10px rgba(255, 165, 0, 0.4);
-}
-
-/* ✅ Statut en gras */
-.status-text {
-  color: #222;
+  margin-right: 5px;
   font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
 }
 
+.btn-reject {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
 
+.btn-activate, .btn-deactivate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
 
-/* ✅ Responsive */
+.btn-activate {
+  background: linear-gradient(135deg, #17a2b8, #138496);
+  color: white;
+}
+
+.btn-deactivate {
+  background: linear-gradient(135deg, #6c757d, #5a6268);
+  color: white;
+}
+
+btn-activate:hover, .btn-deactivate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Icon styles */
+.btn-activate i, .btn-deactivate i {
+  font-size: 16px;
+}
+
+.btn-export {
+  background: linear-gradient(135deg, #ffc107, #e0a800);
+  color: #212529;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  margin-right: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+/* Button hover effects */
+.btn-accept:hover, 
+.btn-reject:hover,
+.btn-activate:hover,
+.btn-deactivate:hover,
+.btn-export:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Responsive adjustments */
 @media (max-width: 1024px) {
-  .forms-container {
+  .main-container {
+    margin-left: 0;
+    padding-top: 80px;
+  }
+  
+  .stats-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .stats-card {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+  }
+  
+  .filters input,
+  .filters select {
+    width: 100%;
+  }
+  
+  .form-toggle-container {
     flex-direction: column;
     align-items: center;
   }
-
-  .form-card {
-    width: 90%;
+  
+  .btn-accept,
+  .btn-reject,
+  .btn-activate,
+  .btn-deactivate {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+  
+  .btn-export {
+    padding: 8px 15px;
+    margin-bottom: 10px;
+    width: 100%;
   }
 }
-
