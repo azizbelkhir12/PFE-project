@@ -17,6 +17,7 @@ import { ContactComponent } from './contact/contact.component';
 import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
 import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
 import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
+import { GestionDesProjetsComponent } from './gestion-des-projets/gestion-des-projets.component';
 
 
 
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'gestion-notification', component: GestionNotificationComponent },
   { path: 'gestion-des-rapports', component: GestionDesRapportsComponent },
   { path: 'gestion-des-articles', component: GestionDesArticlesComponent },
+  { path: 'gestion-des-projets', component: GestionDesProjetsComponent },
 
    // Correction ici
 ];

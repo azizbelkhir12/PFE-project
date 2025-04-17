@@ -14,7 +14,7 @@
     <div class="col-lg-3 col-md-5 col-12">
       <div class="stats-card">
         <i class="fas fa-bullhorn icon-yellow"></i>
-        <h4> Rapports Publiés</h4>
+        <h4>Rapports Publiés</h4>
         <p>{{ rapportsPublies }}</p>
       </div>
     </div>
@@ -59,9 +59,11 @@
   <div class="benevoles-table" *ngIf="!afficherFormulaire">
     <h3>Liste des rapports</h3>
 
-    <!-- Barre de recherche -->
-    <input type="text" placeholder="Rechercher par titre" [(ngModel)]="rechercheTitre">
-    <input type="date" [(ngModel)]="rechercheDate">
+    <!-- ✅ Barre de recherche sur la même ligne -->
+    <div class="recherche-container">
+      <input type="text" placeholder="Rechercher par titre" [(ngModel)]="rechercheTitre">
+      <input type="date" [(ngModel)]="rechercheDate">
+    </div>
 
     <table class="table">
       <thead>
@@ -79,10 +81,12 @@
           <td>{{ r.type }}</td>
           <td>{{ r.date }}</td>
           <td><span class="status-text">{{ r.publie ? 'Publié' : 'Non publié' }}</span></td>
-          <td class="btn-container">
-            <button class="btn-delete" (click)="supprimerRapport(r)">Supprimer</button>
-            <button class="btn-edit" *ngIf="!r.publie" (click)="publierRapport(r)">Publier</button>
-            <button (click)="telechargerRapport(r)">Télécharger en PDF</button>
+          <td>
+            <div class="btn-container">
+              <i class="fas fa-trash-alt text-danger small-icon" (click)="supprimerRapport(r)" title="Supprimer"></i>
+              <i *ngIf="!r.publie" class="fas fa-upload text-success small-icon" (click)="publierRapport(r)" title="Publier"></i>
+              <i class="fas fa-file-download text-primary small-icon" (click)="telechargerRapport(r)" title="Télécharger PDF"></i>
+            </div>
           </td>
         </tr>
       </tbody>

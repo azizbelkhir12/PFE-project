@@ -29,14 +29,22 @@
 
   <!-- ✅ Barre de recherche -->
   <div class="search-container" *ngIf="formulaireActif === 'liste'">
-    <label for="searchTitle">Recherche par titre</label>
-    <input type="text" id="searchTitle" [(ngModel)]="rechercheTitre" placeholder="Rechercher par titre">
-
-    <label for="searchDate">Recherche par date</label>
-    <input type="date" id="searchDate" [(ngModel)]="rechercheDate">
+    <div class="search-field">
+      <input type="text" id="searchTitle" [(ngModel)]="rechercheTitre" placeholder="Rechercher par titre">
+    </div>
+    <div class="search-field">
+      <input type="date" id="searchDate" [(ngModel)]="rechercheDate" placeholder="Rechercher par date">
+    </div>
+    <div class="search-field">
+      <select id="searchStatus" [(ngModel)]="rechercheStatut">
+        <option value="">Tous les statuts</option>
+        <option value="publie">Publié</option>
+        <option value="brouillon">Non publié</option>
+      </select>
+    </div>
   </div>
 
-  <!-- ✅ Formulaire d’ajout -->
+  <!-- ✅ Formulaire d’ajout d’article -->
   <div class="forms-container" *ngIf="formulaireActif === 'ajout'">
     <div class="form-card">
       <h3>Ajout d’un article</h3>
@@ -58,7 +66,7 @@
     </div>
   </div>
 
-  <!-- ✅ Liste des articles -->
+  <!-- ✅ Liste des articles avec actions -->
   <div class="row justify-content-center" *ngIf="formulaireActif === 'liste'">
     <div class="card-article" *ngFor="let article of getArticlesFiltres()">
       <img [src]="article.image" alt="Image article">
@@ -66,15 +74,10 @@
       <p [innerHTML]="article.contenu | slice:0:150"></p>
       <div class="date">Publié le : {{ article.datePublication | date:'dd/MM/yyyy' }}</div>
 
-      <div class="status">
-        <span *ngIf="article.publie" class="status-publie">Publié</span>
-        <span *ngIf="!article.publie" class="status-brouillon">Non publié</span>
-      </div>
-
       <div class="actions">
         <button class="btn btn-modifier" (click)="modifierArticle(article)">Modifier</button>
         <button class="btn btn-supprimer" (click)="supprimerArticle(article)">Supprimer</button>
-        <button *ngIf="!article.publie" class="btn btn-publier" (click)="publierArticle(article)">Publier</button>
+        <button class="btn btn-publier" *ngIf="!article.publie" (click)="publierArticle(article)">Publier</button>
       </div>
     </div>
   </div>

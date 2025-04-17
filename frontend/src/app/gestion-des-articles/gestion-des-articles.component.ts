@@ -12,7 +12,7 @@ interface Article {
 @Component({
   selector: 'app-gestion-des-articles',
   templateUrl: './gestion-des-articles.component.html',
-  standalone: false,
+  standalone:false,
   styleUrls: ['./gestion-des-articles.component.css']
 })
 export class GestionDesArticlesComponent implements OnInit {
@@ -33,6 +33,7 @@ export class GestionDesArticlesComponent implements OnInit {
   imagePreview: string | ArrayBuffer | null = null;
   rechercheTitre: string = ''; // Recherche par titre
   rechercheDate: string = ''; // Recherche par date
+  rechercheStatut: string = ''; // Recherche par statut (publie ou brouillon)
 
   constructor() {}
 
@@ -103,11 +104,13 @@ export class GestionDesArticlesComponent implements OnInit {
     this.chargerStatistiquesArticles();
   }
 
+  // Filtrer les articles selon le titre, la date et le statut
   getArticlesFiltres(): Article[] {
     return this.articles.filter(a => {
       const matchesTitre = a.titre.toLowerCase().includes(this.rechercheTitre.toLowerCase());
       const matchesDate = this.rechercheDate ? a.datePublication === this.rechercheDate : true;
-      return matchesTitre && matchesDate;
+      const matchesStatut = this.rechercheStatut ? (this.rechercheStatut === 'publie' ? a.publie : !a.publie) : true;
+      return matchesTitre && matchesDate && matchesStatut;
     });
   }
 

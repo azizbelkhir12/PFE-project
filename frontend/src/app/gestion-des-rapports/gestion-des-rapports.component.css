@@ -1,6 +1,6 @@
 /* ✅ Ajustement pour éviter que la sidebar masque le contenu */
 .main-container {
-  margin-left: 250px; /* Ajuste selon la largeur de ta sidebar */
+  margin-left: 250px;
   padding: 10px;
 }
 
@@ -8,11 +8,11 @@
 .stats-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 0px; /* ✅ Supprime l’espace en haut */
-  margin-bottom: 40px; /* ✅ Plus d’espace entre les stats et les formulaires */
+  margin-top: 0px;
+  margin-bottom: 40px;
 }
 
-/* ✅ Cartes statistiques avec un effet plus moderne */
+/* ✅ Cartes statistiques */
 .stats-card {
   flex: 1;
   max-width: 250px;
@@ -22,17 +22,15 @@
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #0056b3; /* ✅ Bordure bleue foncée */
+  border-top: 4px solid #0056b3;
   transition: all 0.3s ease-in-out;
 }
 
-/* ✅ Effet au survol des cartes */
 .stats-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ✅ Icônes des cartes */
 .icon-yellow {
   font-size: 35px;
   color: #ffc107;
@@ -42,30 +40,27 @@
 /* ✅ Organisation des formulaires */
 .forms-container {
   display: flex;
-  justify-content: center; /* ✅ Centre les formulaires */
-  gap: 40px; /* ✅ Espace entre les deux formulaires */
-  margin-top: 20px; /* ✅ Réduction de l’espace au-dessus */
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
 }
 
-/* ✅ Formulaires modernisés */
 .form-card {
   background: white;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #0056b3; /* ✅ Bleu foncé */
-  width: 40%; /* ✅ Plus large */
-  min-width: 400px; /* ✅ Taille minimum pour éviter un écrasement */
+  border-left: 5px solid #0056b3;
+  width: 40%;
+  min-width: 400px;
   transition: all 0.3s ease-in-out;
 }
 
-/* ✅ Effet au survol */
 .form-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ✅ Titres des formulaires & tableaux */
 .form-card h3,
 .benevoles-table h3 {
   color: #222;
@@ -76,8 +71,8 @@
   text-transform: uppercase;
 }
 
-/* ✅ Champs de formulaire modernisés */
-input, select {
+input,
+select {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
@@ -89,13 +84,25 @@ input, select {
   transition: all 0.3s ease;
 }
 
-/* ✅ Effet focus */
-input:focus, select:focus {
+input:focus,
+select:focus {
   border-color: #0056b3;
   box-shadow: 0 0 8px rgba(0, 86, 179, 0.3);
   outline: none;
 }
- /* ✅ Conteneur des boutons de sélection */
+
+/* ✅ Conteneur de recherche alignée */
+.recherche-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.recherche-container input {
+  flex: 1;
+}
+
+/* ✅ Boutons de sélection */
 .form-toggle-container {
   display: flex;
   justify-content: center;
@@ -103,7 +110,6 @@ input:focus, select:focus {
   margin-bottom: 20px;
 }
 
-/* ✅ Boutons de sélection */
 .btn-toggle {
   background: linear-gradient(135deg, #007bff, #0056b3);
   color: white;
@@ -116,13 +122,12 @@ input:focus, select:focus {
   transition: all 0.3s ease-in-out;
 }
 
-/* ✅ Effet hover */
 .btn-toggle:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 14px rgba(0, 123, 255, 0.4);
 }
 
-/* ✅ Boutons modernisés avec effet gradient */
+/* ✅ Bouton principal */
 button {
   background: linear-gradient(135deg, #ffc107, #e0a800);
   color: white;
@@ -137,7 +142,6 @@ button {
   transition: all 0.3s ease-in-out;
 }
 
-/* ✅ Effet au survol des boutons */
 button:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 14px rgba(0, 123, 255, 0.4);
@@ -152,13 +156,11 @@ button:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ Design du tableau */
 .table {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* ✅ Entêtes */
 .table th {
   background: #0056b3;
   color: white;
@@ -168,7 +170,6 @@ button:hover {
   border-radius: 10px;
 }
 
-/* ✅ Cellules */
 .table td {
   padding: 12px;
   text-align: center;
@@ -176,36 +177,57 @@ button:hover {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ Effet au survol des lignes */
+.table td:last-child {
+  width: 120px;
+  text-align: center;
+}
+
 .table tr:hover {
   background: rgba(0, 123, 255, 0.1);
 }
 
-/* ✅ Boutons d’action modernisés */
+.table td i {
+  margin: 0 5px;
+  font-size: 0.9rem;
+}
+
+/* ✅ Boutons d’action */
 .btn-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 5px;
 }
 
-.btn-edit, .btn-delete {
-  background: linear-gradient(135deg, #ffb400, #e0a800);
-  color: white;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 8px;
+.btn-edit i,
+.btn-delete i,
+.btn-download i {
+  font-size: 0.75rem;
+}
+
+.btn-edit:hover,
+.btn-delete:hover,
+.btn-download:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Icônes seules */
+.small-icon {
+  font-size: 0.9rem;
+}
+
+.btn-icon {
+  background: transparent;
+  border: #ffffff;
+  margin: 5px;
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s ease-in-out;
 }
 
-/* ✅ Effet hover */
-.btn-edit:hover, .btn-delete:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 10px rgba(255, 165, 0, 0.4);
+.btn-icon:hover .small-icon {
+  opacity: 0.8;
 }
 
-/* ✅ Statut en gras */
+/* ✅ Texte en gras pour le statut */
 .status-text {
   color: #222;
   font-weight: bold;
@@ -221,5 +243,14 @@ button:hover {
   .form-card {
     width: 90%;
   }
+
+  .table td:last-child {
+    width: 100px;
+  }
+
+  .recherche-container {
+    flex-direction: column;
+  }
 }
+
 

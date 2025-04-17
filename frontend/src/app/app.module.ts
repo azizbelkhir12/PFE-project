@@ -32,6 +32,7 @@ import { ContactComponent } from './contact/contact.component';
 import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
 import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
 import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
+import { GestionDesProjetsComponent } from './gestion-des-projets/gestion-des-projets.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-
     ContactComponent,
     GestionNotificationComponent,
     GestionDesRapportsComponent,
-    GestionDesArticlesComponent,  // Vérifie que ce composant existe bien et que le chemin est correct
+    GestionDesArticlesComponent,
+    GestionDesProjetsComponent,
   ],
   imports: [
     BrowserModule,
