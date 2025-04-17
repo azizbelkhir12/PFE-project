@@ -1,16 +1,20 @@
-
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DemandeService } from '../services/demande/demande.service';
 import { VolunteerService } from '../services/volunteer/volunteer.service';
-
 import { jsPDF } from 'jspdf';  // Import jsPDF
 import * as XLSX from 'xlsx';
 
-
-
 interface Benevole {
-  _id: String;
+[x: string]: any;
+lastName: any;
+phone: any;
+address: any;
+name: any;
+lastname: any;
+adresse: any;
+statut: any;
+  _id: string;
   nom: string;
   prenom: string;
   email: string;
@@ -18,7 +22,7 @@ interface Benevole {
   telephone?: string;
   age: number;
   gouvernorat: string;
-  status: 'active' | 'inactive'; 
+  status: 'active' | 'inactive';
 }
 
 @Component({
@@ -27,8 +31,8 @@ interface Benevole {
   standalone: false,
   styleUrls: ['./gestion-benevoles.component.css']
 })
-export class GestionBenevolesComponent {
-  
+export class GestionBenevolesComponent implements OnInit {
+
   benevoles: Benevole[] = [];
   volunteers: any[] = [];
   demandesBenevolat: any[] = [];
@@ -51,7 +55,7 @@ export class GestionBenevolesComponent {
     'Sfax', 'Sidi Bouzid', 'Siliana', 'Sousse', 'Tataouine', 'Tozeur', 'Tunis', 'Zaghouan'
   ];
 
-  formulaireActif: string = 'benevole';
+  formulaireActif: string = 'listeBenevoles';
 
   nouveauBenevole: any = {
     nom: '',
@@ -63,14 +67,13 @@ export class GestionBenevolesComponent {
     gouvernorat: '',
     statut: 'actif'
   };
+benevole: any;
 
-  constructor(private volunteerService: VolunteerService,private snackBar: MatSnackBar, private demandeService: DemandeService  ) {}
+  constructor(private volunteerService: VolunteerService, private snackBar: MatSnackBar, private demandeService: DemandeService) { }
 
   ngOnInit(): void {
     this.loadDemandes();
     this.fetchVolunteers();
-
-    
   }
 
   afficherFormulaire(type: string) {
@@ -84,20 +87,31 @@ export class GestionBenevolesComponent {
   }
 
   getFilteredBenevoles(): Benevole[] {
-    const normalizedSearchTerm = this.searchTermTelephone ? this.searchTermTelephone.replace(/\D/g, '') : '';
-    return this.benevoles.filter(b =>
-      b.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
-      (this.selectedGouvernorat ? b.gouvernorat === this.selectedGouvernorat : true) &&
-      (this.selectedStatut ? b.status === this.selectedStatut : true) &&
-      (this.selectedAge ? b.age === this.selectedAge : true) &&
-      (normalizedSearchTerm ? b.telephone?.replace(/\D/g, '').includes(normalizedSearchTerm) : true)
-    );
+    return this.benevoles.filter(b => {
+      const correspondName = this.searchTerm ? b.name.toLowerCase().includes(this.searchTerm.toLowerCase()) : true;
+      const correspondAge = this.selectedAge ? b.age === this.selectedAge : true;
+      const correspondGouvernorat = this.selectedGouvernorat ? b.gouvernorat === this.selectedGouvernorat : true;
+      const correspondStatut = this.selectedStatut
+      ? b.status?.toLowerCase() === this.selectedStatut.toLowerCase()
+      : true;
+
+      const correspondphone = this.searchTermTelephone
+      ? b.phone?.replace(/\D/g, '').includes(this.searchTermTelephone.replace(/\D/g, ''))
+      : true;
+
+
+      return correspondName && correspondAge && correspondGouvernorat && correspondStatut && correspondphone;
+    });
   }
 
+
+
   getFilteredDemandes() {
+    const normalizedSearchTerm = this.searchTerm.toLowerCase();
     const normalizedSearchTermTelephone = this.searchTermTelephone.replace(/\D/g, '');
+
     return this.demandesBenevolat.filter(d =>
-      d.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
+      d.nom.toLowerCase().includes(normalizedSearchTerm) &&
       (this.selectedGouvernorat ? d.gouvernorat === this.selectedGouvernorat : true) &&
       (normalizedSearchTermTelephone ? d.telephone.replace(/\D/g, '').includes(normalizedSearchTermTelephone) : true)
     );
@@ -187,19 +201,18 @@ export class GestionBenevolesComponent {
     }
 
     if (!confirm(`Activer le bénévole ${volunteer.nom} ${volunteer.prenom}?`)) return;
-    
+
     this.changeStatus(String(volunteer._id), 'active');
   }
 
   deactivateVolunteer(volunteer: Benevole) {
-   
     if (!volunteer?._id) {
       console.error('Invalid volunteer or missing ID', volunteer);
       return;
     }
-   
+
     if (!confirm(`Désactiver le bénévole ${volunteer.nom} ${volunteer.prenom}?`)) return;
-    
+
     this.changeStatus(String(volunteer._id), 'inactive');
   }
 
@@ -207,7 +220,6 @@ export class GestionBenevolesComponent {
     this.isLoading = true;
     this.volunteerService.changeVolunteerStatus(volunteerId, newStatus).subscribe({
       next: (updatedVolunteer) => {
-        // Update the local volunteers array
         const index = this.volunteers.findIndex(v => v._id === volunteerId);
         if (index !== -1) {
           this.volunteers[index].status = newStatus;
@@ -228,17 +240,16 @@ export class GestionBenevolesComponent {
     });
   }
 
-
   fetchVolunteers() {
     this.volunteerService.getVolunteers().subscribe(
       (data: any[]) => {
         this.volunteers = data;
+        this.benevoles = data; // Assurez-vous que benevoles contient aussi les bénévoles récupérés
       },
       (error) => {
         console.error('Error fetching volunteers:', error);
       }
     );
   }
-
-  
 }
+

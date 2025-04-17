@@ -16,9 +16,11 @@ import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.com
 import { ContactComponent } from './contact/contact.component';
 import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
 import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
+import { GestionDesProjetsComponent } from './gestion-des-projets/gestion-des-projets.component';
 import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
 import { AuthGuard } from './guard/auth.guard';
 import { AdminGuard } from './guard/admin.guard';
+
 
 const routes: Routes = [
   { path: '', component: AcceuilComponent },
@@ -43,7 +45,9 @@ const routes: Routes = [
       { path: 'gestion-des-dons', component: GestionDesDonsComponent },
       { path: 'gestion-notification', component: GestionNotificationComponent },
       { path: 'gestion-des-rapports', component: GestionDesRapportsComponent },
-      { path: 'gestion-des-articles', component: GestionDesArticlesComponent }
+      { path: 'gestion-des-articles', component: GestionDesArticlesComponent },
+      { path: 'gestion-des-projets', component: GestionDesProjetsComponent },
+
     ]
   }
 ];

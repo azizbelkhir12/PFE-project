@@ -2,7 +2,8 @@
 <app-sidebar-admin></app-sidebar-admin>
 
 <div class="main-container">
-  <!-- Statistiques en ligne -->
+
+  <!-- Statistiques -->
   <div class="stats-container row d-flex justify-content-between">
     <div class="col-lg-3 col-md-5 col-12">
       <div class="stats-card">
@@ -27,16 +28,16 @@
     </div>
   </div>
 
-  <!-- Sélection du formulaire -->
+  <!-- Boutons de toggle -->
   <div class="form-toggle-container">
     <button class="btn-toggle" (click)="afficherFormulaire('listeBenevoles')">Voir Liste des Bénévoles</button>
     <button class="btn-toggle" (click)="afficherFormulaire('demandes')">Voir Demandes</button>
   </div>
 
-  <!-- Formulaires et section des demandes -->
+  <!-- Contenu dynamique -->
   <div class="forms-container">
 
-    <!-- Section des demandes de bénévolat -->
+    <!-- 🟡 Demandes de bénévolat -->
     <div class="col-12" *ngIf="formulaireActif === 'demandes'">
       <div class="form-card">
         <h3>Demandes de Bénévolat</h3>
@@ -65,11 +66,11 @@
                 <td>{{ demande.phone }}</td>
                 <td>
                   <button class="btn-accept" (click)="accepterDemande(demande)">
-                    <i class="fas fa-check-circle"></i> 
-                    </button>
+                    <i class="fas fa-check-circle"></i>
+                  </button>
                   <button class="btn-reject" (click)="refuserDemande(demande)">
-                    <i class="fas fa-times-circle"></i> 
-                    </button>
+                    <i class="fas fa-times-circle"></i>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -83,29 +84,29 @@
       </div>
     </div>
 
-    <!-- Section Liste des Bénévoles -->
+    <!-- 🟢 Liste des bénévoles -->
     <div class="col-12" *ngIf="formulaireActif === 'listeBenevoles'">
       <div class="form-card">
         <h3>Liste des Bénévoles</h3>
 
-        <!-- Filtres et barre de recherche -->
+        <!-- Filtres -->
         <div class="filters">
           <input type="text" placeholder="Rechercher par nom..." [(ngModel)]="searchTerm" />
-          <select [(ngModel)]="selectedGouvernorat">
-            <option value="">Tous les gouvernorats</option>
-            <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
-          </select>
+<select [(ngModel)]="selectedGouvernorat">
+  <option value="">Tous les gouvernorats</option>
+  <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
+</select>
+<select [(ngModel)]="selectedStatut">
+  <option value="">Tous les statuts</option>
+  <option value="active">Actif</option>
+  <option value="inactive">Inactif</option>
+</select>
+<input type="number" placeholder="Filtrer par âge..." [(ngModel)]="selectedAge" />
+<input type="text" placeholder="Filtrer par téléphone..." [(ngModel)]="searchTermTelephone" />
 
-          <select [(ngModel)]="selectedStatut">
-            <option value="">Tous les statuts</option>
-            <option value="actif">Actif</option>
-            <option value="inactif">Inactif</option>
-          </select>
-
-          <input type="number" placeholder="Filtrer par âge..." [(ngModel)]="selectedAge" />
-          <input type="text" placeholder="Filtrer par téléphone..." [(ngModel)]="searchTermTelephone" />
         </div>
 
+        <!-- Tableau -->
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
@@ -122,7 +123,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let benevole of volunteers">  
+              <tr *ngFor="let benevole of getFilteredBenevoles()">
                 <td>{{ benevole.name }}</td>
                 <td>{{ benevole.lastName }}</td>
                 <td>{{ benevole.email }}</td>
@@ -131,15 +132,14 @@
                 <td>{{ benevole.address }}</td>
                 <td>{{ benevole.gouvernorat }}</td>
                 <td>{{ benevole.status }}</td>
-                
                 <td>
-                  <button *ngIf="benevole.status === 'inactive'" 
+                  <button *ngIf="benevole.status === 'inactive'"
                           class="btn btn-success btn-sm"
                           (click)="activateVolunteer(benevole)"
                           [disabled]="isLoading">
                     <i class="fas fa-check-circle"></i> Activer
                   </button>
-                  <button *ngIf="benevole.status === 'active'" 
+                  <button *ngIf="benevole.status === 'active'"
                           class="btn btn-danger btn-sm"
                           (click)="deactivateVolunteer(benevole)"
                           [disabled]="isLoading">
@@ -158,8 +158,10 @@
       </div>
     </div>
 
+    <!-- Template si pas de demandes -->
     <ng-template #noDemandesTemplate>
       <p class="text-center">Pas de demandes pour le moment</p>
     </ng-template>
+
   </div>
 </div>
