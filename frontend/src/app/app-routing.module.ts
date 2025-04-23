@@ -17,6 +17,10 @@ import { ContactComponent } from './contact/contact.component';
 import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
 import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
 import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
+import { PaymentService } from './services/payment/payment.service';
+import { DonRapideComponent } from './don-rapide/don-rapide.component';
+import { PaymentFailComponent } from './pages/payment-fail/payment-fail.component';
+import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { AuthGuard } from './guard/auth.guard';
 import { AdminGuard } from './guard/admin.guard';
 
@@ -30,7 +34,12 @@ const routes: Routes = [
   { path: 'donateur-parrain-compte', component: DonateurParrainCompteComponent, canActivate: [AuthGuard] },
   { path: 'donateur-standard-compte', component: DonateurStandardCompteComponent, canActivate: [AuthGuard] },
   { path: 'admin-login', component: AdminLoginComponent },
+  { path: 'payment', component: DonRapideComponent }, 
   { path: 'contact', component: ContactComponent },
+  { path: 'payment-success', component: PaymentSuccessComponent },
+  { path: 'payment-fail', component: PaymentFailComponent },
+   
+
   
   // Admin routes group (protected)
   { 

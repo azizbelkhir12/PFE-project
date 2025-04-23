@@ -25,6 +25,7 @@
     "@types/jquery": "^3.5.32",
     "chart.js": "^4.4.8",
     "exceljs": "^4.4.0",
+    "firebase": "^11.6.0",
     "jquery": "^3.7.1",
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",

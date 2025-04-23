@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator');
 const registerDonor = async (req, res) => {
   
 
-  const { name, email, password, address, zipCode, phone, status, img } = req.body;
+  const { name, email, password, address, zipCode, phone, status, img  } = req.body;
 
   try {
     // Check if the donor already exists
@@ -14,7 +14,7 @@ const registerDonor = async (req, res) => {
       return res.status(400).json({ msg: 'Donor already exists' });
     }
 
-    // Create a new donor
+    // Create a new donor 
     donor = new Donor({
       name,
       email,
@@ -26,6 +26,10 @@ const registerDonor = async (req, res) => {
       img,
     });
 
+    if (!isGoogleAuth) {
+      donorData.password = password;
+    }
+
     // Save the donor to the database
     await donor.save();
 
@@ -36,4 +40,6 @@ const registerDonor = async (req, res) => {
   }
 };
 
-module.exports = { registerDonor }; // Export the function with the correct name
+
+
+module.exports = { registerDonor}; // Export the function with the correct name

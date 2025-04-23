@@ -86,16 +86,34 @@ export class GestionBeneficiairesComponent {
 
   creerBeneficiaire() {
     if (!this.nouveauBeneficiaire.name || !this.nouveauBeneficiaire.lastname || !this.nouveauBeneficiaire.email) {
-      this.message = 'Veuillez remplir tous les champs obligatoires.';
+      import('sweetalert2').then(Swal => {
+        Swal.default.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Veuillez remplir tous les champs obligatoires.',
+        });
+      });
       return;
     }
     this.beneficiaryService.createBeneficiaire(this.nouveauBeneficiaire).subscribe(
       (response) => {
-        this.message = 'Bénéficiaire créé avec succès!';
+        import('sweetalert2').then(Swal => {
+          Swal.default.fire({
+            icon: 'success',
+            title: 'Succès',
+            text: 'Bénéficiaire créé avec succès!',
+          });
+        });
         this.resetBeneficiaireForm(); 
       },
       (error) => {
-        this.message = 'Erreur lors de la création du bénéficiaire: ' + error.error.message;
+        import('sweetalert2').then(Swal => {
+          Swal.default.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Erreur lors de la création du bénéficiaire: ' + error.error.message,
+          });
+        });
       }
     );
   }
@@ -129,24 +147,35 @@ deleteBeneficiaire(id: string): void {
     return;
   }
 
-  const confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce bénéficiaire? Cette action est irréversible.');
-  
-  if (confirmation) {
-    this.beneficiaryService.deleteBeneficiaire(id).subscribe({
-      next: () => {
-        this.showMessage('Bénéficiaire supprimé avec succès', 'success');
-        // Remove the deleted item from the local array to avoid reloading
-        this.beneficiaries = this.beneficiaries.filter(b => b._id !== id);
-        // If you were editing this beneficiary, reset the form
-        if (this.nouveauBeneficiaire._id === id) {
-          this.resetBeneficiaireForm();
-        }
-      },
-      error: (err) => {
-        this.showMessage(`Erreur lors de la suppression: ${err.error?.message || err.message}`, 'error');
+  import('sweetalert2').then(Swal => {
+    Swal.default.fire({
+      title: 'Êtes-vous sûr?',
+      text: 'Cette action est irréversible!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimer!',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.beneficiaryService.deleteBeneficiaire(id).subscribe({
+          next: () => {
+            this.showMessage('Bénéficiaire supprimé avec succès', 'success');
+            // Remove the deleted item from the local array to avoid reloading
+            this.beneficiaries = this.beneficiaries.filter(b => b._id !== id);
+            // If you were editing this beneficiary, reset the form
+            if (this.nouveauBeneficiaire._id === id) {
+              this.resetBeneficiaireForm();
+            }
+          },
+          error: (err) => {
+            this.showMessage(`Erreur lors de la suppression: ${err.error?.message || err.message}`, 'error');
+          }
+        });
       }
     });
-  }
+  });
 }
 
   

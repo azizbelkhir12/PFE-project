@@ -94,6 +94,8 @@ export class RegisterComponent {
     }
   }
 
+  
+
   // Handle form submission
     // Handle form submission
     submit() {

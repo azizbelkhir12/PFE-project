@@ -9,6 +9,8 @@ const feedbackRoutes = require("./routes/feedbackRoutes");
 const demanderRoutes = require("./routes/demandeRoutes");
 const volunteerRoutes = require('./routes/volunteerRoutes');
 const beneficiaryRoutes = require('./routes/beneficiaryRoutes'); 
+const paymentRoutes = require('./routes/paymentRoutes');
+const donationRoutes  = require('./routes/donationRoutes');
 
 dotenv.config(); 
 const app = express();
@@ -30,6 +32,8 @@ app.use("/api/contact", feedbackRoutes);
 app.use("/api/demande", demanderRoutes);
 app.use("/api/volunteers", volunteerRoutes);
 app.use('/api/beneficiaries', beneficiaryRoutes);
+app.use('/api/payment', paymentRoutes); 
+app.use('/api/donations', donationRoutes); 
 
 
 

@@ -32,6 +32,11 @@ import { ContactComponent } from './contact/contact.component';
 import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
 import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
 import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { DonRapideComponent } from './don-rapide/don-rapide.component';
+import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
+import { PaymentFailComponent } from './pages/payment-fail/payment-fail.component';
+
 
 @NgModule({
   declarations: [
@@ -57,7 +62,11 @@ import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-
     ContactComponent,
     GestionNotificationComponent,
     GestionDesRapportsComponent,
-    GestionDesArticlesComponent,  // Vérifie que ce composant existe bien et que le chemin est correct
+    GestionDesArticlesComponent,
+    DonRapideComponent,
+    PaymentSuccessComponent,
+    PaymentFailComponent,
+     // Vérifie que ce composant existe bien et que le chemin est correct
   ],
   imports: [
     BrowserModule,
@@ -68,7 +77,7 @@ import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-
     HttpClientModule,
     GoogleMapsModule,
     QuillModule.forRoot(),
-
+    SweetAlert2Module.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DemandeService } from '../services/demande/demande.service';
 import { VolunteerService } from '../services/volunteer/volunteer.service';
+import Swal from 'sweetalert2';
 
 import { jsPDF } from 'jspdf';  // Import jsPDF
 import * as XLSX from 'xlsx';
@@ -140,68 +141,111 @@ export class GestionBenevolesComponent {
     });
   }
 
-  accepterDemande(demande: { _id: string }): void {
-    if (!confirm('Voulez-vous vraiment accepter cette demande ?')) return;
+  
 
-    this.isLoading = true;
-    this.demandeService.acceptDemande(demande._id).subscribe({
-      next: () => {
-        this.loadDemandes();
-        alert('Demande acceptée avec succès !');
-      },
-      error: (err) => {
-        console.error('Error accepting demande', err);
-        alert('Erreur lors de l\'acceptation de la demande');
-        this.isLoading = false;
-      }
-    });
-  }
-
-  refuserDemande(demande: any): void {
-    if (!demande || !demande._id) {
-      console.error('Invalid demande object or missing _id');
-      return;
+accepterDemande(demande: { _id: string }): void {
+  Swal.fire({
+    title: 'Êtes-vous sûr(e)?',
+    text: 'Voulez-vous vraiment accepter cette demande ?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, accepter!',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.isLoading = true;
+      this.demandeService.acceptDemande(demande._id).subscribe({
+        next: () => {
+          this.loadDemandes();
+          Swal.fire('Acceptée!', 'Demande acceptée avec succès!', 'success');
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error accepting demande', err);
+          Swal.fire('Erreur', 'Erreur lors de l\'acceptation de la demande', 'error');
+          this.isLoading = false;
+        }
+      });
     }
+  });
+}
 
-    if (!confirm(`Voulez-vous vraiment refuser la demande de ${demande.nom} ?`)) return;
 
-    this.isLoading = true;
-    this.demandeService.rejectDemande(demande._id).subscribe({
-      next: () => {
-        this.demandesBenevolat = this.demandesBenevolat.filter(d => d._id !== demande._id);
-        this.isLoading = false;
-        alert('Demande refusée avec succès');
-      },
-      error: (err) => {
-        console.error('Error rejecting demande:', err);
-        this.isLoading = false;
-        alert('Erreur lors du refus de la demande');
-      }
-    });
+
+
+refuserDemande(demande: any): void {
+  if (!demande || !demande._id) {
+    console.error('Invalid demande object or missing _id');
+    return;
   }
 
-  activateVolunteer(volunteer: Benevole) {
-    if (!volunteer?._id) {
-      console.error('Invalid volunteer or missing ID', volunteer);
-      return;
+  Swal.fire({
+    title: 'Êtes-vous sûr(e)?',
+    text: `Voulez-vous vraiment refuser la demande de ${demande.nom} ?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, refuser!',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.isLoading = true;
+      this.demandeService.rejectDemande(demande._id).subscribe({
+        next: () => {
+          this.demandesBenevolat = this.demandesBenevolat.filter(d => d._id !== demande._id);
+          this.isLoading = false;
+          Swal.fire('Refusée!', 'Demande refusée avec succès', 'success');
+        },
+        error: (err) => {
+          console.error('Error rejecting demande:', err);
+          this.isLoading = false;
+          Swal.fire('Erreur', 'Erreur lors du refus de la demande', 'error');
+        }
+      });
     }
+  });
+}
 
-    if (!confirm(`Activer le bénévole ${volunteer.nom} ${volunteer.prenom}?`)) return;
-    
-    this.changeStatus(String(volunteer._id), 'active');
+
+activateVolunteer(volunteer: Benevole) {
+  if (!volunteer?._id) {
+    console.error('Invalid volunteer or missing ID', volunteer);
+    return;
   }
 
-  deactivateVolunteer(volunteer: Benevole) {
-   
-    if (!volunteer?._id) {
-      console.error('Invalid volunteer or missing ID', volunteer);
-      return;
+  Swal.fire({
+    title: 'Êtes-vous sûr(e)?',
+    text: `Activer le bénévole  ?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, activer!',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.changeStatus(String(volunteer._id), 'active');
     }
-   
-    if (!confirm(`Désactiver le bénévole ${volunteer.nom} ${volunteer.prenom}?`)) return;
-    
-    this.changeStatus(String(volunteer._id), 'inactive');
+  });
+}
+
+deactivateVolunteer(volunteer: Benevole) {
+  if (!volunteer?._id) {
+    console.error('Invalid volunteer or missing ID', volunteer);
+    return;
   }
+
+  Swal.fire({
+    title: 'Êtes-vous sûr(e)?',
+    text: `Désactiver le bénévole  ?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, désactiver!',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.changeStatus(String(volunteer._id), 'inactive');
+    }
+  });
+}
+
 
   private changeStatus(volunteerId: string, newStatus: 'active' | 'inactive') {
     this.isLoading = true;

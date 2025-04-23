@@ -1,0 +1,119 @@
+.payment-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  min-height: 90vh;
+  padding: 50px 5%;
+  box-sizing: border-box;
+  background-color: #f7f9fb;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-section, .info-section {
+  width: 48%;
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #0e7c7b;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.secondary {
+  background-color: #ffffff;
+  color: #0e7c7b;
+  border: 1px solid #0e7c7b;
+  margin-top: 10px;
+}
+
+button:hover:not([disabled]) {
+  background-color: #096b6a;
+}
+
+button.secondary:hover {
+  background-color: #f0f0f0;
+}
+
+button[disabled] {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-box {
+  text-align: center;
+}
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 48%;
+}
+
+.info-box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.info-box .title {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.info-box p {
+  font-size: 15px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.info-box button {
+  width: 100%;
+}
+
+.signup-box button.secondary {
+  margin-top: 0;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  text-align: left;
+}
