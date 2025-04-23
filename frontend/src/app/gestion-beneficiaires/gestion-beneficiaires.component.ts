@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
+import Swal from 'sweetalert2';
 import { BeneficiaryService } from '../services/beneficiary/beneficiary.service';
 
 @Component({
@@ -23,6 +24,8 @@ export class GestionBeneficiairesComponent {
     children: [{ name: '', age: null }]
   };
 
+  totalBeneficiaires: number = 0;
+
   beneficiaries: any[] = [];
 
   gouvernorats: string[] = [
@@ -38,9 +41,6 @@ export class GestionBeneficiairesComponent {
 
   filtreNom: string = '';
   filtreAge: number | null = null;
-totalBeneficiaires: any;
-  index!: number;
-listeBeneficiaires: any;
 
   constructor(private beneficiaryService: BeneficiaryService) {}
 
@@ -74,36 +74,31 @@ listeBeneficiaires: any;
 
   creerBeneficiaire() {
     if (!this.nouveauBeneficiaire.name || !this.nouveauBeneficiaire.lastname || !this.nouveauBeneficiaire.email) {
-      import('sweetalert2').then(Swal => {
-        Swal.default.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Veuillez remplir tous les champs obligatoires.',
-        });
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs obligatoires.',
       });
       return;
     }
     this.beneficiaryService.createBeneficiaire(this.nouveauBeneficiaire).subscribe(
       (response) => {
-        import('sweetalert2').then(Swal => {
-          Swal.default.fire({
-            icon: 'success',
-            title: 'Succès',
-            text: 'Bénéficiaire créé avec succès!',
-          });
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Bénéficiaire créé avec succès!',
         });
-        this.resetBeneficiaireForm(); 
+        this.resetBeneficiaireForm();
+        this.getBeneficiaires();
       },
-      (error) => {
-        import('sweetalert2').then(Swal => {
-          Swal.default.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: 'Erreur lors de la création du bénéficiaire: ' + error.error.message,
-          });
+      (error: any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de la création du bénéficiaire: ' + error.error.message,
         });
       }
-    });
+    );
   }
 
   ouvrirModalModification(beneficiaire: any): void {
@@ -111,7 +106,7 @@ listeBeneficiaires: any;
   }
 
   updateBeneficiaire(): void {
-    if (!this.nouveauBeneficiaire._id) {
+    if (!this.nouveauBeneficiaire?._id) {
       this.message = 'Aucun bénéficiaire sélectionné pour la mise à jour.';
       return;
     }
@@ -134,8 +129,7 @@ listeBeneficiaires: any;
       return;
     }
 
-  import('sweetalert2').then(Swal => {
-    Swal.default.fire({
+    Swal.fire({
       title: 'Êtes-vous sûr?',
       text: 'Cette action est irréversible!',
       icon: 'warning',
@@ -149,9 +143,7 @@ listeBeneficiaires: any;
         this.beneficiaryService.deleteBeneficiaire(id).subscribe({
           next: () => {
             this.showMessage('Bénéficiaire supprimé avec succès', 'success');
-            // Remove the deleted item from the local array to avoid reloading
-            this.beneficiaries = this.beneficiaries.filter(b => b._id !== id);
-            // If you were editing this beneficiary, reset the form
+            this.beneficiaries = this.beneficiaries.filter((b: any) => b._id !== id);
             if (this.nouveauBeneficiaire._id === id) {
               this.resetBeneficiaireForm();
             }
@@ -162,14 +154,12 @@ listeBeneficiaires: any;
         });
       }
     });
-  });
-}
+  }
 
-  
   filtrerBeneficiaires() {
     return this.beneficiaries.filter(b => {
       const correspondNom = this.filtreNom ? b.name.toLowerCase().includes(this.filtreNom.toLowerCase()) : true;
-      const correspondAge = this.filtreAge ? b.Age === this.filtreAge : true;
+      const correspondAge = this.filtreAge !== null ? b.Age === this.filtreAge : true;
       return correspondNom && correspondAge;
     });
   }
@@ -183,7 +173,7 @@ listeBeneficiaires: any;
 
   exportToPDF() {
     if (!this.beneficiaries || this.beneficiaries.length === 0) {
-      alert('Aucun bénéficiaire à exporter.');
+      Swal.fire('Erreur', 'Aucun bénéficiaire à exporter.', 'error');
       return;
     }
 
@@ -194,75 +184,35 @@ listeBeneficiaires: any;
     doc.text('Liste des bénéficiaires', 20, y);
     y += 10;
 
-    this.beneficiaries.forEach((beneficiaire) => {
-      if (y > 250) {
-        doc.addPage();
-        y = 20;
-      }
-
-      const nom = beneficiaire.name || 'Non précisé';
-      const prenom = beneficiaire.lastname || 'Non précisé';
-      const email = beneficiaire.email || 'Non précisé';
-      const age = beneficiaire.Age !== undefined ? beneficiaire.Age : 'Non précisé';
-      const telephone = beneficiaire.phoneNumber || 'Non précisé';
-      const adresse = beneficiaire.address || 'Non précisée';
-      const gouvernorat = beneficiaire.gouvernorat || 'Non précisé';
-
-      doc.text(`Nom : ${nom}`, 20, y); y += 8;
-      doc.text(`Prénom : ${prenom}`, 20, y); y += 8;
-      doc.text(`Email : ${email}`, 20, y); y += 8;
-      doc.text(`Âge : ${age}`, 20, y); y += 8;
-      doc.text(`Téléphone : ${telephone}`, 20, y); y += 8;
-      doc.text(`Adresse : ${adresse}`, 20, y); y += 8;
-      doc.text(`Gouvernorat : ${gouvernorat}`, 20, y); y += 8;
-
-      if (beneficiaire.children && beneficiaire.children.length > 0) {
-        doc.text('Enfants:', 20, y); y += 8;
-        beneficiaire.children.forEach((child: { name: any; age: any; }) => {
-          doc.text(`${child.name} (${child.age} ans)`, 30, y);
-          y += 8;
-        });
-      } else {
-        doc.text('Aucun enfant', 20, y);
-        y += 8;
-      }
-
-      y += 5;
-
-      // Ligne de séparation
-      doc.setDrawColor(200); // Couleur gris clair
-      doc.line(15, y, 195, y); // Ligne horizontale de gauche à droite
-      y += 10;
+    this.beneficiaries.forEach((beneficiaire: any) => {
+      doc.text(`Nom: ${beneficiaire.name} ${beneficiaire.lastname}`, 20, y);
+      doc.text(`Email: ${beneficiaire.email}`, 20, y + 6);
+      y += 15;
     });
 
     doc.save('beneficiaires.pdf');
   }
 
-
-  showMessage(message: string, type: 'success' | 'error') {
-    this.message = message;
-    console.log(`[${type.toUpperCase()}] ${message}`);
+  showMessage(message: string, icon: 'success' | 'error') {
+    Swal.fire({
+      icon,
+      title: icon === 'success' ? 'Succès' : 'Erreur',
+      text: message,
+    });
   }
 
-  resetBeneficiaireForm(): void {
+  resetBeneficiaireForm() {
     this.nouveauBeneficiaire = {
       _id: '',
-      email: '',
       name: '',
       lastname: '',
-      password: '',
-      gouvernorat: '',
-      Age: 0,
-      phoneNumber: '',
       address: '',
+      email: '',
+      password: '',
+      phoneNumber: '',
+      Age: 0,
+      gouvernorat: '',
       children: [{ name: '', age: null }]
-    };
-  }
-
-  resetAffectationForm(): void {
-    this.affectation = {
-      idBeneficiaire: null,
-      idDonateur: null
     };
   }
 }
