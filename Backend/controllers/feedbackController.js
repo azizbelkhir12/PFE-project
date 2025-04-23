@@ -7,7 +7,7 @@ exports.submitFeedbackForm = async (req, res) => {
     
     res.status(201).json({
       success: true,
-      message: "Thank you for your message! We will get back to you soon.",
+      message: "Merci pour votre message!",
       data: contact,
     });
   } catch (error) {
@@ -17,3 +17,4 @@ exports.submitFeedbackForm = async (req, res) => {
     });
   }
 };
+

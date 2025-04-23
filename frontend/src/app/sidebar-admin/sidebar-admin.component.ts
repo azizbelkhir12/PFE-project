@@ -19,6 +19,7 @@ import {
   faUpload,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-sidebar-admin',

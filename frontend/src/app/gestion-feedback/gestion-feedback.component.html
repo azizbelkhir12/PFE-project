@@ -1,0 +1,45 @@
+<app-navbarcompte-admin></app-navbarcompte-admin>
+<app-sidebar-admin></app-sidebar-admin>
+
+<div class="main-container">
+  <div class="stats-container">
+    <div class="stats-card">
+      <i class="fas fa-comment-dots icon-yellow"></i>
+      <h4>Total Feedbacks</h4>
+      <p>{{ totalFeedbacks }}</p>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h3>Liste des Feedbacks</h3>
+
+    <div *ngIf="feedbacks && feedbacks.length > 0; else noFeedbacksTemplate">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Sujet</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let fb of feedbacks">
+              <td>{{ fb.nom }}</td>
+              <td>{{ fb.email }}</td>
+              <td>{{ fb.sujet }}</td>
+              <td>{{ fb.message }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ng-template #noFeedbacksTemplate>
+      <p style="text-align: center; color: #888;">Aucun feedback trouvé.</p>
+    </ng-template>
+  </div>
+</div>
+
+
