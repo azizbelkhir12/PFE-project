@@ -1,0 +1,112 @@
+<app-navbarcompte-admin></app-navbarcompte-admin>
+<app-sidebar-admin></app-sidebar-admin>
+
+<div class="main-container">
+
+  <!-- ✅ Statistiques des projets -->
+  <div class="stats-container">
+    <div class="stats-card">
+      <i class="fas fa-layer-group icon-yellow"></i>
+      <h4>Tous les projets</h4>
+      <p>{{ totalProjets }}</p>
+    </div>
+    <div class="stats-card">
+      <i class="fas fa-clipboard-list icon-yellow"></i>
+      <h4>Projets en cours</h4>
+      <p>{{ totalProjetsEnCours }}</p>
+    </div>
+    <div class="stats-card">
+      <i class="fas fa-check-circle icon-yellow"></i>
+      <h4>Projets terminés</h4>
+      <p>{{ totalProjetsTermines }}</p>
+    </div>
+    <div class="stats-card">
+      <i class="fas fa-clock icon-yellow"></i>
+      <h4>Projets en retard</h4>
+      <p>{{ totalProjetsEnRetard }}</p>
+    </div>
+  </div>
+
+  <!-- ✅ Boutons de sélection -->
+  <div class="form-toggle-container">
+    <button class="btn-toggle" (click)="afficherFormulaire('ajout')">Ajouter un projet</button>
+    <button class="btn-toggle" (click)="afficherFormulaire('liste')">Voir les projets</button>
+  </div>
+
+  <!-- ✅ Barre de recherche -->
+  <div class="search-container" *ngIf="formulaireActif === 'liste'">
+    <div class="search-field">
+      <input type="text" id="searchTitre" [(ngModel)]="rechercheTitre" placeholder="Rechercher par titre de projet">
+    </div>
+    <div class="search-field">
+      <input type="date" id="searchDate" [(ngModel)]="rechercheDate" placeholder="Rechercher par date de début">
+    </div>
+    <div class="search-field">
+      <select id="searchStatut" [(ngModel)]="rechercheStatut">
+        <option value="">Tous les statuts</option>
+        <option value="en_cours">En cours</option>
+        <option value="termine">Terminé</option>
+        <option value="en_retard">En retard</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ✅ Formulaire d’ajout de projet -->
+  <div class="forms-container" *ngIf="formulaireActif === 'ajout'">
+    <div class="form-card">
+      <h3>Ajout d’un projet</h3>
+      <form (ngSubmit)="soumettreProjet()" #projetForm="ngForm" enctype="multipart/form-data">
+        <label for="titre">Titre</label>
+        <input type="text" id="titre" [(ngModel)]="nouveauProjet.titre" name="titre" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="nouveauProjet.description" name="description" rows="10" required></textarea>
+
+        <label for="dateDebut">Date de début</label>
+        <input type="date" id="dateDebut" [(ngModel)]="nouveauProjet.dateDebut" name="dateDebut" required>
+
+        <label for="dateFin">Date de fin</label>
+        <input type="date" id="dateFin" [(ngModel)]="nouveauProjet.dateFin" name="dateFin" required>
+
+        <label for="montantSoutenu">Montant soutenu</label>
+        <input type="number" id="montantSoutenu" [(ngModel)]="nouveauProjet.montantSoutenu" name="montantSoutenu" required>
+
+        <label for="image">Image du projet</label>
+        <input type="file" id="image" (change)="onImageChange($event)" name="image" required>
+
+        <!-- ✅ Nouveau champ statut -->
+        <label for="statut">Statut</label>
+        <select id="statut" [(ngModel)]="nouveauProjet.statut" name="statut" required>
+          <option value="en_cours">En cours</option>
+          <option value="termine">Terminé</option>
+          <option value="en_retard">En retard</option>
+        </select>
+
+        <!-- ✅ Bouton dynamique en fonction de l'édition -->
+        <button type="submit" class="btn btn-jaune" [disabled]="!projetForm.form.valid">
+          {{ enEdition ? 'Valider les modifications' : 'Ajouter le projet' }}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ✅ Liste des projets -->
+  <div class="row justify-content-center" *ngIf="formulaireActif === 'liste'">
+    <div class="card-article" *ngFor="let projet of getProjetsFiltres()">
+      <div class="image-container">
+        <img [src]="projet.imageUrl || 'default-image.jpg'" alt="Image de projet">
+      </div>
+      <h5>{{ projet.titre || 'Sans titre' }}</h5>
+      <p [innerHTML]="projet.description | slice:0:150"></p>
+      <div class="date">Début le : {{ projet.dateDebut | date:'dd/MM/yyyy' }}</div>
+      <p><strong>Statut:</strong> {{ projet.statut }}</p>
+
+      <!-- ✅ Actions -->
+      <div class="btn-container">
+        <i class="fas fa-edit text-primary small-icon" (click)="modifierProjet(projet)" title="Modifier"></i>
+        <i class="fas fa-trash-alt text-danger small-icon" (click)="supprimerProjet(projet)" title="Supprimer"></i>
+        <i class="fas fa-check-circle text-success small-icon" *ngIf="projet.statut !== 'termine'" (click)="terminerProjet(projet)" title="Terminer"></i>
+      </div>
+    </div>
+  </div>
+</div>

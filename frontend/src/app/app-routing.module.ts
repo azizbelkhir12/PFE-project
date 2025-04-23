@@ -16,6 +16,7 @@ import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.com
 import { ContactComponent } from './contact/contact.component';
 import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
 import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
+import { GestionDesProjetsComponent } from './gestion-des-projets/gestion-des-projets.component';
 import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
 import { PaymentService } from './services/payment/payment.service';
 import { DonRapideComponent } from './don-rapide/don-rapide.component';
@@ -23,6 +24,7 @@ import { PaymentFailComponent } from './pages/payment-fail/payment-fail.componen
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { AuthGuard } from './guard/auth.guard';
 import { AdminGuard } from './guard/admin.guard';
+
 
 const routes: Routes = [
   { path: '', component: AcceuilComponent },
@@ -41,9 +43,10 @@ const routes: Routes = [
    
 
   
+
   // Admin routes group (protected)
-  { 
-    path: 'admin-compte', 
+  {
+    path: 'admin-compte',
     canActivate: [AuthGuard, AdminGuard], // Protect the entire admin section
     children: [
       { path: '', component: AdminCompteComponent }, // Main admin dashboard
@@ -52,7 +55,9 @@ const routes: Routes = [
       { path: 'gestion-des-dons', component: GestionDesDonsComponent },
       { path: 'gestion-notification', component: GestionNotificationComponent },
       { path: 'gestion-des-rapports', component: GestionDesRapportsComponent },
-      { path: 'gestion-des-articles', component: GestionDesArticlesComponent }
+      { path: 'gestion-des-articles', component: GestionDesArticlesComponent },
+      { path: 'gestion-des-projets', component: GestionDesProjetsComponent },
+
     ]
   }
 ];

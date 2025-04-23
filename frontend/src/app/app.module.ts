@@ -37,6 +37,7 @@ import { DonRapideComponent } from './don-rapide/don-rapide.component';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailComponent } from './pages/payment-fail/payment-fail.component';
 
+import { GestionDesProjetsComponent } from './gestion-des-projets/gestion-des-projets.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { PaymentFailComponent } from './pages/payment-fail/payment-fail.componen
     DonRapideComponent,
     PaymentSuccessComponent,
     PaymentFailComponent,
-     // Vérifie que ce composant existe bien et que le chemin est correct
+   
+    GestionDesProjetsComponent,
   ],
   imports: [
     BrowserModule,

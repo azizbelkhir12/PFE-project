@@ -1,19 +1,17 @@
 import { Component } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
-import { NgForm } from '@angular/forms';
 import { BeneficiaryService } from '../services/beneficiary/beneficiary.service';
 
 @Component({
   selector: 'app-gestion-beneficiaires',
   templateUrl: './gestion-beneficiaires.component.html',
+  standalone:false,
   styleUrls: ['./gestion-beneficiaires.component.css'],
-  standalone: false,
 })
 export class GestionBeneficiairesComponent {
-
   nouveauBeneficiaire = {
-    _id: '', // Add the _id property
+    _id: '',
     name: '',
     lastname: '',
     address: '',
@@ -22,48 +20,39 @@ export class GestionBeneficiairesComponent {
     phoneNumber: '',
     Age: 0,
     gouvernorat: '',
-    children: [
-      { name: '', age: null } // 👈 Add at least one by default
-    ]
+    children: [{ name: '', age: null }]
   };
+
+  beneficiaries: any[] = [];
+
+  gouvernorats: string[] = [
+    'Ariana', 'Béja', 'Ben Arous', 'Bizerte', 'Gabès', 'Gafsa', 'Jendouba', 'Kairouan',
+    'Kasserine', 'Kébili', 'Le Kef', 'Mahdia', 'Manouba', 'Medenine', 'Monastir', 'Nabeul',
+    'Sfax', 'Sidi Bouzid', 'Siliana', 'Sousse', 'Tataouine', 'Tozeur', 'Tunis', 'Zaghouan'
+  ];
+
+  formulaireActif: string = 'beneficiaire';
+  message: string = '';
+
+  affectation: any = { idBeneficiaire: null, idDonateur: null };
+
+  filtreNom: string = '';
+  filtreAge: number | null = null;
+totalBeneficiaires: any;
+  index!: number;
+listeBeneficiaires: any;
 
   constructor(private beneficiaryService: BeneficiaryService) {}
 
   ngOnInit(): void {
     this.getBeneficiaires();
   }
-  
-  beneficiaries: any[] = []; // Declare the beneficiaries property
 
-  listeBeneficiaires: any[] = [
-
-  ];
-
-  index : number = 0; 
-
-  gouvernorats: string[] = ['Ariana', 'Béja', 'Ben Arous', 'Bizerte', 'Gabès', 'Gafsa', 'Jendouba', 'Kairouan',
-    'Kasserine', 'Kébili', 'Le Kef', 'Mahdia', 'Manouba', 'Medenine', 'Monastir', 'Nabeul',
-    'Sfax', 'Sidi Bouzid', 'Siliana', 'Sousse', 'Tataouine', 'Tozeur', 'Tunis', 'Zaghouan'];
-
-  totalBeneficiaires: number = this.listeBeneficiaires.length;
-  formulaireActif: string = 'beneficiaire';  // Formulaire de création affiché par défaut
-  message: string = '';
-
-  // Modèles de données pour les formulaires
-  
-  affectation: any = { idBeneficiaire: 0, idDonateur: 0 };
-  beneficiaireSelectionne: number | null = null;
-
-  // Variables pour le filtrage
-  filtreNom: string = ''; // Filtre par nom
-  filtreAge: number | null = null; // Filtre par âge
-
-  // Changer le formulaire affiché
   afficherFormulaire(formulaire: string) {
     this.formulaireActif = formulaire;
-    this.message = ''; // Réinitialise les messages à chaque changement de formulaire
+    this.message = '';
   }
- 
+
   ajouterEnfant() {
     this.nouveauBeneficiaire.children.push({ name: '', age: null });
   }
@@ -75,7 +64,6 @@ export class GestionBeneficiairesComponent {
   getBeneficiaires(): void {
     this.beneficiaryService.getBeneficiaires().subscribe({
       next: (response) => {
-        console.log('Liste des bénéficiaires:', response.data.beneficiaries);
         this.beneficiaries = response.data.beneficiaries;
       },
       error: (error) => {
@@ -115,37 +103,36 @@ export class GestionBeneficiairesComponent {
           });
         });
       }
-    );
+    });
   }
 
   ouvrirModalModification(beneficiaire: any): void {
-    this.nouveauBeneficiaire = { ...beneficiaire }; // Deep copy to avoid binding issues
+    this.nouveauBeneficiaire = { ...beneficiaire };
   }
+
   updateBeneficiaire(): void {
     if (!this.nouveauBeneficiaire._id) {
       this.message = 'Aucun bénéficiaire sélectionné pour la mise à jour.';
       return;
     }
-  
-    this.beneficiaryService.updateBeneficiaire(this.nouveauBeneficiaire._id, this.nouveauBeneficiaire)
-      .subscribe({
-        next: (res) => {
-          this.message = 'Bénéficiaire mis à jour avec succès !';
-          this.getBeneficiaires(); // Recharge la liste après mise à jour
-          this.resetBeneficiaireForm(); // Réinitialise le formulaire
-        },
-        error: (err) => {
-          this.message = 'Erreur lors de la mise à jour du bénéficiaire : ' + err.error.message;
-        }
-      });
+
+    this.beneficiaryService.updateBeneficiaire(this.nouveauBeneficiaire._id, this.nouveauBeneficiaire).subscribe({
+      next: () => {
+        this.message = 'Bénéficiaire mis à jour avec succès !';
+        this.getBeneficiaires();
+        this.resetBeneficiaireForm();
+      },
+      error: (err) => {
+        this.message = 'Erreur lors de la mise à jour du bénéficiaire : ' + err.error.message;
+      }
+    });
   }
 
-  // In your component
-deleteBeneficiaire(id: string): void {
-  if (!id) {
-    this.showMessage('ID du bénéficiaire invalide', 'error');
-    return;
-  }
+  deleteBeneficiaire(id: string): void {
+    if (!id) {
+      this.showMessage('ID du bénéficiaire invalide', 'error');
+      return;
+    }
 
   import('sweetalert2').then(Swal => {
     Swal.default.fire({
@@ -186,32 +173,79 @@ deleteBeneficiaire(id: string): void {
       return correspondNom && correspondAge;
     });
   }
-  
 
- 
   exportToXLSX() {
-    const worksheet = XLSX.utils.json_to_sheet(this.listeBeneficiaires);
+    const worksheet = XLSX.utils.json_to_sheet(this.beneficiaries);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Bénéficiaires');
     XLSX.writeFile(workbook, 'beneficiaires.xlsx');
   }
+
   exportToPDF() {
+    if (!this.beneficiaries || this.beneficiaries.length === 0) {
+      alert('Aucun bénéficiaire à exporter.');
+      return;
+    }
+
     const doc = new jsPDF();
-    doc.text('Liste des Bénéficiaires', 10, 10);
-    this.listeBeneficiaires.forEach((beneficiaire, index) => {
-      doc.text(`${beneficiaire.nom} ${beneficiaire.prenom} - Age: ${beneficiaire.age} - Tel: ${beneficiaire.telephone}`, 10, 20 + (index * 10));
+    doc.setFontSize(12);
+    let y = 20;
+
+    doc.text('Liste des bénéficiaires', 20, y);
+    y += 10;
+
+    this.beneficiaries.forEach((beneficiaire) => {
+      if (y > 250) {
+        doc.addPage();
+        y = 20;
+      }
+
+      const nom = beneficiaire.name || 'Non précisé';
+      const prenom = beneficiaire.lastname || 'Non précisé';
+      const email = beneficiaire.email || 'Non précisé';
+      const age = beneficiaire.Age !== undefined ? beneficiaire.Age : 'Non précisé';
+      const telephone = beneficiaire.phoneNumber || 'Non précisé';
+      const adresse = beneficiaire.address || 'Non précisée';
+      const gouvernorat = beneficiaire.gouvernorat || 'Non précisé';
+
+      doc.text(`Nom : ${nom}`, 20, y); y += 8;
+      doc.text(`Prénom : ${prenom}`, 20, y); y += 8;
+      doc.text(`Email : ${email}`, 20, y); y += 8;
+      doc.text(`Âge : ${age}`, 20, y); y += 8;
+      doc.text(`Téléphone : ${telephone}`, 20, y); y += 8;
+      doc.text(`Adresse : ${adresse}`, 20, y); y += 8;
+      doc.text(`Gouvernorat : ${gouvernorat}`, 20, y); y += 8;
+
+      if (beneficiaire.children && beneficiaire.children.length > 0) {
+        doc.text('Enfants:', 20, y); y += 8;
+        beneficiaire.children.forEach((child: { name: any; age: any; }) => {
+          doc.text(`${child.name} (${child.age} ans)`, 30, y);
+          y += 8;
+        });
+      } else {
+        doc.text('Aucun enfant', 20, y);
+        y += 8;
+      }
+
+      y += 5;
+
+      // Ligne de séparation
+      doc.setDrawColor(200); // Couleur gris clair
+      doc.line(15, y, 195, y); // Ligne horizontale de gauche à droite
+      y += 10;
     });
+
     doc.save('beneficiaires.pdf');
   }
 
+
   showMessage(message: string, type: 'success' | 'error') {
     this.message = message;
-    // Optionally, you can add logic to handle the type (e.g., display success or error styles)
     console.log(`[${type.toUpperCase()}] ${message}`);
   }
 
   resetBeneficiaireForm(): void {
-    this.nouveauBeneficiaire = { 
+    this.nouveauBeneficiaire = {
       _id: '',
       email: '',
       name: '',
@@ -221,14 +255,14 @@ deleteBeneficiaire(id: string): void {
       Age: 0,
       phoneNumber: '',
       address: '',
-      children: []
+      children: [{ name: '', age: null }]
     };
   }
 
   resetAffectationForm(): void {
-    this.affectation = { 
-      idBeneficiaire: null, 
-      idDonateur: null 
+    this.affectation = {
+      idBeneficiaire: null,
+      idDonateur: null
     };
   }
 }

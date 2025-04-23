@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DemandeService } from '../services/demande/demande.service';
@@ -8,10 +7,16 @@ import Swal from 'sweetalert2';
 import { jsPDF } from 'jspdf';  // Import jsPDF
 import * as XLSX from 'xlsx';
 
-
-
 interface Benevole {
-  _id: String;
+[x: string]: any;
+lastName: any;
+phone: any;
+address: any;
+name: any;
+lastname: any;
+adresse: any;
+statut: any;
+  _id: string;
   nom: string;
   prenom: string;
   email: string;
@@ -19,7 +24,7 @@ interface Benevole {
   telephone?: string;
   age: number;
   gouvernorat: string;
-  status: 'active' | 'inactive'; 
+  status: 'active' | 'inactive';
 }
 
 @Component({
@@ -28,8 +33,8 @@ interface Benevole {
   standalone: false,
   styleUrls: ['./gestion-benevoles.component.css']
 })
-export class GestionBenevolesComponent {
-  
+export class GestionBenevolesComponent implements OnInit {
+
   benevoles: Benevole[] = [];
   volunteers: any[] = [];
   demandesBenevolat: any[] = [];
@@ -52,7 +57,7 @@ export class GestionBenevolesComponent {
     'Sfax', 'Sidi Bouzid', 'Siliana', 'Sousse', 'Tataouine', 'Tozeur', 'Tunis', 'Zaghouan'
   ];
 
-  formulaireActif: string = 'benevole';
+  formulaireActif: string = 'listeBenevoles';
 
   nouveauBenevole: any = {
     nom: '',
@@ -64,14 +69,13 @@ export class GestionBenevolesComponent {
     gouvernorat: '',
     statut: 'actif'
   };
+benevole: any;
 
-  constructor(private volunteerService: VolunteerService,private snackBar: MatSnackBar, private demandeService: DemandeService  ) {}
+  constructor(private volunteerService: VolunteerService, private snackBar: MatSnackBar, private demandeService: DemandeService) { }
 
   ngOnInit(): void {
     this.loadDemandes();
     this.fetchVolunteers();
-
-    
   }
 
   afficherFormulaire(type: string) {
@@ -85,24 +89,57 @@ export class GestionBenevolesComponent {
   }
 
   getFilteredBenevoles(): Benevole[] {
-    const normalizedSearchTerm = this.searchTermTelephone ? this.searchTermTelephone.replace(/\D/g, '') : '';
-    return this.benevoles.filter(b =>
-      b.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
-      (this.selectedGouvernorat ? b.gouvernorat === this.selectedGouvernorat : true) &&
-      (this.selectedStatut ? b.status === this.selectedStatut : true) &&
-      (this.selectedAge ? b.age === this.selectedAge : true) &&
-      (normalizedSearchTerm ? b.telephone?.replace(/\D/g, '').includes(normalizedSearchTerm) : true)
-    );
+    return this.benevoles.filter(b => {
+      const correspondName = this.searchTerm ? b.name.toLowerCase().includes(this.searchTerm.toLowerCase()) : true;
+      const correspondAge = this.selectedAge ? b.age === this.selectedAge : true;
+      const correspondGouvernorat = this.selectedGouvernorat ? b.gouvernorat === this.selectedGouvernorat : true;
+      const correspondStatut = this.selectedStatut
+      ? b.status?.toLowerCase() === this.selectedStatut.toLowerCase()
+      : true;
+
+      const correspondphone = this.searchTermTelephone
+      ? b.phone?.replace(/\D/g, '').includes(this.searchTermTelephone.replace(/\D/g, ''))
+      : true;
+
+
+      return correspondName && correspondAge && correspondGouvernorat && correspondStatut && correspondphone;
+    });
   }
 
+
+
   getFilteredDemandes() {
+    const normalizedSearchTerm = this.searchTerm.toLowerCase();
     const normalizedSearchTermTelephone = this.searchTermTelephone.replace(/\D/g, '');
+
     return this.demandesBenevolat.filter(d =>
-      d.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
+      d.nom.toLowerCase().includes(normalizedSearchTerm) &&
       (this.selectedGouvernorat ? d.gouvernorat === this.selectedGouvernorat : true) &&
       (normalizedSearchTermTelephone ? d.telephone.replace(/\D/g, '').includes(normalizedSearchTermTelephone) : true)
     );
   }
+  exportbenevolesToXLSX() {
+    if (!this.benevoles || this.benevoles.length === 0) {
+      alert('Aucun bénévole à exporter.');
+      return;
+    }
+
+    // On peut éventuellement filtrer ou transformer les données ici
+    const data = this.benevoles.map(b => ({
+      Nom: b.name || 'Non précisé',
+      Prénom: b.lastName || 'Non précisé',
+      Email: b.email || 'Non précisé',
+      Âge: b.age !== undefined ? b.age : 'Non précisé',
+      Gouvernorat: b.gouvernorat || 'Non précisé',
+      Téléphone: b.phone || 'Non précisé',
+      Statut: b.status || 'Non précisé'
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const wb: XLSX.WorkBook = { Sheets: { 'Bénévoles': ws }, SheetNames: ['Bénévoles'] };
+    XLSX.writeFile(wb, 'liste_benevoles.xlsx');
+  }
+
 
   exportToXLSX() {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.demandesBenevolat);
@@ -111,20 +148,57 @@ export class GestionBenevolesComponent {
   }
 
   exportToPDF() {
+    if (!this.demandesBenevolat || this.demandesBenevolat.length === 0) {
+      alert('Aucune demande à exporter.');
+      return;
+    }
+
     const doc = new jsPDF();
-    doc.text('Liste des demandes de bénévolat', 20, 20);
+    doc.setFontSize(12);
+    let y = 20;
+
+    doc.text('Liste des demandes de bénévolat', 20, y);
+    y += 10;
+
     this.demandesBenevolat.forEach((demande, index) => {
-      const startY = 30 + index * 60;
-      doc.text(`Nom: ${demande.nom} ${demande.prenom}`, 20, startY);
-      doc.text(`Email: ${demande.email}`, 20, startY + 10);
-      doc.text(`Âge: ${demande.age}`, 20, startY + 20);
-      doc.text(`Gouvernorat: ${demande.gouvernorat}`, 20, startY + 30);
-      doc.text(`Téléphone: ${demande.telephone}`, 20, startY + 40);
-      doc.text(`Raison: ${demande.raison}`, 20, startY + 50);
-      doc.text('--------------------------------------------', 20, startY + 60);
+      if (y > 250) {
+        doc.addPage();
+        y = 20;
+      }
+
+      const nom = demande.name || 'Non précisé';
+      const prenom = demande.prenom || 'Non précisé';
+      const email = demande.email || 'Non précisé';
+      const age = demande.age !== undefined ? demande.age : 'Non précisé';
+      const gouvernorat = demande.gouvernorat || 'Non précisé';
+      const telephone = demande.phone || 'Non précisé';
+      const raison = demande.reason || 'Non précisée';
+
+      doc.text(`Nom : ${nom}`, 20, y);
+      y += 8;
+      doc.text(`Prénom : ${prenom}`, 20, y);
+      y += 8;
+      doc.text(`Email : ${email}`, 20, y);
+      y += 8;
+      doc.text(`Âge : ${age}`, 20, y);
+      y += 8;
+      doc.text(`Gouvernorat : ${gouvernorat}`, 20, y);
+      y += 8;
+      doc.text(`Téléphone : ${telephone}`, 20, y);
+      y += 8;
+      doc.text(`Raison : ${raison}`, 20, y);
+      y += 10;
+
+      // Ligne de séparation
+      doc.setDrawColor(200);
+      doc.line(20, y, 190, y);
+      y += 10;
     });
-    doc.save('demandes_benevolat_sans_tableau.pdf');
+
+    doc.save('demandes_benevolat.pdf');
   }
+
+
 
   loadDemandes(): void {
     this.isLoading = true;
@@ -140,6 +214,59 @@ export class GestionBenevolesComponent {
       }
     });
   }
+  exportBenevolesToPDF() {
+    if (!this.benevoles || this.benevoles.length === 0) {
+      alert('Aucun bénévole à exporter.');
+      return;
+    }
+
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    let y = 20;
+
+    doc.text('Liste des bénévoles', 20, y);
+    y += 10;
+
+    this.benevoles.forEach((benevole, index) => {
+      // Ajouter une nouvelle page si nécessaire
+      if (y > 250) {
+        doc.addPage();
+        y = 20;
+      }
+
+      const nom = benevole.name || 'Non précisé';
+      const prenom = benevole.lastName || 'Non précisé';
+      const email = benevole.email || 'Non précisé';
+      const age = benevole.age !== undefined ? benevole.age : 'Non précisé';
+      const gouvernorat = benevole.gouvernorat || 'Non précisé';
+      const telephone = benevole.phone || 'Non précisé';
+      const statut = benevole.status || 'Non précisé';
+
+      // Affichage bien espacé
+      doc.text(`Nom : ${nom}`, 20, y);
+      y += 8;
+      doc.text(`Prénom : ${prenom}`, 20, y);
+      y += 8;
+      doc.text(`Email : ${email}`, 20, y);
+      y += 8;
+      doc.text(`Âge : ${age}`, 20, y);
+      y += 8;
+      doc.text(`Gouvernorat : ${gouvernorat}`, 20, y);
+      y += 8;
+      doc.text(`Téléphone : ${telephone}`, 20, y);
+      y += 8;
+      doc.text(`Statut : ${statut}`, 20, y);
+      y += 10;
+
+      // Ligne de séparation discrète
+      doc.setDrawColor(200); // gris clair
+      doc.line(20, y, 190, y);
+      y += 10;
+    });
+
+    doc.save('liste_benevoles.pdf');
+  }
+
 
   
 
@@ -251,7 +378,6 @@ deactivateVolunteer(volunteer: Benevole) {
     this.isLoading = true;
     this.volunteerService.changeVolunteerStatus(volunteerId, newStatus).subscribe({
       next: (updatedVolunteer) => {
-        // Update the local volunteers array
         const index = this.volunteers.findIndex(v => v._id === volunteerId);
         if (index !== -1) {
           this.volunteers[index].status = newStatus;
@@ -272,17 +398,16 @@ deactivateVolunteer(volunteer: Benevole) {
     });
   }
 
-
   fetchVolunteers() {
     this.volunteerService.getVolunteers().subscribe(
       (data: any[]) => {
         this.volunteers = data;
+        this.benevoles = data; // Assurez-vous que benevoles contient aussi les bénévoles récupérés
       },
       (error) => {
         console.error('Error fetching volunteers:', error);
       }
     );
   }
-
-  
 }
+
