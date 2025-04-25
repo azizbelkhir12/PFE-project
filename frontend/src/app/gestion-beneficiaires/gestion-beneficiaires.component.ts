@@ -190,14 +190,33 @@ export class GestionBeneficiairesComponent {
     doc.text('Liste des bénéficiaires', 20, y);
     y += 10;
 
-    this.beneficiaries.forEach((beneficiaire: any) => {
+    this.beneficiaries.forEach((beneficiaire: any, index: number) => {
+      // Affichage des informations du bénéficiaire
       doc.text(`Nom: ${beneficiaire.name} ${beneficiaire.lastname}`, 20, y);
       doc.text(`Email: ${beneficiaire.email}`, 20, y + 6);
       y += 15;
+      doc.text(`Téléphone: ${beneficiaire.phoneNumber}`, 20, y);
+      doc.text(`Adresse: ${beneficiaire.address}`, 20, y + 6);
+      doc.text(`Gouvernorat: ${beneficiaire.gouvernorat}`, 20, y + 12);
+      doc.text(`Âge: ${beneficiaire.Age}`, 20, y + 18);
+      doc.text(`Enfants:`, 20, y + 24);
+      // Affichage des enfants du bénéficiaire
+      beneficiaire.children.forEach((enfant: any, index: number) => {
+        doc.text(`Enfant ${index + 1}: ${enfant.name}, Âge: ${enfant.age}`, 20, y + 30 + (index * 6));
+      });
+      y += 30 + (beneficiaire.children.length * 6); // Ajuste la position Y pour le prochain bénéficiaire
+
+
+      // Ligne horizontale après chaque bénéficiaire
+      doc.line(20, y + 30, 200, y + 30);  // Ligne horizontale de 20 à 200 (ajuste la longueur selon la largeur de ta page)
+
+      // Ajouter un espacement entre les bénéficiaires
+      y += 35; // Espacement après chaque bénéficiaire, ajustable
     });
 
-    doc.save('beneficiaires.pdf');
-  }
+    doc.save('beneficiaires.pdf');}
+
+
 
   showMessage(message: string, icon: 'success' | 'error') {
     Swal.fire({

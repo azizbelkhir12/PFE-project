@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { QuillModule } from 'ngx-quill';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 import { AppComponent } from './app.component';
 
@@ -32,7 +33,8 @@ import { ContactComponent } from './contact/contact.component';
 import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
 import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
 import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { GestionFeedbackComponent } from './gestion-feedback/gestion-feedback.component';
+
 import { DonRapideComponent } from './don-rapide/don-rapide.component';
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { PaymentFailComponent } from './pages/payment-fail/payment-fail.component';
@@ -64,10 +66,11 @@ import { GestionDesProjetsComponent } from './gestion-des-projets/gestion-des-pr
     GestionNotificationComponent,
     GestionDesRapportsComponent,
     GestionDesArticlesComponent,
+    GestionFeedbackComponent,
     DonRapideComponent,
     PaymentSuccessComponent,
     PaymentFailComponent,
-   
+
     GestionDesProjetsComponent,
   ],
   imports: [

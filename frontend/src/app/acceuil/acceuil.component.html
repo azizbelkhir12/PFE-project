@@ -47,8 +47,8 @@
       </div>
       <div class="col-lg-6">
         <div class="section-header">
-          <p>Learn About Us</p>
-          <h2>Worldwide non-profit charity organization</h2>
+          <p> À propos de nous</p>
+          <h2>Aide humanitaire en Tunisie</h2>
         </div>
         <div class="about-text">
           <p>L’association TUNISIA CHARITY تونس الخيرية est une organisation non gouvernementale à but non lucratif. Elle vise à servir la société en mobilisant les efforts des bienfaiteurs pour résoudre les problèmes de leurs communautés et venir en aide aux personnes dans le besoin. <br>
@@ -65,8 +65,8 @@
 <div class="service">
   <div class="container">
     <div class="section-header text-center">
-      <p>What We Do?</p>
-      <h2>We believe that we can save more lives with you</h2>
+      <p>Nos Actions</p>
+      <h2>Nous croyons que nous pouvons sauver plus de vies avec vous</h2>
     </div>
     <div class="row">
       <div class="col-lg-4 col-md-6" *ngFor="let service of services">
@@ -151,8 +151,8 @@
 <div class="contact">
   <div class="container">
     <div class="section-header text-center">
-      <p>Get In Touch</p>
-      <h2>Contact for any query</h2>
+      <p>À Votre Écoute</p>
+      <h2>Des questions ? Contactez-nous !</h2>
     </div>
     <div class="contact-img">
       <img src="assets/contact.jpg" alt="Contact Image">
@@ -162,23 +162,23 @@
 
       <form [formGroup]="contactForm" (ngSubmit)=" onSubmitForm()">
         <div class="control-group">
-          <input type="text" class="form-control" placeholder="Your Name" formControlName="name" required />
-          <p *ngIf="contactForm.controls['name'].invalid && contactForm.controls['name'].touched" class="text-danger">Please enter your name</p>
+          <input type="text" class="form-control" placeholder="Votre Nom" formControlName="name" required />
+          <p *ngIf="contactForm.controls['name'].invalid && contactForm.controls['name'].touched" class="text-danger">Veuillez entrer votre nom.</p>
         </div>
         <div class="control-group">
-          <input type="email" class="form-control" placeholder="Your Email" formControlName="email" required />
-          <p *ngIf="contactForm.controls['email'].invalid && contactForm.controls['email'].touched" class="text-danger">Please enter a valid email</p>
+          <input type="email" class="form-control" placeholder="Votre Email" formControlName="email" required />
+          <p *ngIf="contactForm.controls['email'].invalid && contactForm.controls['email'].touched" class="text-danger">Veuillez entrer une adresse e-mail valide.</p>
         </div>
         <div class="control-group">
-          <input type="text" class="form-control" placeholder="Subject" formControlName="subject" required />
-          <p *ngIf="contactForm.controls['subject'].invalid && contactForm.controls['subject'].touched" class="text-danger">Please enter a subject</p>
+          <input type="text" class="form-control" placeholder="Sujet" formControlName="subject" required />
+          <p *ngIf="contactForm.controls['subject'].invalid && contactForm.controls['subject'].touched" class="text-danger">Veuillez entrer un sujet</p>
         </div>
         <div class="control-group">
           <textarea class="form-control" placeholder="Message" formControlName="message" required></textarea>
-          <p *ngIf="contactForm.controls['message'].invalid && contactForm.controls['message'].touched" class="text-danger">Message must be at least 10 characters</p>
+          <p *ngIf="contactForm.controls['message'].invalid && contactForm.controls['message'].touched" class="text-danger">Le message doit contenir au moins 10 caractères</p>
         </div>
         <div>
-          <button class="btn btn-custom" type="submit" [disabled]="contactForm.invalid">Send Message</button>
+          <button class="btn btn-custom" type="submit" [disabled]="contactForm.invalid">Envoyer Message</button>
         </div>
       </form>
     </div>

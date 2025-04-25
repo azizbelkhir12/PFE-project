@@ -14,6 +14,7 @@ const donationRoutes  = require('./routes/donationRoutes');
 const rapportRoutes = require('./routes/rapportRoutes');
 const uploads = require('./utils/upload'); 
 
+
 dotenv.config(); 
 const app = express();
 
@@ -38,6 +39,10 @@ app.use('/api/beneficiaries', beneficiaryRoutes);
 app.use('/api/payment', paymentRoutes); 
 app.use('/api/donations', donationRoutes);
 app.use('/api/rapport', rapportRoutes); 
+
+
+
+
 
 
 
