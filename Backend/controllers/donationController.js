@@ -3,7 +3,7 @@ const Donation = require('../models/Donation');
 
 exports.createDonation = async (req, res) => {
   try {
-    const { amount, paymentMethod, guestName, guestEmail, paymentId, status } = req.body;
+    const { amount, paymentMethod, paymentType , guestName, guestEmail, paymentId, status } = req.body;
     const donorId = req.userId || null;
 
     // Check for duplicate paymentId
@@ -15,12 +15,12 @@ exports.createDonation = async (req, res) => {
           message: 'Donation already recorded',
           donation: existingDonation
         });
-      }
+      } 
     }
 
     // Set status based on payment method and verification
     let donationStatus = 'completed'; // Default to completed
-    if (paymentMethod === 'credit_card' && !paymentId) {
+    if ((paymentMethod === 'credit_card' || paymentMethod === 'flouci') && !paymentId) {
       donationStatus = 'pending';
     }
 
@@ -32,6 +32,7 @@ exports.createDonation = async (req, res) => {
     const newDonation = new Donation({
       amount,
       paymentMethod,
+      paymentType, 
       donorId,
       guestName: donorId ? null : guestName,
       guestEmail: donorId ? null : guestEmail,
@@ -51,5 +52,14 @@ exports.createDonation = async (req, res) => {
       success: false,
       message: 'Error creating donation' 
     });
+  }
+};
+
+exports.getAllDonations = async (req, res) => {
+  try {
+    const donations = await Donation.find({});
+    res.status(200).json(donations);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des dons', error });
   }
 };

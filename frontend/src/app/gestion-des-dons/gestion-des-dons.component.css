@@ -53,10 +53,11 @@
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #0056b3; /* ✅ Bleu foncé */
-  width: 40%; /* ✅ Plus large */
-  min-width: 400px; /* ✅ Taille minimum pour éviter un écrasement */
-  transition: all 0.3s ease-in-out;
+  border-left: 5px solid #0056b3;
+  width: auto; 
+  min-width: auto; 
+  display: inline-block;
+  margin: 0 auto; 
 }
 
 /* ✅ Effet au survol */
@@ -66,6 +67,27 @@
 }
 
 /* ✅ Titres des formulaires & tableaux */
+/* Table adjustments */
+.table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+}
+
+/* Column sizing - adjust as needed */
+.table th, .table td {
+  padding: 12px;
+  text-align: left;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Container adjustments */
+.forms-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+}
 .form-card h3,
 .benevoles-table h3 {
   color: #222;

@@ -48,6 +48,10 @@ export class GestionBeneficiairesComponent {
     this.getBeneficiaires();
   }
 
+  private updateStatistics(): void {
+    this.totalBeneficiaires = this.beneficiaries.length;
+  }
+
   afficherFormulaire(formulaire: string) {
     this.formulaireActif = formulaire;
     this.message = '';
@@ -65,6 +69,7 @@ export class GestionBeneficiairesComponent {
     this.beneficiaryService.getBeneficiaires().subscribe({
       next: (response) => {
         this.beneficiaries = response.data.beneficiaries;
+        this.updateStatistics()
       },
       error: (error) => {
         console.error('Erreur lors du chargement des bénéficiaires :', error);
@@ -116,6 +121,7 @@ export class GestionBeneficiairesComponent {
         this.message = 'Bénéficiaire mis à jour avec succès !';
         this.getBeneficiaires();
         this.resetBeneficiaireForm();
+        this.updateStatistics()
       },
       error: (err) => {
         this.message = 'Erreur lors de la mise à jour du bénéficiaire : ' + err.error.message;

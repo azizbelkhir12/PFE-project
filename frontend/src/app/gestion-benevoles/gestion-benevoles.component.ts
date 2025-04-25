@@ -82,10 +82,10 @@ benevole: any;
     this.formulaireActif = type;
   }
 
-  mettreAJourStatistiques() {
-    this.totalBenevoles = this.benevoles.length;
-    this.totalBenevolesActifs = this.benevoles.filter(b => b.status === 'active').length;
-    this.totalBenevolesInactifs = this.benevoles.filter(b => b.status === 'inactive').length;
+  private updateStatistics(): void {
+    this.totalBenevoles = this.volunteers.length;
+    this.totalBenevolesActifs = this.volunteers.filter(v => v.status === 'active').length;
+    this.totalBenevolesInactifs = this.volunteers.filter(v => v.status === 'inactive').length;
   }
 
   getFilteredBenevoles(): Benevole[] {
@@ -382,6 +382,7 @@ deactivateVolunteer(volunteer: Benevole) {
         if (index !== -1) {
           this.volunteers[index].status = newStatus;
         }
+        this.updateStatistics(); 
         this.snackBar.open(`Statut mis à jour avec succès`, 'Fermer', {
           duration: 3000,
         });
@@ -402,7 +403,8 @@ deactivateVolunteer(volunteer: Benevole) {
     this.volunteerService.getVolunteers().subscribe(
       (data: any[]) => {
         this.volunteers = data;
-        this.benevoles = data; // Assurez-vous que benevoles contient aussi les bénévoles récupérés
+        this.benevoles = data; 
+        this.updateStatistics(); 
       },
       (error) => {
         console.error('Error fetching volunteers:', error);

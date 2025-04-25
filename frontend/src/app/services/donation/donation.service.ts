@@ -24,6 +24,7 @@ export class DonationService {
     const payload = {
       amount: data.amount,
       paymentMethod: data.paymentMethod,
+      paymentType: "local",
       guestName: data.guestName || null,
       guestEmail: data.guestEmail || null,
       paymentId: data.paymentId || null,
@@ -31,5 +32,10 @@ export class DonationService {
     };
 
     return this.http.post(`${this.apiUrl}/createDon`, payload);
+  }
+
+
+  getDonations(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/getAllDonations`);
   }
 }

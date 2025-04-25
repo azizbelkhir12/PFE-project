@@ -48,34 +48,37 @@
     <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'don'">
       <div class="form-card">
         <h3>Ajouter un Don</h3>
-        <form #donForm="ngForm" (ngSubmit)="ajouterDon()">
+        <form #donForm="ngForm" >
           <label>Donateur :</label>
-          <input type="text" [(ngModel)]="nouveauDon.donateur" name="donateur" required />
+          <input type="text" [(ngModel)]="nouveauDon.guestName" name="donateur" required />
+
+          <label for="guestEmail">Email</label>
+          <input type="email" id="guestEmail" [(ngModel)]="nouveauDon.guestEmail" name="guestEmail" class="form-control" required />
 
           <label>Montant :</label>
-          <input type="number" [(ngModel)]="nouveauDon.montant" name="montant" required min="1" />
+          <input type="number" [(ngModel)]="nouveauDon.amount" name="montant" required min="1" />
 
           <label>Mode de Paiement :</label>
-          <select [(ngModel)]="nouveauDon.modePaiement" name="modePaiement" required>
-            <option value="Carte">Carte</option>
-            <option value="Virement">Virement</option>
-            <option value="Espèces">Espèces</option>
+          <select [(ngModel)]="nouveauDon.paymentMethod" name="modePaiement" required>
+            <option value="credit_card">Carte</option>
+            <option value="bank_transfer">Virement</option>
+            <option value="cash">Espèces</option>
           </select>
 
           <label>Statut :</label>
-          <select [(ngModel)]="nouveauDon.statut" name="statut" required>
-            <option value="En Attente">En Attente</option>
-            <option value="Confirmé">Confirmé</option>
+          <select [(ngModel)]="nouveauDon.status" name="statut" required>
+            <option value="pending">En Attente</option>
+            <option value="completed">Confirmé</option>
           </select>
 
           <!-- Ajout du champ "Type de Don" -->
           <label>Type de Don :</label>
-          <select [(ngModel)]="nouveauDon.typeDon" name="typeDon" required>
+          <select [(ngModel)]="nouveauDon.paymentType" name="typeDon" required>
             <option value="Local">Local</option>
             <option value="International">International</option>
           </select>
 
-          <button class="btn-blue" type="submit" [disabled]="donForm.invalid">Ajouter le Don</button>
+          <button class="btn-blue" type="submit" [disabled]="donForm.invalid" (click)="ajouterDon()">Ajouter le Don</button>
         </form>
       </div>
     </div>
@@ -84,27 +87,38 @@
     <div class="col-lg-6 col-md-8 col-12" *ngIf="formulaireActif === 'donateurs'">
       <div class="form-card">
         <h3>Liste des Donateurs</h3>
-
+    
         <!-- Barre de recherche -->
         <input type="text" [(ngModel)]="searchDonateurs" placeholder="Rechercher un donateur" class="search-input">
-
+    
         <table #tableDonateurs class="table table-striped">
           <thead>
             <tr>
               <th>Nom</th>
               <th>Email</th>
-              <th>Nombre de Dons</th>
+              <th>Téléphone</th>
+              <th>Adresse</th>
+              <th>Code Postal</th>
+              <th>Statut</th>
+              
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let donateur of filteredDonateurs()">
-              <td>{{ donateur.nom }}</td>
+              <td>{{ donateur.name }}</td>
               <td>{{ donateur.email }}</td>
-              <td>{{ donateur.nombreDons }}</td>
+              <td>{{ donateur.phone }}</td>
+              <td>{{ donateur.address }}</td>
+              <td>{{ donateur.zipCode }}</td>
+              <td>{{ donateur.status }}</td>
+              <td>
+                <img *ngIf="donateur.img" [src]="donateur.img" alt="Photo" class="rounded" width="40" height="40">
+                <span *ngIf="!donateur.img">-</span>
+              </td>
             </tr>
           </tbody>
         </table>
-
+    
         <!-- Boutons pour exporter en PDF et Excel -->
         <div class="ex">
           <button class="ex" (click)="exporterPDF()">Exporter en PDF</button>
@@ -112,6 +126,7 @@
         </div>
       </div>
     </div>
+    
 
     <!-- Section Liste des Dons -->
     <div class="col-lg-6 col-md-8 col-12" *ngIf="formulaireActif === 'liste'">
@@ -121,31 +136,30 @@
         <!-- Barre de recherche -->
         <input type="text" [(ngModel)]="searchDons" placeholder="Rechercher un don" class="search-input">
 
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Donateur</th>
-              <th>Montant</th>
-              <th>Type de Don</th>
-              <th>Mode de Paiement</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let don of filteredDons()">
-              <td>{{ don.donateur }}</td>
-              <td>{{ don.montant }} TND</td>
-              <td>{{ don.typeDon }}</td>
-              <td>{{ don.modePaiement }}</td>
-              <td>{{ don.statut }}</td>
-              <td>
-                <button class="btn-edit" (click)="modifierDon(don)">Modifier</button>
-                <button class="btn-delete" (click)="supprimerDon(don.id)">Supprimer</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- Liste des dons -->
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Donateur</th>
+        <th>Montant</th>
+        <th>Type de Don</th>
+        <th>Mode Paiement</th>
+        <th>Statut</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let don of donsFiltres">
+        <td>{{ don.guestName }}</td>
+        <td>{{ don.amount }} TND</td>
+        <td>{{ don.paymentType }}</td>
+        <td>{{ don.paymentMethod }}</td>
+        <td>{{ don.status }}</td>
+        <td>{{ don.date | date:'dd/MM/yyyy' }}</td>
+        
+      </tr>
+    </tbody>
+  </table>
 
         <!-- Boutons pour exporter en PDF et Excel -->
         <div class="ex">
