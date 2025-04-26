@@ -81,18 +81,18 @@
 .form-toggle-container {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 15px;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .btn-toggle {
-  background-color: #0056b3;
+  background: linear-gradient(135deg, #007bff, #0056b3);
   color: white;
-  padding: 10px 18px;
+  padding: 12px 20px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   transition: all 0.3s ease-in-out;
 }

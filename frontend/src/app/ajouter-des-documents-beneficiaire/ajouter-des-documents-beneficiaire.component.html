@@ -1,0 +1,38 @@
+<div class="document-upload-section">
+  <h2>Ajouter vos documents</h2>
+
+  <!-- Formulaire de téléchargement de documents -->
+  <form [formGroup]="documentForm" (ngSubmit)="onSubmit()">
+
+    <!-- Photo Personnelle -->
+    <div class="upload-field">
+      <label for="personal-photo">Votre photo personnelle</label>
+      <input type="file" id="personal-photo" formControlName="personalPhoto" accept="image/*" (change)="onFileChange($event, 'personalPhoto')" required>
+      <div *ngIf="personalPhotoPreview" class="preview-container">
+        <img [src]="personalPhotoPreview" alt="Aperçu Photo Personnelle">
+      </div>
+    </div>
+
+    <!-- Photo de la Maison -->
+    <div class="upload-field">
+      <label for="house-photo">Photo de votre maison</label>
+      <input type="file" id="house-photo" formControlName="housePhoto" accept="image/*" (change)="onFileChange($event, 'housePhoto')" required>
+      <div *ngIf="housePhotoPreview" class="preview-container">
+        <img [src]="housePhotoPreview" alt="Aperçu Photo de Maison">
+      </div>
+    </div>
+
+    <!-- Bulletin -->
+    <div class="upload-field">
+      <label for="bulletin">Votre bulletin</label>
+      <input type="file" id="bulletin" formControlName="bulletin" accept=".pdf,.jpg,.jpeg,.png" (change)="onFileChange($event, 'bulletin')" required>
+      <div *ngIf="bulletinPreview" class="preview-container">
+        <span>Fichier ajouté : {{ bulletinPreview }}</span>
+      </div>
+    </div>
+
+    <!-- Bouton de soumission -->
+    <button type="submit" [disabled]="documentForm.invalid" class="btn-submit">Soumettre</button>
+  </form>
+</div>
+

@@ -1,0 +1,7 @@
+<div class="notifications-list">
+  <div *ngFor="let notification of notifications" class="notification-item">
+    <h3 class="notification-title">{{ notification.title }}</h3>
+    <p><strong>{{ notification.message }}</strong></p>
+    <small>{{ notification.date | date: 'dd/MM/yyyy' }}</small>
+  </div>
+</div>

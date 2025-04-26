@@ -32,7 +32,7 @@ import { GestionDesDonsComponent } from './gestion-des-dons/gestion-des-dons.com
 import { ContactComponent } from './contact/contact.component';
 import { GestionNotificationComponent } from './gestion-notification/gestion-notification.component';
 import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-rapports.component';
-import { GestionDesArticlesComponent } from './gestion-des-articles/gestion-des-articles.component';
+
 import { GestionFeedbackComponent } from './gestion-feedback/gestion-feedback.component';
 
 import { DonRapideComponent } from './don-rapide/don-rapide.component';
@@ -40,6 +40,12 @@ import { PaymentSuccessComponent } from './pages/payment-success/payment-success
 import { PaymentFailComponent } from './pages/payment-fail/payment-fail.component';
 
 import { GestionDesProjetsComponent } from './gestion-des-projets/gestion-des-projets.component';
+import { VoirDocumentsBeneficiaireComponent } from './voir-documents-beneficiaire/voir-documents-beneficiaire.component';
+import { ModifierInfosBeneficiaireComponent } from './modifier-infos-beneficiaire/modifier-infos-beneficiaire.component';
+import { VoirNotificationsBeneficiaireComponent } from './voir-notifications-beneficiaire/voir-notifications-beneficiaire.component';
+import { AjouterDesDocumentsBeneficiaireComponent } from './ajouter-des-documents-beneficiaire/ajouter-des-documents-beneficiaire.component';
+import { NavBarMembreComponent } from './nav-bar-membre/nav-bar-membre.component';
+import { FooterMembreComponent } from './footer-membre/footer-membre.component';
 
 @NgModule({
   declarations: [
@@ -65,13 +71,19 @@ import { GestionDesProjetsComponent } from './gestion-des-projets/gestion-des-pr
     ContactComponent,
     GestionNotificationComponent,
     GestionDesRapportsComponent,
-    GestionDesArticlesComponent,
+
     GestionFeedbackComponent,
     DonRapideComponent,
     PaymentSuccessComponent,
     PaymentFailComponent,
 
     GestionDesProjetsComponent,
+      VoirDocumentsBeneficiaireComponent,
+      ModifierInfosBeneficiaireComponent,
+      VoirNotificationsBeneficiaireComponent,
+      AjouterDesDocumentsBeneficiaireComponent,
+      NavBarMembreComponent,
+      FooterMembreComponent,
   ],
   imports: [
     BrowserModule,

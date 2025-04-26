@@ -1,1 +1,52 @@
-<h2>Bienvenue sur votre compte Bénéviciére</h2>
+<app-nav-bar-membre></app-nav-bar-membre>
+<div class="dashboard-container">
+  <!-- En-tête compact -->
+  <div class="dashboard-header">
+    <div>
+      <h4>Bienvenue, {{ utilisateur?.nom}}  dans votre Espace 👋</h4>
+    </div>
+
+    <!-- Ajout de l'image de profil avec le bouton de déconnexion -->
+
+  </div>
+
+  <!-- Cartes principales -->
+  <div class="cards-container">
+    <div class="dashboard-card" [class.active]="sectionActive === 'profil'" (click)="afficherSection('profil')">
+      <div class="card-icon-bg">
+        <i class="icon fas fa-user-edit"></i>
+      </div>
+      <h3>Mes informations</h3>
+      <p>Consulter/modifier mon profil</p>
+    </div>
+
+    <div class="dashboard-card" [class.active]="sectionActive === 'notifications'" (click)="afficherSection('notifications')">
+      <div class="card-icon-bg">
+        <i class="icon fas fa-bell"></i>
+      </div>
+      <h3>Notifications</h3>
+      <p>Messages de l'administration</p>
+    </div>
+
+    <div class="dashboard-card" [class.active]="sectionActive === 'documents'" (click)="afficherSection('documents')">
+      <div class="card-icon-bg">
+        <i class="icon fas fa-file-upload"></i>
+      </div>
+      <h3>Documents</h3>
+      <p>Envoyer mes pièces justificatives</p>
+    </div>
+  </div>
+
+  <!-- Section dynamique -->
+  <div class="content-section">
+    <app-modifier-infos-beneficiaire *ngIf="sectionActive === 'profil'"></app-modifier-infos-beneficiaire>
+    <app-voir-notifications-beneficiaire *ngIf="sectionActive === 'notifications'"></app-voir-notifications-beneficiaire>
+    <app-ajouter-des-documents-beneficiaire *ngIf="sectionActive === 'documents'"></app-ajouter-des-documents-beneficiaire>
+  </div>
+</div>
+<app-footer-membre></app-footer-membre>
+
+
+
+
+

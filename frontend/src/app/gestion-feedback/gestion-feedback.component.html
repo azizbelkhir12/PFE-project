@@ -22,14 +22,18 @@
               <th>Email</th>
               <th>Sujet</th>
               <th>Message</th>
+              <th>Actions</th> <!-- ✅ Colonne ajoutée ici -->
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let fb of feedbacks">
+            <tr *ngFor="let fb of feedbacks; let i = index"> <!-- ✅ index ajouté -->
               <td>{{ fb.nom }}</td>
               <td>{{ fb.email }}</td>
               <td>{{ fb.sujet }}</td>
               <td>{{ fb.message }}</td>
+              <td>
+                <button class="btn-supprimer" (click)="supprimerFeedback(i)">Supprimer</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -41,5 +45,6 @@
     </ng-template>
   </div>
 </div>
+
 
 

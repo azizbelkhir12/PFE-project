@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './gestion-feedback.component.css'
 })
 export class GestionFeedbackComponent implements OnInit {
+supprimerFeedback(arg0: any) {
+throw new Error('Method not implemented.');
+}
 
   totalFeedbacks: number = 0;
   feedbacks: any[] = [];
+i: any;
 
   ngOnInit(): void {
     // Simuler des données de feedback pour l'affichage

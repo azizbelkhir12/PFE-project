@@ -6,14 +6,9 @@
   padding: 0;
   margin-bottom: 30px;
   background-color: #284E7B !important; /* Your requested color */
-}
-
-.navbar.nav-sticky {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  transition: 0.5s;
+  display: flex; /* Utilisation de flexbox pour organiser les éléments */
+  justify-content: space-between; /* Espacement entre le logo et les liens */
+  align-items: center; /* Centrer verticalement */
 }
 
 /* Logo Styles */
@@ -25,6 +20,7 @@
   font-weight: 700;
   letter-spacing: 5px;
   text-transform: uppercase;
+  margin-right: 30px; /* Espacement entre le logo et les liens */
 }
 
 .navbar .navbar-brand img {
@@ -83,21 +79,22 @@
   .navbar .navbar-brand img {
       height: 80px;
   }
-  
+
   .navbar-collapse {
       background-color: #1a3a5a;
       padding: 15px;
       margin-top: 15px;
       border-radius: 5px;
   }
-  
+
   .dropdown-menu {
       background-color: transparent !important;
       border: none !important;
   }
-  
+
   .dropdown-item {
       color: white !important;
       padding: 8px 15px !important;
   }
 }
+

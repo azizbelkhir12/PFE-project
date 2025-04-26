@@ -1,0 +1,91 @@
+/* NAVBAR GLOBALE */
+.navbar {
+  background-color: #0056b3; /* Bleu de fond */
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Marque */
+.navbar-brand {
+  color: white;
+  font-weight: bold;
+  font-size: 1.4rem;
+  text-decoration: none;
+  margin-right: 2rem;
+}
+
+/* CONTENEUR DES LIENS */
+.navbar-nav {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1; /* permet aux liens de prendre l'espace et se centrer */
+}
+
+/* Liens de navigation */
+.navbar-nav .nav-link {
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: white; /* Blanc au survol */
+  color: #003366;
+}
+
+.navbar-nav .nav-link.active {
+  background-color: white;
+  color: #003366;
+}
+
+/* IMAGE + BOUTON DÉCONNEXION */
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-left: 2rem;
+}
+
+.header-profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid white;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+}
+
+.header-profile-pic:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+/* BOUTON DE DÉCONNEXION */
+.logout-btn {
+  padding: 8px 16px;
+  background-color:  #0056b3; /* Couleur du bouton */
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+.logout-btn:hover {
+  background-color: #ec4b15;
+  color: white;
+}
+
+

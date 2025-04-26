@@ -16,12 +16,14 @@ export class AcceuilComponent {
   activeTab: string = 'about';
 
   services = [
-    { icon: 'flaticon-diet', title: 'Healthy Food', description: 'Providing nutritious food for those in need.' },
-    { icon: 'flaticon-water', title: 'Pure Water', description: 'Ensuring access to clean and safe drinking water.' },
-    { icon: 'flaticon-healthcare', title: 'Health Care', description: 'Offering medical assistance to improve well-being.' },
-    { icon: 'flaticon-education', title: 'Primary Education', description: 'Supporting education for underprivileged children.' },
-    { icon: 'flaticon-home', title: 'Residence Facilities', description: 'Providing shelter for those without homes.' },
-    { icon: 'flaticon-social-care', title: 'Social Care', description: 'Helping individuals in difficult situations.' }
+    { icon: 'flaticon-diet', title: ' Soutien à lÉducation des Enfants ', description: 'Fournir des fournitures scolaires et du soutien aux enfants orphelins.' },
+    { icon: 'flaticon-water', title: 'Eau Pure', description: 'Assurer l\'accès à de l\'eau potable propre et sûre.' }
+,   { icon: 'flaticon-orphelinat', title: 'Parrainage d\'Enfants', description: 'Trouver des parrains pour soutenir les enfants dans le besoin.' },
+
+{ icon: 'flaticon-poverty', title: 'Lutte contre la pauvreté', description: 'Soutien aux familles précaires avec aide matérielle, éducative et sociale.' }
+,{ icon: 'flaticon-emergency', title: 'Urgence humanitaire', description: 'Assistance immédiate aux victimes de crises avec aide alimentaire, abris et soins.' }
+,{ icon: 'flaticon-social-care', title: 'Aide Sociale', description: 'Aider les personnes en situation difficile.' }
+
   ];
 
   facts = [
@@ -32,7 +34,7 @@ export class AcceuilComponent {
   ];
 
   causes = [
-    { 
+    {
       img: 'assets/img/causes-1.jpg',
       title: 'Food for the Hungry',
       description: 'Providing food to those in need across the globe.',
@@ -40,7 +42,7 @@ export class AcceuilComponent {
       goal: 50000,
       progress: 85
     },
-    { 
+    {
       img: 'assets/img/causes-2.jpg',
       title: 'Clean Water Initiative',
       description: 'Helping communities gain access to clean water.',
@@ -48,7 +50,7 @@ export class AcceuilComponent {
       goal: 60000,
       progress: 75
     },
-    { 
+    {
       img: 'assets/img/causes-3.jpg',
       title: 'Education for All',
       description: 'Providing education to underprivileged children.',
@@ -56,7 +58,7 @@ export class AcceuilComponent {
       goal: 100000,
       progress: 90
     },
-    { 
+    {
       img: 'assets/img/causes-4.jpg',
       title: 'Disaster Relief',
       description: 'Helping victims recover from natural disasters.',
@@ -89,7 +91,7 @@ export class AcceuilComponent {
     });
   }
 
-  ngOnInit() {  
+  ngOnInit() {
     this.scriptsService.initializeScripts();
   }
 

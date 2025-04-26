@@ -1,0 +1,119 @@
+/* Structure principale */
+.dashboard-container {
+  padding: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* En-tête */
+.dashboard-header {
+  display: flex;
+  justify-content: center; /* Centrer horizontalement */
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+/* Conteneur pour l'image de profil et le bouton de déconnexion */
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacement entre l'image de profil et le bouton */
+}
+
+/* Image de profil */
+.header-profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #0056b3;
+  cursor: pointer;
+}
+
+
+
+/* Indicateurs */
+.indicators {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.indicator-card {
+  flex: 1;
+  padding: 0.8rem;
+  background: #f0f4f8;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.9rem;
+}
+
+.indicator-card i {
+  color: #0056b3;
+}
+
+/* Cartes principales */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+h4{justify-content: center;}
+
+.card-icon-bg {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 1rem;
+  background: #e6f0fa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon-bg .icon {
+  color: #0056b3;
+  font-size: 1.5rem;
+}
+
+.dashboard-card h3 {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.dashboard-card p {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Section active */
+.dashboard-card.active {
+  border: 2px solid #0056b3;
+  background-color: #f5f9ff;
+}
+
+/* Section de contenu */
+.content-section {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}

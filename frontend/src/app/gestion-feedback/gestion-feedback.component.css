@@ -13,6 +13,19 @@
   width: 100%;
   gap: 20px; /* ✅ Espacement entre les cartes */
 }
+.btn-supprimer {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.btn-supprimer:hover {
+  background-color: #c0392b;
+}
 
 
 .stats-card {

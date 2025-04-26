@@ -1,0 +1,33 @@
+<app-navbarcompte-admin></app-navbarcompte-admin>
+<app-sidebar-admin></app-sidebar-admin>
+
+<div class="main-container">
+  <h2>Visualisation des documents des bénéficiaires</h2>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="🔍 Rechercher un bénéficiaire..."
+    />
+  </div>
+
+  <div class="cards-wrapper">
+    <div *ngFor="let beneficiaire of beneficiairesFiltres" class="beneficiaire-card">
+      <h3>{{ beneficiaire.nom }}</h3>
+      <div class="documents">
+        <div *ngFor="let doc of beneficiaire.documents" class="doc-item">
+          <i [ngClass]="doc.icone" class="icon-doc" [style.color]="doc.couleur"></i>
+          <span>{{ doc.nom }}</span>
+          <a [href]="doc.url" target="_blank" class="view-link">Voir</a>
+        </div>
+      </div>
+      <button class="btn-download">
+        <i class="fas fa-download"></i> Télécharger tous les documents
+      </button>
+    </div>
+  </div>
+</div>
+
+
+

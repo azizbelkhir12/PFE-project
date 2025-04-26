@@ -91,7 +91,7 @@
 
         <!-- Filtres -->
         <div class="filters">
-          <input type="text" placeholder="Rechercher par nom..." [(ngModel)]="searchTerm" />
+          <input type="text" placeholder="🔍Rechercher par nom..." [(ngModel)]="searchTerm" />
 <select [(ngModel)]="selectedGouvernorat">
   <option value="">Tous les gouvernorats</option>
   <option *ngFor="let gouvernorat of gouvernorats" [value]="gouvernorat">{{ gouvernorat }}</option>
@@ -101,8 +101,8 @@
   <option value="active">Actif</option>
   <option value="inactive">Inactif</option>
 </select>
-<input type="number" placeholder="Filtrer par âge..." [(ngModel)]="selectedAge" />
-<input type="text" placeholder="Filtrer par téléphone..." [(ngModel)]="searchTermTelephone" />
+<input type="number" placeholder="🔍Filtrer par âge..." [(ngModel)]="selectedAge" />
+<input type="text" placeholder="🔍Filtrer par téléphone..." [(ngModel)]="searchTermTelephone" />
 
         </div>
 

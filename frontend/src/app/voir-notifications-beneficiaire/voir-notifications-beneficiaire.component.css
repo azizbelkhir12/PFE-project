@@ -1,0 +1,137 @@
+/* Conteneur principal des notifications */
+.notifications-list {
+  max-width: 600px; /* Réduction de la largeur des notifications */
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  background: linear-gradient(135deg, #f0f4f7, #e1eff7); /* Dégradé doux de fond */
+  border-radius: 20px; /* Coins arrondis plus prononcés */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1); /* Ombre plus douce */
+  overflow: hidden; /* Empêche le débordement des éléments enfants */
+  backdrop-filter: blur(10px); /* Légère flou de fond */
+}
+
+/* Titre de la section Notifications */
+h2 {
+  font-size: 30px; /* Plus grand titre */
+  color: #4a90e2; /* Bleu doux */
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Carte contenant chaque notification */
+.notification-item {
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  background-color: #ffffff;
+  margin-bottom: 1.5rem; /* Espacement plus grand entre les notifications */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-left: 6px solid #4a90e2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+  display: flex; /* Flexbox pour centrer le contenu */
+  flex-direction: column;
+  justify-content: space-between; /* Espacement entre les éléments */
+  align-items: center; /* Centrer horizontalement */
+  text-align: center; /* Assurer que le texte soit centré */
+  background-color: #ffffff;
+  padding: 1.8rem 2.5rem; /* Un peu plus d'espacement pour un effet aéré */
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+}
+
+/* Légère élévation au survol de la notification */
+.notification-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée */
+  background-color: #f8f8f8; /* Légère teinte de fond */
+}
+
+/* Titre de chaque notification */
+.notification-title {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 100%; /* S'assure que le titre occupe toute la largeur */
+}
+
+/* Format du message de la notification */
+.notification-item p {
+  font-size: 17px;
+  color: #555;
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  width: 100%; /* S'assure que le message occupe toute la largeur */
+  font-family: 'Arial', sans-serif; /* Police moderne */
+}
+
+/* Date de la notification */
+.notification-item small {
+  font-size: 14px;
+  color: #777;
+  display: block;
+  margin-top: 1rem;
+  text-align: center; /* Centrer la date */
+  width: 100%; /* S'assure que la date occupe toute la largeur */
+  font-family: 'Arial', sans-serif; /* Police moderne */
+}
+
+/* Bouton d'action de notification */
+.btn-action {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background 0.3s, transform 0.3s;
+  margin-top: 1.5rem;
+  display: inline-block;
+  text-align: center;
+  width: auto;
+  text-transform: uppercase;
+}
+
+/* Effet de survol sur le bouton */
+.btn-action:hover {
+  background-color: #357ab7;
+  transform: translateY(-5px); /* Légère élévation au survol */
+}
+
+/* Bouton désactivé */
+.btn-action:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Responsive - Mobile et Tablette */
+@media (max-width: 768px) {
+  .notifications-list {
+    padding: 1.5rem;
+  }
+
+  h2 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .notification-item {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .btn-action {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 14px 20px;
+    text-align: center;
+  }
+}
