@@ -164,18 +164,16 @@ button:hover {
 .table th {
   background: #0056b3;
   color: white;
-  padding: 14px;
+  padding: 12px;
   text-align: center;
-  font-size: 14px;
-  border-radius: 10px;
 }
 
 .table td {
-  padding: 12px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
   text-align: center;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
+
 
 .table td:last-child {
   width: 120px;

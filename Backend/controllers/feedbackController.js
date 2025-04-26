@@ -18,3 +18,11 @@ exports.submitFeedbackForm = async (req, res) => {
   }
 };
 
+exports.getFeedbacks = async (req, res) => {
+  try {
+    const Feedbacks = await Contact.find({});
+    res.status(200).json(Feedbacks);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des Feedbacks', error });
+  }
+};

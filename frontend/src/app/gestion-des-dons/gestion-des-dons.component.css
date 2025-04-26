@@ -75,10 +75,17 @@
 }
 
 /* Column sizing - adjust as needed */
-.table th, .table td {
+.table th {
+  background: white;
+  color: white;
   padding: 12px;
-  text-align: left;
-  white-space: nowrap; /* Prevent text wrapping */
+  text-align: center;
+}
+
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
 }
 
 /* Container adjustments */

@@ -32,7 +32,7 @@ connectDB();
 app.use('/', routes);
 app.use('/api/donors', donorRoutes);
 app.use('/api/auth', authRoutes);
-app.use("/api/contact", feedbackRoutes);
+app.use("/api/feedback", feedbackRoutes);
 app.use("/api/demande", demanderRoutes);
 app.use("/api/volunteers", volunteerRoutes);
 app.use('/api/beneficiaries', beneficiaryRoutes);
