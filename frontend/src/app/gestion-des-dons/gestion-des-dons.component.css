@@ -54,10 +54,10 @@
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   border-left: 5px solid #0056b3;
-  width: auto; 
-  min-width: auto; 
+  width: auto;
+  min-width: auto;
   display: inline-block;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 /* ✅ Effet au survol */
@@ -183,32 +183,32 @@ button:hover {
 }
 
 /* ✅ Design du tableau */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* ✅ Entêtes */
 .table th {
   background: #0056b3;
   color: white;
-  padding: 14px;
-  text-align: center;
-  font-size: 14px;
-  border-radius: 10px;
-}
-
-/* ✅ Cellules */
-.table td {
   padding: 12px;
   text-align: center;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ Effet au survol des lignes */
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
 .table tr:hover {
-  background: rgba(0, 123, 255, 0.1);
+  background-color: #f5f5f5;
 }
 
 /* ✅ Boutons d’action modernisés */
