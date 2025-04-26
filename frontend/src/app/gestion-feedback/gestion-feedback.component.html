@@ -26,10 +26,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let fb of feedbacks; let i = index"> <!-- ✅ index ajouté -->
-              <td>{{ fb.nom }}</td>
+            <tr *ngFor="let fb of feedbacks">
+              <td>{{ fb.name }}</td>
               <td>{{ fb.email }}</td>
-              <td>{{ fb.sujet }}</td>
+              <td>{{ fb.subject }}</td>
               <td>{{ fb.message }}</td>
               <td>
                 <button class="btn-supprimer" (click)="supprimerFeedback(i)">Supprimer</button>

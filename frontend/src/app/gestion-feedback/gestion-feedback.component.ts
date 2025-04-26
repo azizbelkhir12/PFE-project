@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ContactService } from '../services/contact/contact.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-feedback',
@@ -15,22 +17,34 @@ throw new Error('Method not implemented.');
   feedbacks: any[] = [];
 i: any;
 
-  ngOnInit(): void {
-    // Simuler des données de feedback pour l'affichage
-    this.feedbacks = [
-      {
-        nom: 'Jean Dupont',
-        email: 'jean.dupont@example.com',
-        sujet: 'Problème de connexion',
-        message: 'Je n’arrive pas à me connecter à mon compte.'
-      },
-      {
-        nom: 'Marie Curie',
-        email: 'marie.curie@example.com',
-        sujet: 'Suggestion',
-        message: 'Ce serait bien d’ajouter un mode sombre.'
-      }
-    ];
+  constructor(private contactService : ContactService) {}
 
-    this.totalFeedbacks = this.feedbacks.length;}}
+  ngOnInit(): void {
+    
+    this.feedbacks = [];
+    this.chargerFeedbacks();
+    this.totalFeedbacks = this.feedbacks.length;
+  }
+
+  chargerFeedbacks(): void {
+    this.contactService.getContactForm().subscribe({
+      next: (response: any[]) => {
+        this.feedbacks = response;
+        this.totalFeedbacks = this.feedbacks.length;
+        
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des Feedbacks:', error);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Impossible de récupérer les Feedbacks',
+          showConfirmButton: true
+        });
+      }
+    });
+  }
+  
+  }
 

@@ -107,10 +107,10 @@
 .table th {
   background: #0056b3;
   color: white;
-  padding: 14px;
+  padding: 12px;
   text-align: center;
+  font-weight: bold;
   font-size: 14px;
-  border-radius: 10px;
 }
 
 /* ✅ Cellules du tableau */
@@ -265,7 +265,7 @@ button:hover {
 
 .btn-export {
   background: linear-gradient(135deg, #ffc107, #e0a800);
-  color: #212529;
+  color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 8px;

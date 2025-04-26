@@ -2,7 +2,7 @@ const Donor = require('../models/Donor');
 const { validationResult } = require('express-validator');
 
 // Register a new donor
-const registerDonor = async (req, res) => {
+ exports.registerDonor = async (req, res) => {
   
 
   const { name, email, password, address, zipCode, phone, status, img  } = req.body;
@@ -26,9 +26,7 @@ const registerDonor = async (req, res) => {
       img,
     });
 
-    if (!isGoogleAuth) {
-      donorData.password = password;
-    }
+   
 
     // Save the donor to the database
     await donor.save();
@@ -41,5 +39,14 @@ const registerDonor = async (req, res) => {
 };
 
 
+exports.getAllDonors = async (req, res) => {
+  try {
+    const donors = await Donor.find({});
+    res.status(200).json(donors);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des donateurs', error });
+  }
+};
 
-module.exports = { registerDonor}; // Export the function with the correct name
+
+

@@ -5,5 +5,6 @@ const donationController = require('../controllers/donationController');
 
 
 router.post('/createDon', donationController.createDonation);
+router.get('/getAllDonations', donationController.getAllDonations);
 
 module.exports = router;

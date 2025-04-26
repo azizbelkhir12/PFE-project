@@ -1,3 +1,4 @@
+// donationModel.js
 const mongoose = require('mongoose');
 
 const DonationSchema = new mongoose.Schema({
@@ -10,13 +11,18 @@ const DonationSchema = new mongoose.Schema({
     enum: ['credit_card', 'bank_transfer', 'cash', 'flouci'],  
     required: true 
   },
+  paymentType: {
+    type: String,
+    enum: ['local', 'international'],
+    required: true
+  },
   status: {
     type: String,
     enum: ['pending', 'completed', 'failed'],
     default: 'pending'
   },
-  paymentId: { type: String, unique: true, sparse: true, default: null }, // Store Flouci payment reference
-  paymentDetails: { type: Object, default: null }, // Store full payment verification details
+  paymentId: { type: String, unique: true, sparse: true, default: null },
+  paymentDetails: { type: Object, default: null },
   date: { type: Date, default: Date.now },
 }, { timestamps: true });
 

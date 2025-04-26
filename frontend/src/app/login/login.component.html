@@ -4,10 +4,11 @@
   <div class="container">
     <div class="row align-items-center">
       <!-- Tabs -->
-      <div class="about-tab"></div>
       <ul class="nav nav-pills nav-justified">
         <li class="nav-item" *ngFor="let tab of tabs; let i = index">
-          <a class="nav-link" [ngClass]="{ active: activeTab === i }" (click)="setActiveTab(i)"> {{ tab.title }} </a>
+          <a class="nav-link" [ngClass]="{ active: activeTab === i }" (click)="setActiveTab(i)">
+            {{ tab.title }}
+          </a>
         </li>
       </ul>
 
@@ -15,31 +16,20 @@
       <div class="tab-content">
         <ng-container *ngFor="let tab of tabs; let i = index">
           <div *ngIf="activeTab === i" class="container tab-pane" [ngClass]="{ active: activeTab === i, fade: activeTab !== i }">
-            
+
             <!-- Volunteer Login Tab -->
-            <ng-container *ngIf="i === 0">
+            <ng-container *ngIf="tab.userType === 'volunteer'">
               <h3 class="login-title">Espace de connexion des bénévoles</h3>
-              
               <section class="login-section">
                 <div class="row login-container">
-                  <!-- Form Column -->
                   <div class="col-md-6 form-column">
                     <form #loginForm="ngForm" (ngSubmit)="submitLogin()" class="login-form">
-                      <input type="email" placeholder="Entrez votre adresse e-mail" class="form-input" 
-                             [(ngModel)]="loginData.email" name="email" required/>
-                      
-                      <input type="password" placeholder="Mot de passe" class="form-input" 
-                             [(ngModel)]="loginData.password" name="password" required/>
-                      
-                      <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">
-                        Se connecter
-                      </button>
-                      
+                      <input type="email" placeholder="Entrez votre adresse e-mail" class="form-input" [(ngModel)]="loginData.email" name="email" required />
+                      <input type="password" placeholder="Mot de passe" class="form-input" [(ngModel)]="loginData.password" name="password" required />
+                      <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">Se connecter</button>
                       <div class="error-message">{{ loginErrorMsg }}</div>
                     </form>
                   </div>
-                  
-                  <!-- Info Column -->
                   <div class="col-md-6 info-column">
                     <div class="login-info">
                       <h4>Nouveau sur notre site ?</h4>
@@ -51,67 +41,19 @@
               </section>
             </ng-container>
 
-                    <!-- Mission Tab -->
-                    <ng-container *ngSwitchCase="1">
-
-                      <h3 style="text-align: center; font-size: 40px;">Espace de connexion des donateurs</h3>
-
-                      <!-- Form 2: Donation Form -->
-                      <section class="contact login_box_area" id="contact" style="margin-top: 50px;">
-                        <div class="row container align-self-center" style="padding-top: 60px;">
-                          <form #donationForm="ngForm" (ngSubmit)="submitLogin()" class="col-lg-6">
-                            <input type="email" placeholder="Entrer votre Email" class="box styled-input" [(ngModel)]="loginData.email" name="fullName" required/>
-
-                            <input type="password" placeholder="Entrer mot de passe " class="box styled-input" [(ngModel)]="loginData.password" name="amount" required />
-
-                            <button type="submit" class="btn-Flower" [disabled]="donationForm.invalid" (click)="submitLogin()">
-                              Se Connecter
-                            </button>
-
-                            <div style="padding-top: 10px;">
-                              <span class="errorMsg">{{ loginErrorMsg }}</span>
-                            </div>
-                          </form>
-
-                          <!-- Donation Message -->
-                          <div class="image col-lg-5">
-                            <div class="login_box_img">
-                              <div class="hover">
-                                <h4>Faites la différence !</h4>
-                                <p>
-                                  Votre don peut nous aider à fournir des ressources essentielles à ceux qui en ont besoin. Chaque contribution nous rapproche de la réalisation de notre mission
-                                </p>
-                                <span><a routerLink="/register" class="btn-Flower">Signup</a></span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </section>
-                    </ng-container>
             <!-- Donor Login Tab -->
-            <ng-container *ngIf="i === 1">
+            <ng-container *ngIf="tab.userType === 'donor'">
               <h3 class="login-title">Espace de connexion des donateurs</h3>
-              
               <section class="login-section">
                 <div class="row login-container">
-                  <!-- Form Column -->
                   <div class="col-md-6 form-column">
                     <form #donationForm="ngForm" (ngSubmit)="submitLogin()" class="login-form">
-                      <input type="email" placeholder="Entrer votre Email" class="form-input" 
-                             [(ngModel)]="loginData.email" name="fullName" required/>
-                      
-                      <input type="password" placeholder="Entrer mot de passe" class="form-input" 
-                             [(ngModel)]="loginData.password" name="amount" required/>
-                      
-                      <button type="submit" class="submit-btn" [disabled]="donationForm.invalid">
-                        Se connecter
-                      </button>
-                      
+                      <input type="email" placeholder="Entrer votre Email" class="form-input" [(ngModel)]="loginData.email" name="email" required />
+                      <input type="password" placeholder="Entrer mot de passe" class="form-input" [(ngModel)]="loginData.password" name="password" required />
+                      <button type="submit" class="submit-btn" [disabled]="donationForm.invalid">Se connecter</button>
                       <div class="error-message">{{ loginErrorMsg }}</div>
                     </form>
                   </div>
-                  
-                  <!-- Info Column -->
                   <div class="col-md-6 info-column">
                     <div class="login-info">
                       <h4>Faites la différence !</h4>
@@ -124,29 +66,18 @@
             </ng-container>
 
             <!-- Beneficiary Login Tab -->
-            <ng-container *ngIf="i === 2">
+            <ng-container *ngIf="tab.userType === 'beneficiary'">
               <h3 class="login-title">Espace de connexion des bénéficiaires</h3>
-              
               <section class="login-section">
                 <div class="row login-container">
-                  <!-- Form Column -->
                   <div class="col-md-6 form-column">
                     <form #contactForm="ngForm" (ngSubmit)="submitLogin()" class="login-form">
-                      <input type="text" placeholder="Votre email" class="form-input" 
-                             [(ngModel)]="loginData.email" name="email" required/>
-                      
-                      <input type="text" placeholder="Entrer votre mot de passe" class="form-input" 
-                             [(ngModel)]="loginData.password" name="password" required/>
-                      
-                      <button type="submit" class="submit-btn" [disabled]="contactForm.invalid">
-                        Connexion
-                      </button>
-                      
+                      <input type="email" placeholder="Votre email" class="form-input" [(ngModel)]="loginData.email" name="email" required />
+                      <input type="password" placeholder="Entrer votre mot de passe" class="form-input" [(ngModel)]="loginData.password" name="password" required />
+                      <button type="submit" class="submit-btn" [disabled]="contactForm.invalid">Connexion</button>
                       <div class="error-message">{{ loginErrorMsg }}</div>
                     </form>
                   </div>
-                  
-                  <!-- Info Column -->
                   <div class="col-md-6 info-column">
                     <div class="login-info">
                       <h4>Besoin d'aide ?</h4>
@@ -156,6 +87,7 @@
                 </div>
               </section>
             </ng-container>
+
           </div>
         </ng-container>
       </div>

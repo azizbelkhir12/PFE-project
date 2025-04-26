@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
-import { jsPDF } from 'jspdf';  // Importation de jsPDF
+import { Component, OnInit } from '@angular/core';
+import { jsPDF } from 'jspdf'; 
+import { RapportService } from '../services/rapport/rapport.service';
+import { HttpClient } from '@angular/common/http';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-gestion-des-rapports',
@@ -7,149 +11,222 @@ import { jsPDF } from 'jspdf';  // Importation de jsPDF
   standalone: false,
   styleUrls: ['./gestion-des-rapports.component.css']
 })
-export class GestionDesRapportsComponent {
-  afficherFormulaire = true;
+export class GestionDesRapportsComponent implements OnInit{
+  afficherFormulaire = false;
+  totalRapports = 0;
+  rapportsPublies = 0;
+  rapportsFinanciers = 0;
+  rapportsLitteraires = 0;
 
   rapport = {
     titre: '',
     type: '',
-    fichier: null as File | null,
-    nomFichier: ''
+    file: null as File | null
   };
 
-  message: string = '';
-  typeMessage: 'success' | 'error' = 'success';
-
-  rapports = [
-    {
-      titre: 'Rapport Janvier',
-      type: 'financier',
-      date: '2024-01-10',
-      publie: true,
-      nomFichier: 'rapport-janvier.pdf',
-      fichier: new File(["Rapport contenu"], 'rapport-janvier.pdf', { type: 'application/pdf' }) // Exemple de fichier
-    },
-    {
-      titre: 'Rapport Février',
-      type: 'litteraire',
-      date: '2024-02-14',
-      publie: false,
-      nomFichier: 'rapport-fevrier.pdf',
-      fichier: new File(["Rapport contenu"], 'rapport-fevrier.pdf', { type: 'application/pdf' })
-    },
-    {
-      titre: 'Analyse Q1',
-      type: 'financier',
-      date: '2024-03-21',
-      publie: true,
-      nomFichier: 'analyse-q1.pdf',
-      fichier: new File(["Rapport contenu"], 'analyse-q1.pdf', { type: 'application/pdf' })
-    },
-    {
-      titre: 'Rapport Mars',
-      type: 'litteraire',
-      date: '2024-03-29',
-      publie: false,
-      nomFichier: 'rapport-mars.pdf',
-      fichier: new File(["Rapport contenu"], 'rapport-mars.pdf', { type: 'application/pdf' })
-    }
-  ];
-
+  rapports: any[] = [];
+  filteredRapports: any[] = [];
   rechercheTitre = '';
   rechercheDate = '';
+  isLoading = false;
 
-  // Gère la sélection du fichier
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.rapport.fichier = file;
-      this.rapport.nomFichier = file.name;
-    }
+  constructor(private rapportService: RapportService, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.chargerRapports();
   }
 
-  // Ajout d’un nouveau rapport avec vérification
-  ajouterRapport() {
-    if (!this.rapport.titre || !this.rapport.type || !this.rapport.fichier) {
-      this.afficherMessage('❌ Veuillez remplir tous les champs', 'error');
-      return;
-    }
-
-    const nouveauRapport = {
-      titre: this.rapport.titre,
-      type: this.rapport.type,
-      date: new Date().toISOString().split('T')[0],
-      publie: false,
-      nomFichier: this.rapport.nomFichier,
-      fichier: this.rapport.fichier
-    };
-
-    this.rapports.push(nouveauRapport);
-    this.rapport = { titre: '', type: '', fichier: null, nomFichier: '' };
-
-    this.afficherMessage('✅ Rapport ajouté avec succès !', 'success');
-  }
-
-  // Supprime un rapport
-  supprimerRapport(r: any) {
-    this.rapports = this.rapports.filter(item => item !== r);
-    this.afficherMessage('🗑️ Rapport supprimé', 'success');
-  }
-
-  // Publie un rapport
-  publierRapport(r: any) {
-    r.publie = true;
-    this.afficherMessage('📢 Rapport publié avec succès !', 'success');
-  }
-
-  // Filtre les rapports selon la recherche
-  getRapportsFiltres() {
-    return this.rapports.filter(r => {
-      const matchTitre = this.rechercheTitre
-        ? r.titre.toLowerCase().includes(this.rechercheTitre.toLowerCase())
-        : true;
-      const matchDate = this.rechercheDate ? r.date === this.rechercheDate : true;
-      return matchTitre && matchDate;
+  chargerRapports(): void {
+    this.isLoading = true;
+    this.rapportService.getRapports().subscribe({
+      next: (data: any) => {
+        this.rapports = data;
+        this.filteredRapports = [...this.rapports];
+        this.calculerStatistiques();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des rapports:', error);
+        this.showErrorAlert('Erreur lors du chargement des rapports');
+        this.isLoading = false;
+      }
     });
   }
 
-  // Affiche un message temporaire
-  afficherMessage(texte: string, type: 'success' | 'error') {
-    this.message = texte;
-    this.typeMessage = type;
-    setTimeout(() => {
-      this.message = '';
-    }, 3000);
+  calculerStatistiques(): void {
+    this.totalRapports = this.filteredRapports.length;
+    this.rapportsPublies = this.filteredRapports.filter(r => r.publie).length;
+    this.rapportsFinanciers = this.filteredRapports.filter(r => r.type === 'financier').length;
+    this.rapportsLitteraires = this.filteredRapports.filter(r => r.type === 'litteraire').length;
   }
 
-  // Fonction modifiée pour télécharger un fichier PDF
-  telechargerRapport(r: any) {
-    const lien = document.createElement('a');
-
-    // Si un fichier est bien sélectionné et que c'est un fichier PDF
-    if (r.fichier && r.fichier.name.endsWith('.pdf')) {
-      const fileURL = URL.createObjectURL(r.fichier); // Crée une URL pour le fichier téléchargé
-      lien.href = fileURL;
-      lien.download = r.nomFichier;  // Utilise le nom du fichier pour le téléchargement
-      lien.click();  // Lance le téléchargement
-    } else {
-      this.afficherMessage(' Ce fichier ne peut pas être exporté (non-PDF).', 'error');
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.rapport.file = file;
     }
   }
 
-  // Statistiques dynamiques
-  get totalRapports() {
-    return this.rapports.length;
+  ajouterRapport(): void {
+    if (!this.rapport.titre || !this.rapport.type || !this.rapport.file) {
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Champs manquants',
+        text: 'Veuillez remplir tous les champs',
+        showConfirmButton: true
+      });
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('titre', this.rapport.titre);
+    formData.append('type', this.rapport.type);
+    formData.append('file', this.rapport.file);
+  
+    this.rapportService.ajouterRapport(formData).subscribe({
+      next: (response: any) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Rapport ajouté avec succès',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.rapport = { titre: '', type: '', file: null };
+        this.chargerRapports();
+      },
+      error: (error) => {
+        console.error('Erreur lors de l\'ajout du rapport:', error);
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de l\'ajout du rapport',
+          showConfirmButton: true
+        });
+      }
+    });
+  }
+  
+
+  supprimerRapport(id: string): void {
+    Swal.fire({
+      title: 'Confirmation',
+      text: 'Voulez-vous vraiment supprimer ce rapport? Cette action est irréversible.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimer',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.rapportService.supprimerRapport(id).subscribe({
+          next: () => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Suppression réussie',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.chargerRapports();
+          },
+          error: (error) => {
+            console.error('Erreur:', error);
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Erreur',
+              text: 'La suppression a échoué',
+              showConfirmButton: true
+            });
+          }
+        });
+        
+      }
+    });
   }
 
-  get rapportsPublies() {
-    return this.rapports.filter(r => r.publie).length;
+  telechargerRapport(id: string): void {
+    this.rapportService.telechargerRapport(id).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        
+        const rapport = this.rapports.find(r => r._id === id);
+        const fileName = rapport?.file?.originalName || `rapport_${id}`;
+        
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        
+        this.showSuccessAlert('Téléchargement commencé');
+      },
+      error: (error) => {
+        console.error('Erreur lors du téléchargement:', error);
+        this.showErrorAlert('Erreur lors du téléchargement du rapport');
+      }
+    });
   }
 
-  get rapportsFinanciers() {
-    return this.rapports.filter(r => r.type === 'financier').length;
+  getRapportsFiltres(): any[] {
+    let filtered = [...this.rapports];
+    
+    if (this.rechercheTitre) {
+      filtered = filtered.filter(r => 
+        r.titre.toLowerCase().includes(this.rechercheTitre.toLowerCase())
+      );
+    }
+    
+    if (this.rechercheDate) {
+      const searchDate = new Date(this.rechercheDate).toISOString().split('T')[0];
+      filtered = filtered.filter(r => {
+        const rapportDate = r.createdAt 
+          ? new Date(r.createdAt).toISOString().split('T')[0] 
+          : new Date(r.date).toISOString().split('T')[0];
+        return rapportDate === searchDate;
+      });
+    }
+    
+    this.filteredRapports = filtered;
+    this.calculerStatistiques();
+    
+    return this.filteredRapports;
   }
 
-  get rapportsLitteraires() {
-    return this.rapports.filter(r => r.type === 'litteraire').length;
+  // SweetAlert helper methods
+  private showSuccessAlert(message: string): void {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
+  private showErrorAlert(message: string): void {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'error',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
+  private showWarningAlert(message: string): void {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'warning',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000
+    });
   }
 }
