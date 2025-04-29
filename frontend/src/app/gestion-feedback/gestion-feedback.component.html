@@ -22,7 +22,7 @@
               <th>Email</th>
               <th>Sujet</th>
               <th>Message</th>
-              <th>Actions</th> <!-- ✅ Colonne ajoutée ici -->
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -32,7 +32,7 @@
               <td>{{ fb.subject }}</td>
               <td>{{ fb.message }}</td>
               <td>
-                <button class="btn-supprimer" (click)="supprimerFeedback(i)">Supprimer</button>
+                <button class="btn-supprimer" (click)="supprimerFeedback(fb._id)">Supprimer</button>
               </td>
             </tr>
           </tbody>

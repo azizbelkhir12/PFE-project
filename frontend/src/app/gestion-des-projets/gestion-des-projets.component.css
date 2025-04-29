@@ -318,6 +318,50 @@ button:hover {
   transform: scale(1.2);
 }
 
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5); /* dark background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+  max-height: 90vh; /* NEW: limit height */
+  overflow-y: auto; /* NEW: make scroll if content is too tall */
+  position: relative;
+}
+
+
+
 /* ✅ RESPONSIVE DESIGN */
 @media (max-width: 992px) {
   .main-container {

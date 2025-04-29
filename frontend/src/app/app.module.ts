@@ -7,6 +7,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { QuillModule } from 'ngx-quill';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+
 
 import { AppComponent } from './app.component';
 
@@ -46,6 +50,7 @@ import { VoirNotificationsBeneficiaireComponent } from './voir-notifications-ben
 import { AjouterDesDocumentsBeneficiaireComponent } from './ajouter-des-documents-beneficiaire/ajouter-des-documents-beneficiaire.component';
 import { NavBarMembreComponent } from './nav-bar-membre/nav-bar-membre.component';
 import { FooterMembreComponent } from './footer-membre/footer-membre.component';
+import { RapportsComponent } from './rapports/rapports.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +89,7 @@ import { FooterMembreComponent } from './footer-membre/footer-membre.component';
       AjouterDesDocumentsBeneficiaireComponent,
       NavBarMembreComponent,
       FooterMembreComponent,
+      RapportsComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,7 +100,10 @@ import { FooterMembreComponent } from './footer-membre/footer-membre.component';
     HttpClientModule,
     GoogleMapsModule,
     QuillModule.forRoot(),
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    MatTabsModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

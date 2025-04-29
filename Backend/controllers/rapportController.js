@@ -50,7 +50,7 @@ exports.ajouterRapport = async (req, res) => {
 
 exports.getRapports = async (req, res) => {
   try {
-    const rapports = await Rapport.find({}, 'titre type date'); // Only return these fields
+    const rapports = await Rapport.find({}, 'titre type date file.originalName');
     res.status(200).json(rapports);
   } catch (error) {
     console.error('Erreur récupération rapports:', error);
@@ -61,6 +61,7 @@ exports.getRapports = async (req, res) => {
     });
   }
 };
+
 
 exports.supprimerRapport = async (req, res) => {
   try {

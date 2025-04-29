@@ -9,9 +9,7 @@ import Swal from 'sweetalert2';
   styleUrl: './gestion-feedback.component.css'
 })
 export class GestionFeedbackComponent implements OnInit {
-supprimerFeedback(arg0: any) {
-throw new Error('Method not implemented.');
-}
+
 
   totalFeedbacks: number = 0;
   feedbacks: any[] = [];
@@ -45,6 +43,52 @@ i: any;
       }
     });
   }
+
+  supprimerFeedback(id: string): void {
+    if (!id) {
+      console.error('ID is undefined or null');
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Erreur',
+        text: 'ID du Feedback manquant',
+        showConfirmButton: true
+      });
+      return;
+    }
   
+    Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: "Vous ne pourrez pas revenir en arrière !",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimer !'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.contactService.deleteContactForm(id).subscribe({
+          next: () => {
+            Swal.fire(
+              'Supprimé !',
+              'Le Feedback a été supprimé.',
+              'success'
+            );
+            this.chargerFeedbacks();
+          },
+          error: (error) => {
+            console.error('Erreur lors de la suppression du Feedback:', error);
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Impossible de supprimer le Feedback: ' + error.message,
+              showConfirmButton: true
+            });
+          }
+        });
+      }
+    });
   }
 
+}

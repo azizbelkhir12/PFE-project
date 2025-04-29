@@ -24,6 +24,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { AdminGuard } from './guard/admin.guard';
 import { GestionFeedbackComponent } from './gestion-feedback/gestion-feedback.component';
 import { VoirDocumentsBeneficiaireComponent } from './voir-documents-beneficiaire/voir-documents-beneficiaire.component';
+import { RapportsComponent } from './rapports/rapports.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'payment-success', component: PaymentSuccessComponent },
   { path: 'payment-fail', component: PaymentFailComponent },
+  { path: 'rapports', component: RapportsComponent,  },
 
 
 

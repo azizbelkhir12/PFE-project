@@ -26,3 +26,17 @@ exports.getFeedbacks = async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la récupération des Feedbacks', error });
   }
 };
+
+
+exports.deleteFeedback = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const feedback = await Contact.findByIdAndDelete(id);
+    if (!feedback) {
+      return res.status(404).json({ message: 'Feedback non trouvé' });
+    }
+    res.status(200).json({ message: 'Feedback supprimé avec succès' });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la suppression du Feedback', error });
+  }
+}

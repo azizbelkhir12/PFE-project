@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProjetService } from '../services/projet/projet.service';
 
 @Component({
   selector: 'app-gestion-des-projets',
@@ -8,176 +9,177 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionDesProjetsComponent implements OnInit {
 
-  formulaireActif: 'ajout' | 'liste' = 'ajout';
+  formulaireActif: 'ajout' | 'liste' = 'liste';
   rechercheTitre = '';
   rechercheDate: string | null = null;
   rechercheStatut = '';
+  enEdition: boolean = false; 
 
   totalProjets = 0;
   totalProjetsEnCours = 0;
   totalProjetsTermines = 0;
   totalProjetsEnRetard = 0;
 
-  enEdition = false; // <- pour distinguer ajout vs modification
-
-  projets: any[] = [
-    {
-      id: 1,
-      titre: 'Collecte pour la rentrée scolaire',
-      description: 'Collecte de fournitures scolaires pour les enfants.',
-      dateDebut: '2025-08-01',
-      dateFin: '2025-08-15',
-      date: '2025-08-01 - 2025-08-15',
-      statut: 'en_cours',
-      montantSoutenu: 500,
-      imageUrl: 'https://via.placeholder.com/150'
-    },
-    {
-      id: 2,
-      titre: 'Fête de l’Aïd',
-      description: 'Organiser une fête pour les enfants défavorisés.',
-      dateDebut: '2025-07-01',
-      dateFin: '2025-07-07',
-      date: '2025-07-01 - 2025-07-07',
-      statut: 'termine',
-      montantSoutenu: 300,
-      imageUrl: 'https://via.placeholder.com/150'
-    },
-    {
-      id: 3,
-      titre: 'Aide alimentaire',
-      description: 'Distribution de nourriture aux familles nécessiteuses.',
-      dateDebut: '2025-09-01',
-      dateFin: '2025-09-05',
-      date: '2025-09-01 - 2025-09-05',
-      statut: 'en_retard',
-      montantSoutenu: 200,
-      imageUrl: 'https://via.placeholder.com/150'
-    }
-  ];
-
-  prochainId = 4;
+  projets: any[] = [];
+  selectedImage: File | null = null;
+  
+  // Modal properties
+  showModal = false;
+  projetEnEdition: any = null;
+  selectedImageForEdit: File | null = null;
 
   nouveauProjet = {
-    id: 0,
     titre: '',
     description: '',
     dateDebut: '',
     dateFin: '',
     montantSoutenu: 0,
-    imageUrl: '',
-    statut: 'en_cours',
-    date: ''
+    statut: 'en_cours'
   };
 
-  projetModifie: any;
+  constructor(private projectService: ProjetService) { }
 
   ngOnInit(): void {
-    this.rafraichirStatistiques();
+    this.chargerProjets();
+  }
+
+  chargerProjets(): void {
+    this.projectService.getProjects().subscribe({
+      next: (projets) => {
+        this.projets = projets;
+        this.rafraichirStatistiques();
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des projets:', err);
+        alert('Erreur lors du chargement des projets');
+      }
+    });
   }
 
   afficherFormulaire(type: 'ajout' | 'liste') {
     this.formulaireActif = type;
+    if (type === 'ajout') {
+      this.reinitialiserFormulaire();
+    }
   }
 
   onImageChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input?.files?.length) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.nouveauProjet.imageUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
+      this.selectedImage = input.files[0];
     }
   }
 
   onImageChangeModif(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input?.files?.length) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.projetModifie.imageUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
+      this.selectedImageForEdit = input.files[0];
     }
   }
 
   soumettreProjet(): void {
-    if (
-      this.nouveauProjet.titre &&
-      this.nouveauProjet.description &&
-      this.nouveauProjet.dateDebut &&
-      this.nouveauProjet.dateFin &&
-      this.nouveauProjet.montantSoutenu > 0
-    ) {
-      this.nouveauProjet.date = `${this.nouveauProjet.dateDebut} - ${this.nouveauProjet.dateFin}`;
-
-      if (this.enEdition) {
-        const index = this.projets.findIndex(p => p.id === this.nouveauProjet.id);
-        if (index !== -1) {
-          this.projets[index] = { ...this.nouveauProjet };
-          alert(`Le projet "${this.nouveauProjet.titre}" a été modifié avec succès.`);
-        }
-      } else {
-        const nouveau = {
-          ...this.nouveauProjet,
-          id: this.prochainId++
-        };
-        this.projets.push(nouveau);
-        alert('Le projet a été ajouté avec succès !');
-      }
-
-      // Réinitialisation
-      this.nouveauProjet = {
-        id: 0,
-        titre: '',
-        description: '',
-        dateDebut: '',
-        dateFin: '',
-        montantSoutenu: 0,
-        imageUrl: '',
-        statut: 'en_cours',
-        date: ''
-      };
-      this.enEdition = false;
-
-      this.rafraichirStatistiques();
-      this.afficherFormulaire('liste');
-    } else {
-      alert('Veuillez remplir tous les champs correctement.');
+    if (!this.selectedImage) {
+      alert('Veuillez sélectionner une image');
+      return;
     }
+  
+    this.projectService.addProject(this.nouveauProjet, this.selectedImage).subscribe({
+      next: () => {
+        alert('Projet ajouté avec succès');
+        this.reinitialiserFormulaire();
+        this.chargerProjets();
+        this.afficherFormulaire('liste');
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'ajout du projet:', err);
+        alert('Erreur lors de l\'ajout du projet: ' + err.message);
+      }
+    });
+  }
+  
+
+  // Modal functions
+  openEditModal(projet: any): void {
+    this.projetEnEdition = { ...projet };
+    this.selectedImageForEdit = null;
+    this.showModal = true;
   }
 
-  modifierProjet(projet: any): void {
-    this.nouveauProjet = { ...projet };
-    this.enEdition = true;
-    this.afficherFormulaire('ajout');
+  closeModal(): void {
+    this.showModal = false;
+  }
+
+  modifierProjet(): void {
+    this.projectService.updateProject(
+      this.projetEnEdition._id, 
+      this.projetEnEdition, 
+      this.selectedImageForEdit || undefined
+    ).subscribe({
+      next: () => {
+        alert('Projet modifié avec succès');
+        this.closeModal();
+        this.chargerProjets();
+      },
+      error: (err) => {
+        console.error('Erreur lors de la modification:', err);
+        alert('Erreur lors de la modification: ' + err.message);
+      }
+    });
   }
 
   supprimerProjet(projet: any): void {
-    const index = this.projets.findIndex(p => p.id === projet.id);
-    if (index > -1) {
-      this.projets.splice(index, 1);
-      this.rafraichirStatistiques();
-      alert(`Projet "${projet.titre}" supprimé`);
+    if (confirm(`Êtes-vous sûr de vouloir supprimer le projet "${projet.titre}"?`)) {
+      this.projectService.deleteProject(projet._id).subscribe({
+        next: () => {
+          alert('Projet supprimé avec succès');
+          this.chargerProjets();
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression du projet:', err);
+          alert('Erreur lors de la suppression du projet');
+        }
+      });
     }
   }
 
   terminerProjet(projet: any): void {
-    projet.statut = 'termine';
-    this.rafraichirStatistiques();
-    alert(`Le projet "${projet.titre}" a été marqué comme terminé`);
+    const updatedProjet = { ...projet, statut: 'termine' };
+    this.projectService.updateProject(projet._id, updatedProjet)
+      .subscribe({
+        next: () => {
+          alert('Projet marqué comme terminé');
+          this.chargerProjets();
+        },
+        error: (err) => {
+          console.error('Erreur lors de la mise à jour du projet:', err);
+          alert('Erreur lors de la mise à jour du projet');
+        }
+      });
   }
 
   getProjetsFiltres(): any[] {
     return this.projets.filter(projet => {
       const titreMatch = projet.titre.toLowerCase().includes(this.rechercheTitre.toLowerCase());
-      const dateMatch = !this.rechercheDate || projet.date.includes(this.rechercheDate);
+      const dateMatch = !this.rechercheDate || projet.dateDebut.includes(this.rechercheDate);
       const statutMatch = !this.rechercheStatut || projet.statut === this.rechercheStatut;
       return titreMatch && dateMatch && statutMatch;
     });
+  }
+
+  getImageUrl(imageData: string): string {
+    if (!imageData) return 'assets/default-image.jpg';
+    
+    // If it's an Imgur URL (starts with http)
+    if (imageData.startsWith('https')) {
+      return imageData;
+    }
+    
+    // Fallback for base64 images if needed
+    return `data:image/jpeg;base64,${imageData}`;
+  }
+
+  handleImageError(event: any) {
+    event.target.src = 'assets/default-image.jpg';
   }
 
   rafraichirStatistiques(): void {
@@ -185,5 +187,17 @@ export class GestionDesProjetsComponent implements OnInit {
     this.totalProjetsEnCours = this.projets.filter(p => p.statut === 'en_cours').length;
     this.totalProjetsTermines = this.projets.filter(p => p.statut === 'termine').length;
     this.totalProjetsEnRetard = this.projets.filter(p => p.statut === 'en_retard').length;
+  }
+
+  reinitialiserFormulaire(): void {
+    this.nouveauProjet = {
+      titre: '',
+      description: '',
+      dateDebut: '',
+      dateFin: '',
+      montantSoutenu: 0,
+      statut: 'en_cours'
+    };
+    this.selectedImage = null;
   }
 }
