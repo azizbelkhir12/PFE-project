@@ -110,37 +110,28 @@
     </div>
 
     <div class="causes-carousel">
-      <div class="causes-item" *ngFor="let cause of causes">
+      <div class="causes-item" *ngFor="let projet of projets">
         <div class="causes-img">
-          <img [src]="cause.img" alt="Image">
+          <img [src]="projet.imageUrl || 'assets/default-image.jpg'" alt="Image">
         </div>
         <div class="causes-progress">
-          <div class="progress">
-            <div
-              class="progress-bar"
-              role="progressbar"
-              [style.width.%]="cause.progress"
-              [attr.aria-valuenow]="cause.progress"
-              aria-valuemin="0"
-              aria-valuemax="100">
-              <span>{{ cause.progress }}%</span>
-            </div>
-          </div>
+          
           <div class="progress-text">
-            <p><strong>Raised:</strong> ${{ cause.raised }}</p>
-            <p><strong>Goal:</strong> ${{ cause.goal }}</p>
+            <p><strong>Montant soutenu:</strong> {{ projet.montantSoutenu }}</p>
+            <p><strong>Statut:</strong> {{ projet.statut }}</p>
           </div>
         </div>
         <div class="causes-text">
-          <h3>{{ cause.title }}</h3>
-          <p>{{ cause.description }}</p>
+          <h3>{{ projet.titre }}</h3>
+          <p>{{ projet.description }}</p>
         </div>
         <div class="causes-btn">
-          <a class="btn ">Learn More</a>
-          <a class="btn btn-custom">Donate Now</a>
+          <a class="btn">En savoir plus</a>
+          <a class="btn btn-custom" routerLink="/payment">Faire un don</a>
         </div>
       </div>
     </div>
+    
   </div>
 </div>
 <!-- Causes End -->

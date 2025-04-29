@@ -21,6 +21,7 @@ const DonationSchema = new mongoose.Schema({
     enum: ['pending', 'completed', 'failed'],
     default: 'pending'
   },
+  project: { type: String, enum: ['Parrainage enfant', 'Rentrée scolaire', 'Ramadan', "Aid Idh'ha", 'Aid Fiter'], required: true  },
   paymentId: { type: String, unique: true, sparse: true, default: null },
   paymentDetails: { type: Object, default: null },
   date: { type: Date, default: Date.now },

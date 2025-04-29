@@ -47,7 +47,8 @@ export class DonRapideComponent {
   paymentMethod: ['credit_card', Validators.required], 
   paymentType: ['local', Validators.required],         
   guestName: ['', Validators.required],
-  guestEmail: ['', [Validators.required, Validators.email]]
+  guestEmail: ['', [Validators.required, Validators.email]], 
+  project: ['', Validators.required]  
     });
 
     // Watch for payment method changes

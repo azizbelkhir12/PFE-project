@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ContactService } from '../services/contact/contact.service';
+import { ProjetService } from '../services/projet/projet.service';
 //import { ScriptsService } from '../services/scripts.service';
 
 @Component({
@@ -33,49 +34,18 @@ export class AcceuilComponent {
     { icon: 'flaticon-donation', value: 5000, text: 'Raised', prefix: `$` }
   ];
 
-  causes = [
-    {
-      img: 'assets/img/causes-1.jpg',
-      title: 'Food for the Hungry',
-      description: 'Providing food to those in need across the globe.',
-      raised: 100000,
-      goal: 50000,
-      progress: 85
-    },
-    {
-      img: 'assets/img/causes-2.jpg',
-      title: 'Clean Water Initiative',
-      description: 'Helping communities gain access to clean water.',
-      raised: 80000,
-      goal: 60000,
-      progress: 75
-    },
-    {
-      img: 'assets/img/causes-3.jpg',
-      title: 'Education for All',
-      description: 'Providing education to underprivileged children.',
-      raised: 120000,
-      goal: 100000,
-      progress: 90
-    },
-    {
-      img: 'assets/img/causes-4.jpg',
-      title: 'Disaster Relief',
-      description: 'Helping victims recover from natural disasters.',
-      raised: 50000,
-      goal: 75000,
-      progress: 60
-    }
-  ];
-
+  
   donateForm: FormGroup;
   contactForm: FormGroup;
   donationAmounts = [10, 20, 30];
+  projets: any[] = [];
+
 
   constructor(
     private fb: FormBuilder,
     private contactService: ContactService,
-    private http: HttpClient
+    private http: HttpClient, 
+    private projetService: ProjetService 
   ) {
     this.donateForm = this.fb.group({
       name: ['', Validators.required],
@@ -92,11 +62,23 @@ export class AcceuilComponent {
   }
 
   ngOnInit() {
-    this.scriptsService.initializeScripts();
+    //this.scriptsService.initializeScripts();
+    this.chargerProjets()
   }
 
   ngAfterViewInit() {
     this.animateNumbers();
+  }
+
+  chargerProjets() {
+    this.projetService.getProjects().subscribe({
+      next: (projets) => {
+        this.projets = projets;
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des projets:', err);
+      }
+    });
   }
 
   animateNumbers() {

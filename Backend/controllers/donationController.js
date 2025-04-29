@@ -3,7 +3,7 @@ const Donation = require('../models/Donation');
 
 exports.createDonation = async (req, res) => {
   try {
-    const { amount, paymentMethod, paymentType , guestName, guestEmail, paymentId, status } = req.body;
+    const { amount, paymentMethod, paymentType , guestName, guestEmail,project, paymentId, status } = req.body;
     const donorId = req.userId || null;
 
     // Check for duplicate paymentId
@@ -36,6 +36,7 @@ exports.createDonation = async (req, res) => {
       donorId,
       guestName: donorId ? null : guestName,
       guestEmail: donorId ? null : guestEmail,
+      project,
       paymentId,
       status: donationStatus
     });

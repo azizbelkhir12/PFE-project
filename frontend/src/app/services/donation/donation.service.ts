@@ -28,6 +28,7 @@ export class DonationService {
       guestName: data.guestName || null,
       guestEmail: data.guestEmail || null,
       paymentId: data.paymentId || null,
+      project: data.project  ,
       status: data.status || 'completed'
     };
 
