@@ -43,7 +43,7 @@ throw new Error('Method not implemented.');
     status: '',
     paymentId: this.generatePaymentId()
   };
-  
+
 
   constructor(private donorsService: DonorsService, private donationService: DonationService) {
     this.donForm = new FormGroup({
@@ -61,14 +61,7 @@ throw new Error('Method not implemented.');
     this.fetchDonations();
   }
 
-  chargerDons() {
-    this.dons = [
-      { id: 1, donateur: 'John Doe', montant: 100, typeDon: 'International', modePaiement: 'Carte', statut: 'Confirmé' },
-      { id: 2, donateur: 'Jane Smith', montant: 200, typeDon: 'Local', modePaiement: 'Virement', statut: 'En Attente' },
-      { id: 3, donateur: 'Alice Brown', montant: 50, typeDon: 'International', modePaiement: 'Espèces', statut: 'Confirmé' }
-    ];
-    this.filtrerDons();
-  }
+
 
   mettreAJourStatistiques() {
     this.totalDons = this.dons.reduce((total, don) => total + don.montant, 0);
@@ -77,13 +70,7 @@ throw new Error('Method not implemented.');
     this.totalDonsEnAttente = this.dons.filter(don => don.statut === 'En Attente').reduce((total, don) => total + don.montant, 0);
   }
 
-  filtrerDons() {
-    this.donsFiltres = this.dons.filter(don =>
-      don.donateur.toLowerCase().includes(this.searchDons.toLowerCase())
-    );
-    this.mettreAJourDonateurs();
-    this.createChart();
-  }
+
 
   mettreAJourDonateurs() {
     this.donors = [...new Set(this.dons.map(don => don.donateur))].map(nom => {
@@ -123,30 +110,105 @@ throw new Error('Method not implemented.');
 
   exporterPDF() {
     const doc = new jsPDF();
-    doc.text("Liste des Donateurs", 10, 10);
-    this.donors.forEach((donateur, index) => {
-      doc.text(`${donateur.nom}: ${donateur.montantTotal} TND`, 10, 20 + index * 10);
+    doc.setFontSize(18);
+    doc.text("Liste des Donateurs", 70, 15);
+
+    doc.setFontSize(12);
+    const startY = 30;
+    let positionY = startY;
+
+    this.filteredDonateurs().forEach((donateur: { name: string; email: string; phone: string; address: string; zipCode: string; status: string }, index: number) => {
+      doc.text(`Nom : ${donateur.name}`, 10, positionY);
+      positionY += 8;
+      doc.text(`Email : ${donateur.email}`, 10, positionY);
+      positionY += 8;
+      doc.text(`Téléphone : ${donateur.phone}`, 10, positionY);
+      positionY += 8;
+      doc.text(`Adresse : ${donateur.address}`, 10, positionY);
+      positionY += 8;
+      doc.text(`Code Postal : ${donateur.zipCode}`, 10, positionY);
+      positionY += 8;
+      doc.text(`Statut : ${donateur.status}`, 10, positionY);
+      positionY += 12; // un peu plus d'espace avant le donateur suivant
+
+      // Si on arrive en bas de page, ajouter une nouvelle page
+      if (positionY > 270) {
+        doc.addPage();
+        positionY = startY;
+      }
     });
+
     doc.save('donateurs.pdf');
   }
+  exporterDonsPDF() {
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text("Liste des Dons", 80, 15);
+
+    doc.setFontSize(12);
+    const startY = 30;
+    let positionY = startY;
+
+    this.donsFiltres.forEach((don: { guestName: string; amount: number; paymentType: string; paymentMethod: string; status: string; date: Date }, index: number) => {
+      doc.text(`Donateur : ${don.guestName}`, 10, positionY);
+      positionY += 8;
+      doc.text(`Montant : ${don.amount} TND`, 10, positionY);
+      positionY += 8;
+      doc.text(`Type de Don : ${don.paymentType}`, 10, positionY);
+      positionY += 8;
+      doc.text(`Mode de Paiement : ${don.paymentMethod}`, 10, positionY);
+      positionY += 8;
+      doc.text(`Statut : ${don.status}`, 10, positionY);
+      positionY += 8;
+      doc.text(`Date : ${new Date(don.date).toLocaleDateString('fr-FR')}`, 10, positionY);
+      positionY += 12; // espace entre les dons
+
+      // Si on atteint le bas de la page, ajouter une nouvelle page
+      if (positionY > 270) {
+        doc.addPage();
+        positionY = startY;
+      }
+    });
+
+    doc.save('dons.pdf');
+  }
+
+
+
 
   exporterExcel() {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.donors);
     const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
     XLSX.writeFile(wb, 'donateurs.xlsx');
   }
+  exporterDonsExcel() {
+    const donsExport = this.donsFiltres.map(don => ({
+      'Donateur': don.guestName,
+      'Montant (TND)': don.amount,
+      'Type de Don': don.paymentType,
+      'Mode de Paiement': don.paymentMethod,
+      'Statut': don.status,
+      'Date': new Date(don.date).toLocaleDateString('fr-FR')  // Format français
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(donsExport);
+    const wb: XLSX.WorkBook = { Sheets: { 'Dons': ws }, SheetNames: ['Dons'] };
+    XLSX.writeFile(wb, 'dons.xlsx');
+  }
+
   filteredDonateurs(): any[] {
     return this.donors.filter(donor =>
       donor.name.toLowerCase().includes(this.searchDonateurs.toLowerCase())
     );
   }
-  
+
 
   filteredDons(): any[] {
-    return this.donsFiltres.filter(don =>
-      don.donateur.toLowerCase().includes(this.searchDons.toLowerCase())
+    return this.donsFiltres.filter((don: any) =>
+      don.guestName.toLowerCase().includes(this.searchDons.toLowerCase())
     );
   }
+
 
   fetchDonors() {
     this.donorsService.getDonors().subscribe({
@@ -241,7 +303,11 @@ throw new Error('Method not implemented.');
       paymentId: ''
     };
   }
-  
+
 }
 
+
+function index(value: any, index: number, array: any[]): void {
+  throw new Error('Function not implemented.');
+}
 
