@@ -1,0 +1,87 @@
+/* Structure principale */
+.dashboard-container {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* En-tête */
+.dashboard-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-title {
+  font-size: 1.6rem;
+  color: #2a2a2a;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Cartes principales */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-card.active {
+  border: 2px solid #007bff;
+  background: #f0f8ff;
+}
+
+.card-icon-bg {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  background: #e6f0fa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon-bg .icon {
+  color: #0056b3;
+  font-size: 1.6rem;
+}
+
+.dashboard-card h3 {
+  font-size: 1.2rem;
+  margin: 0.6rem 0;
+  color: #222;
+}
+
+.dashboard-card p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Section dynamique */
+.content-section {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+

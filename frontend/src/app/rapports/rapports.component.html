@@ -5,9 +5,7 @@
   <div class="container">
       <div class="row">
           <div class="col-12">
-              <h2 style="font-size: 2.5rem; font-weight: bold; color: black; text-align: left; margin-bottom: 20px;">
-                  Rapports
-              </h2>
+
           </div>
       </div>
   </div>
@@ -18,14 +16,14 @@
 <div class="blog">
   <div class="container">
       <div class="section-header text-center">
-          <p>Nos Rapports</p>
-          <h2>Liste des rapports disponibles</h2>
-          
+
+          <h2>Nos Rapports</h2>
+
           <!-- Search Bar -->
           <div class="row justify-content-center mb-4">
               <div class="col-md-6">
                   <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Rechercher un rapport..." 
+                      <input type="text" class="form-control" placeholder="Rechercher un rapport..."
                              [(ngModel)]="searchTerm" (input)="currentPage = 1">
                       <div class="input-group-append">
                           <span class="input-group-text"><i class="fa fa-search"></i></span>
@@ -47,8 +45,8 @@
           <div class="col-lg-4" *ngFor="let rapport of paginatedRapports">
               <div class="blog-item">
                   <div class="blog-img">
-                      <img *ngIf="rapport.type === 'financier'" src="assets/financier.png" alt="financier" class="img-fluid resized-image">
-                      <img *ngIf="rapport.type === 'litteraire'" src="assets/litteraire.png" alt="Image de Word" class="img-fluid">
+                      <img *ngIf="rapport.type === 'financier'" src="assets/rapport f.jpg" alt="financier" class="img-fluid resized-image">
+                      <img *ngIf="rapport.type === 'litteraire'" src="assets/li.jpg" alt="Image de Word" class="img-fluid">
                   </div>
                   <div class="blog-text">
                       <h3><a (click)="downloadRapport(rapport)" style="cursor: pointer">{{rapport.titre}}</a></h3>
@@ -76,14 +74,14 @@
                   <li class="page-item" [class.disabled]="currentPage === 1">
                       <a class="page-link" (click)="changePage(currentPage - 1)">Précédent</a>
                   </li>
-                  <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" 
+                  <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
                       [class.active]="currentPage === i + 1">
                       <a class="page-link" (click)="changePage(i + 1)">{{i + 1}}</a>
                   </li>
                   <li class="page-item" [class.disabled]="currentPage === totalPages">
                       <a class="page-link" (click)="changePage(currentPage + 1)">Suivant</a>
                   </li>
-              </ul> 
+              </ul>
           </div>
       </div>
 

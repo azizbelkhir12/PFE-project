@@ -1,91 +1,101 @@
-/* NAVBAR GLOBALE */
+/* Navbar Base Styles */
 .navbar {
-  background-color: #0056b3; /* Bleu de fond */
-  padding: 0.8rem 2rem;
-  display: flex;
-  justify-content: center; /* Centre horizontalement */
-  align-items: center;
-  flex-wrap: wrap;
+  position: relative;
+  transition: 0.5s;
+  z-index: 999;
+  padding: 0;
+  margin-bottom: 30px;
+  background-color: #284E7B !important; /* Your requested color */
+  display: flex; /* Utilisation de flexbox pour organiser les éléments */
+  justify-content: space-between; /* Espacement entre le logo et les liens */
+  align-items: center; /* Centrer verticalement */
 }
 
-/* Marque */
-.navbar-brand {
-  color: white;
-  font-weight: bold;
-  font-size: 1.4rem;
-  text-decoration: none;
-  margin-right: 2rem;
+/* Logo Styles */
+.navbar .navbar-brand {
+  margin: 0;
+  color: #ffffff;
+  font-size: 45px;
+  line-height: 0;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-right: 30px; /* Espacement entre le logo et les liens */
 }
 
-/* CONTENEUR DES LIENS */
-.navbar-nav {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  align-items: center;
-  flex: 1; /* permet aux liens de prendre l'espace et se centrer */
+.navbar .navbar-brand img {
+  width: auto;
+  height: 120px;
+  object-fit: contain;
+  margin-left: 50px;
 }
 
-/* Liens de navigation */
-.navbar-nav .nav-link {
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  text-decoration: none;
-  transition: background-color 0.3s, color 0.3s;
+/* Navigation Links */
+.navbar-dark .navbar-nav .nav-link,
+.navbar-dark .navbar-nav .nav-link:focus,
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+  padding: 10px 15px 8px 15px;
+  color: #ffffff !important;
+  font-weight: 500;
 }
 
-.navbar-nav .nav-link:hover {
-  background-color: white; /* Blanc au survol */
-  color: #003366;
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+  color: #FDBE33 !important;
 }
 
-.navbar-nav .nav-link.active {
-  background-color: white;
-  color: #003366;
-}
-
-/* IMAGE + BOUTON DÉCONNEXION */
-.header-profile {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  margin-left: 2rem;
-}
-
-.header-profile-pic {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  cursor: pointer;
-  border: 2px solid white;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s;
-}
-
-.header-profile-pic:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-}
-
-/* BOUTON DE DÉCONNEXION */
-.logout-btn {
-  padding: 8px 16px;
-  background-color:  #0056b3; /* Couleur du bouton */
+/* Custom Button */
+.btn-custom {
+  background-color: #FDBE33;
   color: white;
   border: none;
+  padding: 8px 18px;
   border-radius: 25px;
-  cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.3s ease;
-  font-size: 0.9rem;
-  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-
-.logout-btn:hover {
-  background-color: #ec4b15;
-  color: white;
+.btn-custom:hover {
+  background-color: #E64A19;
+  transform: scale(1.05);
 }
 
+.btn-custom:active {
+  transform: scale(0.98);
+}
+
+/* Dropdown Menu */
+.navbar .dropdown-menu {
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
+  background: #f8f9fa;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+  .navbar .navbar-brand img {
+      height: 80px;
+  }
+
+  .navbar-collapse {
+      background-color: #1a3a5a;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 5px;
+  }
+
+  .dropdown-menu {
+      background-color: transparent !important;
+      border: none !important;
+  }
+
+  .dropdown-item {
+      color: white !important;
+      padding: 8px 15px !important;
+  }
+}
 

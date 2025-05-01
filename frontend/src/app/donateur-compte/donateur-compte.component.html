@@ -1,0 +1,64 @@
+<app-nav-bar-membre></app-nav-bar-membre>
+
+<div class="dashboard-container">
+  <!-- En-tête -->
+  <div class="dashboard-header">
+    <h4 class="dashboard-title">Bienvenue, {{ utilisateur?.nom }} dans votre Espace 👋</h4>
+  </div>
+
+  <!-- Cartes -->
+  <div class="cards-container">
+    <div class="dashboard-card" [class.active]="activeSection === 'profile'" (click)="showSection('profile')">
+      <div class="card-icon-bg">
+        <i class="fas fa-user-edit icon"></i>
+      </div>
+      <h3>Mes informations</h3>
+      <p>Consulter / modifier mon profil</p>
+    </div>
+
+    <div class="dashboard-card" [class.active]="activeSection === 'don'" (click)="showSection('don')">
+      <div class="card-icon-bg">
+        <i class="fas fa-donate icon"></i>
+      </div>
+      <h3>Effectuer un Don</h3>
+      <p>Faire un nouveau don</p>
+    </div>
+
+    <div class="dashboard-card" [class.active]="activeSection === 'historique'" (click)="showSection('historique')">
+      <div class="card-icon-bg">
+        <i class="fas fa-history icon"></i>
+      </div>
+      <h3>Historique</h3>
+      <p>Voir mes paiements</p>
+    </div>
+
+    <div class="dashboard-card" *ngIf="typeDonateur === 'parrain'" [class.active]="activeSection === 'enfants'" (click)="showSection('enfants')">
+      <div class="card-icon-bg">
+        <i class="fas fa-child icon"></i>
+      </div>
+      <h3>Enfants Parrainés</h3>
+      <p>Informations sur les enfants</p>
+    </div>
+
+    <div class="dashboard-card" *ngIf="typeDonateur === 'standard'" [class.active]="activeSection === 'rapports'" (click)="showSection('rapports')">
+      <div class="card-icon-bg">
+        <i class="fas fa-chart-line icon"></i>
+      </div>
+      <h3>Rapports Financiers</h3>
+      <p>Voir les rapports de l'association</p>
+    </div>
+  </div>
+
+  <!-- Section dynamique -->
+  <div class="content-section">
+    <app-profile-donateur *ngIf="activeSection === 'profile'"></app-profile-donateur>
+    <app-effectuer-don *ngIf="activeSection === 'don'"></app-effectuer-don>
+    <app-historique-paiement *ngIf="activeSection === 'historique'"></app-historique-paiement>
+    <app-parinnage-enfants *ngIf="activeSection === 'enfants' && typeDonateur === 'parrain'"></app-parinnage-enfants>
+    <app-rapports-donnateur-standard *ngIf="activeSection === 'rapports' && typeDonateur === 'standard'"></app-rapports-donnateur-standard>
+  </div>
+</div>
+
+<app-footer></app-footer>
+
+

@@ -105,8 +105,8 @@
 <div class="causes">
   <div class="container">
     <div class="section-header text-center">
-      <p>Popular Causes</p>
-      <h2>Let's know about charity causes around the world</h2>
+      <p>Nos Projets</p>
+      <h2>Explorons les différentes projets dans notre associations</h2>
     </div>
 
     <div class="causes-carousel">
@@ -115,7 +115,7 @@
           <img [src]="projet.imageUrl || 'assets/default-image.jpg'" alt="Image">
         </div>
         <div class="causes-progress">
-          
+
           <div class="progress-text">
             <p><strong>Montant soutenu:</strong> {{ projet.montantSoutenu }}</p>
             <p><strong>Statut:</strong> {{ projet.statut }}</p>
@@ -126,12 +126,12 @@
           <p>{{ projet.description }}</p>
         </div>
         <div class="causes-btn">
-          <a class="btn">En savoir plus</a>
+
           <a class="btn btn-custom" routerLink="/payment">Faire un don</a>
         </div>
       </div>
     </div>
-    
+
   </div>
 </div>
 <!-- Causes End -->

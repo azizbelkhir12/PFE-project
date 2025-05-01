@@ -19,6 +19,9 @@
 
 .blog .blog-img img {
   width: 100%;
+
+  display: block;
+  margin: 0 auto;
 }
 
 .blog .blog-text {
@@ -91,8 +94,8 @@
 }
 
 .img-fluid{
-  width: 50px;
-  height: 200px;
+  width: 50x;
+  height: 2s00px;
 }
 
 /*******************************/
