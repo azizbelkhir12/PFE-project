@@ -1,31 +1,28 @@
 <div class="navbar">
-  <!-- Partie Gauche : Logo et Titre -->
+  <!-- Left Side -->
   <div class="navbar-left">
     <button class="menu-toggle" (click)="toggleSidebar()">
-      <fa-icon [icon]="faBars"></fa-icon>
+      <fa-icon [icon]="faAlignJustify"></fa-icon>
     </button>
     <h1>
-      <fa-icon [icon]="faUsersCog"></fa-icon> Admin Compte
+      <fa-icon [icon]="faUserShield"></fa-icon> Admin Compte
     </h1>
   </div>
 
-  
-
-
-  <!-- Partie Droite : Notifications et Profil -->
+  <!-- Right Side -->
   <div class="navbar-right">
     <div class="notification">
-      <fa-icon [icon]="faBell"  ></fa-icon>
+      <fa-icon [icon]="faEnvelope" routerLink="/admin-compte/chat"></fa-icon>
       <span class="badge"></span>
     </div>
     <div class="user-profile" (click)="toggleProfileMenu()">
-      <img src="https://via.placeholder.com/40" alt="Profile" />
-      <span>Admin</span>
-      <fa-icon [icon]="faChevronDown"></fa-icon>
-      <!-- Menu déroulant du profil -->
+      
+      <fa-icon [icon]="faAngleDown"></fa-icon>
       <div class="profile-menu" *ngIf="isProfileMenuOpen">
-        <a href="#"><fa-icon [icon]="faCog"></fa-icon> Paramètres</a>
-        <a href="#"><fa-icon [icon]="faSignOutAlt"></fa-icon> Déconnexion</a>
+        <a href="#"><fa-icon [icon]="faSlidersH"></fa-icon> Paramètres</a>
+        <a href="#" (click)="onLogout()">
+          <fa-icon [icon]="faRightFromBracket"></fa-icon> Déconnexion
+        </a>
       </div>
     </div>
   </div>
