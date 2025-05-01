@@ -6,8 +6,6 @@ import { RegisterComponent } from './register/register.component';
 import { BenevolatComponent } from './benevolat/benevolat.component';
 import { BenevoleCompteComponent } from './benevole-compte/benevole-compte.component';
 import { BeneficiaireCompteComponent } from './beneficiaire-compte/beneficiaire-compte.component';
-import { DonateurParrainCompteComponent } from './donateur-parrain-compte/donateur-parrain-compte.component';
-import { DonateurStandardCompteComponent } from './donateur-standard-compte/donateur-standard-compte.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminCompteComponent } from './admin-compte/admin-compte.component';
 import { GestionBenevolesComponent } from './gestion-benevoles/gestion-benevoles.component';
@@ -19,12 +17,15 @@ import { GestionDesRapportsComponent } from './gestion-des-rapports/gestion-des-
 import { GestionDesProjetsComponent } from './gestion-des-projets/gestion-des-projets.component';
 import { DonRapideComponent } from './don-rapide/don-rapide.component';
 import { PaymentFailComponent } from './pages/payment-fail/payment-fail.component';
+
 import { PaymentSuccessComponent } from './pages/payment-success/payment-success.component';
 import { AuthGuard } from './guard/auth.guard';
 import { AdminGuard } from './guard/admin.guard';
 import { GestionFeedbackComponent } from './gestion-feedback/gestion-feedback.component';
 import { VoirDocumentsBeneficiaireComponent } from './voir-documents-beneficiaire/voir-documents-beneficiaire.component';
 import { RapportsComponent } from './rapports/rapports.component';
+import { DonateurCompteComponent } from './donateur-compte/donateur-compte.component';
+
 import { ChatComponent } from './chat/chat.component';
 
 
@@ -33,10 +34,11 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'benevolat', component: BenevolatComponent },
+  { path: 'donateur-compte', component: DonateurCompteComponent },
   { path: 'benevole-compte', component: BenevoleCompteComponent, canActivate: [AuthGuard] },
   { path: 'beneficiaire-compte', component: BeneficiaireCompteComponent, canActivate: [AuthGuard] },
-  { path: 'donateur-parrain-compte', component: DonateurParrainCompteComponent, canActivate: [AuthGuard] },
-  { path: 'donateur-standard-compte', component: DonateurStandardCompteComponent, canActivate: [AuthGuard] },
+
+
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'payment', component: DonRapideComponent },
   { path: 'contact', component: ContactComponent },

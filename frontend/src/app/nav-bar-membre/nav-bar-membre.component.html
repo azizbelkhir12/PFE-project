@@ -1,30 +1,30 @@
-<nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" routerLink="/">Tunisia Charity</a>
+<!-- Nav Bar Start -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+      <!-- Logo -->
+      <a routerLink="/" class="navbar-brand">
+          <img src="assets/logo2.png" alt="Logo" class="img-fluid">
+      </a>
 
-  <!-- Bouton pour les petits écrans -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+      <!-- Toggle button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <!-- Contenu du menu de navigation -->
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <div class="navbar-nav">
-      <a routerLink="/" routerLinkActive="active" class="nav-item nav-link">Home</a>
-      <a routerLink="/contact" routerLinkActive="active" class="nav-item nav-link">Contact</a>
-      <a routerLink="/Rapports" routerLinkActive="active" class="nav-item nav-link">Rapports</a>
-      <a routerLink="/events" routerLinkActive="active" class="nav-item nav-link">Evénements</a>
-      <a routerLink="/blog" routerLinkActive="active" class="nav-item nav-link">Blog</a>
-    </div>
+      <!-- Navbar content -->
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav me-auto">
+            <a routerLink="/" class="nav-item nav-link active">Home</a>
+            <a routerLink="/contact" class="nav-item nav-link">Contact</a>
+            <a routerLink="/rapports" class="nav-item nav-link">Rapports</a>
+            <a routerLink="/benevolat" class="nav-item nav-link">Rejoignez-nous</a>
+          </div>
 
-    <!-- Section profil + déconnexion -->
-    <div class="header-profile d-flex align-items-center ms-auto">
-      <img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-        alt="Photo de profil"
-        class="header-profile-pic" (click)="afficherSection('profil')">
+          <div class="navbar-nav ms-auto">
+            <a routerLink="/login" class="nav-link">Se Déconnecter</a>
 
-      <button class="logout-btn ms-2" (click)="seDeconnecter()">Se déconnecter</button>
-    </div>
+          </div>
+      </div>
   </div>
 </nav>
 

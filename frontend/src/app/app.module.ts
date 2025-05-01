@@ -21,11 +21,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { BenevolatComponent } from './benevolat/benevolat.component';
 import { LoginComponent } from './login/login.component';
-import { DonateurComponent } from './donateur/donateur.component';
+
 import { BenevoleCompteComponent } from './benevole-compte/benevole-compte.component';
 import { BeneficiaireCompteComponent } from './beneficiaire-compte/beneficiaire-compte.component';
-import { DonateurParrainCompteComponent } from './donateur-parrain-compte/donateur-parrain-compte.component';
-import { DonateurStandardCompteComponent } from './donateur-standard-compte/donateur-standard-compte.component';
+
 import { AdminCompteComponent } from './admin-compte/admin-compte.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
@@ -51,6 +50,12 @@ import { AjouterDesDocumentsBeneficiaireComponent } from './ajouter-des-document
 import { NavBarMembreComponent } from './nav-bar-membre/nav-bar-membre.component';
 import { FooterMembreComponent } from './footer-membre/footer-membre.component';
 import { RapportsComponent } from './rapports/rapports.component';
+import { DonateurCompteComponent } from './donateur-compte/donateur-compte.component';
+import { ProfileDonateurComponent } from './profile-donateur/profile-donateur.component';
+import { EffectuerDonComponent } from './effectuer-don/effectuer-don.component';
+import { HistoriquePaiementComponent } from './historique-paiement/historique-paiement.component';
+import { ParinnageEnfantsComponent } from './parinnage-enfants/parinnage-enfants.component';
+import { RapportsDonnateurStandardComponent } from './rapports-donnateur-standard/rapports-donnateur-standard.component';
 import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
@@ -62,11 +67,10 @@ import { ChatComponent } from './chat/chat.component';
     FooterComponent,
     BenevolatComponent,
     LoginComponent,
-    DonateurComponent,
+
     BenevoleCompteComponent,
     BeneficiaireCompteComponent,
-    DonateurParrainCompteComponent,
-    DonateurStandardCompteComponent,
+
     AdminCompteComponent,
     AdminLoginComponent,
     SidebarAdminComponent,
@@ -92,6 +96,13 @@ import { ChatComponent } from './chat/chat.component';
       FooterMembreComponent,
       RapportsComponent,
       ChatComponent,
+      DonateurCompteComponent,
+      ProfileDonateurComponent,
+      EffectuerDonComponent,
+      HistoriquePaiementComponent,
+      ParinnageEnfantsComponent,
+      RapportsDonnateurStandardComponent,
+
   ],
   imports: [
     BrowserModule,
