@@ -115,109 +115,101 @@ exports.registerAdmin = async (req, res) => {
 
 
 exports.forgotPassword = async (req, res) => {
-    const { email, userType } = req.body;
-  
-    try {
-      let user = null;
-      let Model = null;
-  
-      switch (userType) {
-        case 'admin':
-          Model = Admin;
-          break;
-        case 'beneficiary':
-          Model = Beneficiary;
-          break;
-        case 'volunteer':
-          Model = Volunteer;
-          break;
-        case 'donor':
-          Model = Donor;
-          break;
-        default:
-          return res.status(400).json({ message: 'Invalid user type' });
-      }
-  
-      user = await Model.findOne({ email });
-  
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      const token = crypto.randomBytes(20).toString('hex');
-      user.resetPasswordToken = token;
-      user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-      await user.save();
-  
-      const transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: process.env.EMAIL_USER, // Your Gmail address
-          pass: process.env.EMAIL_PASS, // Your Gmail App Password
-        },
-      });
-  
-      const mailOptions = {
-        to: user.email,
-        from: process.env.EMAIL_USER,
-        subject: 'Password Reset',
-        text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
-              Please click on the following link, or paste this into your browser to complete the process:\n\n
-              http://${req.headers.host}/reset-password/${token}\n\n
-              If you did not request this, please ignore this email and your password will remain unchanged.\n`,
-      };
-  
-      await transporter.sendMail(mailOptions);
-  
-      res.status(200).json({ message: 'An email has been sent to ' + user.email + ' with further instructions.' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error sending reset email' });
-    }
-  };
+  const { email, userType } = req.body;
 
-  exports.resetPassword = async (req, res) => {
-    const { token, newPassword } = req.body;
-  
-    try {
-        let user = null;
-  
-        user = await Admin.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-        if (user) {
-            modelType = 'Admin';
-        }
-        if (!user) {
-            user = await Beneficiary.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-            if (user) {
-                modelType = 'Beneficiary';
-            }
-        }
-        if (!user) {
-            user = await Volunteer.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-            if (user) {
-                modelType = 'Volunteer';
-            }
-        }
-        if (!user) {
-            user = await Donor.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-            if (user) {
-                modelType = 'Donor';
-            }
-        }
-  
-      if (!user) {
-        return res.status(400).json({ message: 'Password reset token is invalid or has expired.' });
-      }
-  
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      user.password = hashedPassword;
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-      await user.save();
-  
-      res.status(200).json({ message: 'Your password has been successfully updated.' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error resetting password' });
+  try {
+    let user = null;
+    let Model = null;
+
+    switch (userType) {
+      case 'admin':
+        Model = Admin;
+        break;
+      case 'beneficiary':
+        Model = Beneficiary;
+        break;
+      case 'volunteer':
+        Model = Volunteer;
+        break;
+      case 'donor':
+        Model = Donor;
+        break;
+      default:
+        return res.status(400).json({ message: 'Invalid user type' });
     }
-  };    
+
+    user = await Model.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 heure
+    await user.save();
+
+    // Configuration Nodemailer avec SMTP Brevo
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST, // ex: smtp-relay.brevo.com
+      port: parseInt(process.env.EMAIL_PORT, 10), // ex: 587
+      secure: false, // true si port 465, false pour 587
+      auth: {
+        user: process.env.EMAIL_USER, // votre email SMTP Brevo
+        pass: process.env.EMAIL_PASS, // votre clé SMTP Brevo
+      },
+    });
+
+    const resetUrl = `http://${req.headers.host}/reset-password/${token}`;
+
+    const mailOptions = {
+      from: `"Support" <${process.env.EMAIL_USER}>`, // expéditeur
+      to: user.email,
+      subject: 'Réinitialisation de votre mot de passe',
+      text: `Vous recevez cet email car vous (ou quelqu'un d'autre) avez demandé la réinitialisation du mot de passe de votre compte.\n\n
+Veuillez cliquer sur le lien suivant ou copiez-le dans votre navigateur pour finaliser la procédure :\n\n
+${resetUrl}\n\n
+Si vous n'avez pas demandé cette réinitialisation, ignorez simplement cet email.\n`,
+      // Optionnel : ajoutez un html si vous voulez un email plus joli
+      html: `<p>Vous recevez cet email car vous (ou quelqu'un d'autre) avez demandé la réinitialisation du mot de passe de votre compte.</p>
+<p>Veuillez cliquer sur le lien suivant ou copiez-le dans votre navigateur pour finaliser la procédure :</p>
+<p><a href="${resetUrl}">${resetUrl}</a></p>
+<p>Si vous n'avez pas demandé cette réinitialisation, ignorez simplement cet email.</p>`
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: 'Un email a été envoyé à ' + user.email + ' avec les instructions.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de l’envoi de l’email de réinitialisation.' });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    let user = null;
+
+    user = await Admin.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
+    if (!user) user = await Beneficiary.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
+    if (!user) user = await Volunteer.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
+    if (!user) user = await Donor.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Le token est invalide ou a expiré.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Votre mot de passe a été mis à jour avec succès.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de la réinitialisation du mot de passe.' });
+  }
+};

@@ -56,6 +56,7 @@ import { EffectuerDonComponent } from './effectuer-don/effectuer-don.component';
 import { HistoriquePaiementComponent } from './historique-paiement/historique-paiement.component';
 import { ParinnageEnfantsComponent } from './parinnage-enfants/parinnage-enfants.component';
 import { RapportsDonnateurStandardComponent } from './rapports-donnateur-standard/rapports-donnateur-standard.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { RapportsDonnateurStandardComponent } from './rapports-donnateur-standar
       NavBarMembreComponent,
       FooterMembreComponent,
       RapportsComponent,
+      ChatComponent,
       DonateurCompteComponent,
       ProfileDonateurComponent,
       EffectuerDonComponent,

@@ -1,0 +1,48 @@
+<app-navbarcompte-admin></app-navbarcompte-admin>
+<app-sidebar-admin></app-sidebar-admin>
+
+<div class="container-fluid chat-page">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 style="text-align: center;margin-bottom: 20px;">Chat with Volunteers</h1>
+    </div>
+  </div>
+<div class="chat-container">
+    <!-- Volunteer selection -->
+    <div class="volunteer-select">
+      <input type="text" placeholder="Search volunteer..." [(ngModel)]="volunteerSearch" (input)="filterVolunteers()" />
+      <select (change)="onVolunteerSelect($event)">
+        <option disabled selected value="">Select a volunteer</option>
+        <option *ngFor="let v of filteredVolunteers" [value]="v._id">
+          {{ v.name }}
+        </option>
+      </select>
+    </div>
+  
+    <!-- Show current chat target -->
+    <div *ngIf="receiverId" class="selected-volunteer">
+      <h4>Chatting with: {{ selectedVolunteerName }}</h4>
+    </div>
+  
+    <!-- Message area -->
+    <div class="messages">
+      <div
+        *ngFor="let msg of messages"
+        [ngClass]="{
+          'my-message': msg.senderId === senderId,
+          'other-message': msg.senderId !== senderId
+        }"
+      >
+        <div class="message-bubble">
+          <strong>{{ msg.senderRole }}:</strong> {{ msg.text }}
+        </div>
+      </div>
+    </div>
+  
+    <!-- Input area -->
+    <div class="input-area">
+      <input [(ngModel)]="newMessage" placeholder="Type a message..." />
+      <button (click)="sendMessage()" [disabled]="!receiverId">Send</button>
+    </div>
+  </div>
+  
