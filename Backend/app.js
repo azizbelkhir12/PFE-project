@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const http = require('http'); 
+const socketIo = require('socket.io'); // 
 const connectDB = require('./config/db');
 const routes = require('./routes/index.js');
 const donorRoutes = require('./routes/donorRoutes');
@@ -13,16 +15,27 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const donationRoutes  = require('./routes/donationRoutes');
 const rapportRoutes = require('./routes/rapportRoutes');
 const projectRoutes = require('./routes/projectRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 const uploads = require('./utils/upload'); 
+const app = express();
+
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: '*'
+  }
+});
 
 
 dotenv.config(); 
-const app = express();
 
 //Middlewares
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads')); 
+
+require('./socket/socket')(io);
+
 
 
 //database connection 
@@ -41,7 +54,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/rapport', rapportRoutes); 
 app.use('/api/projects', projectRoutes);
-
+app.use('/api/messages', messageRoutes);
 
 
 

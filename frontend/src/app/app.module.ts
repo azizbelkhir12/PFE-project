@@ -51,6 +51,7 @@ import { AjouterDesDocumentsBeneficiaireComponent } from './ajouter-des-document
 import { NavBarMembreComponent } from './nav-bar-membre/nav-bar-membre.component';
 import { FooterMembreComponent } from './footer-membre/footer-membre.component';
 import { RapportsComponent } from './rapports/rapports.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { RapportsComponent } from './rapports/rapports.component';
       NavBarMembreComponent,
       FooterMembreComponent,
       RapportsComponent,
+      ChatComponent,
   ],
   imports: [
     BrowserModule,

@@ -25,6 +25,7 @@ import { AdminGuard } from './guard/admin.guard';
 import { GestionFeedbackComponent } from './gestion-feedback/gestion-feedback.component';
 import { VoirDocumentsBeneficiaireComponent } from './voir-documents-beneficiaire/voir-documents-beneficiaire.component';
 import { RapportsComponent } from './rapports/rapports.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 const routes: Routes = [
@@ -46,6 +47,7 @@ const routes: Routes = [
 
 
 
+
   // Admin routes group (protected)
   {
     path: 'admin-compte',
@@ -60,7 +62,7 @@ const routes: Routes = [
       { path: 'gestion-des-projets', component: GestionDesProjetsComponent },
       { path: 'gestion-feedback', component: GestionFeedbackComponent },
       { path: 'voir-documents-beneficiaire', component: VoirDocumentsBeneficiaireComponent },
-
+      { path: 'chat', component: ChatComponent }, // Add chat component here
 
     ]
   }

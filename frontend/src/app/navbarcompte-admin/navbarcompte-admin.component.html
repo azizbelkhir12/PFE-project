@@ -9,21 +9,14 @@
     </h1>
   </div>
 
-  <!-- Partie Centrale : Barre de Recherche et Actions Rapides -->
-  <div class="navbar-center">
-    <div class="search-bar">
-      <input type="text" placeholder="Rechercher..." />
-      <fa-icon [icon]="faSearch"></fa-icon>
-    </div>
-
-  </div>
+  
 
 
   <!-- Partie Droite : Notifications et Profil -->
   <div class="navbar-right">
     <div class="notification">
-      <fa-icon [icon]="faBell"></fa-icon>
-      <span class="badge">3</span>
+      <fa-icon [icon]="faBell"  ></fa-icon>
+      <span class="badge"></span>
     </div>
     <div class="user-profile" (click)="toggleProfileMenu()">
       <img src="https://via.placeholder.com/40" alt="Profile" />
