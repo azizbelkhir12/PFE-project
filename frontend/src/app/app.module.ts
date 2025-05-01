@@ -10,6 +10,10 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
 
 
 import { AppComponent } from './app.component';
@@ -53,10 +57,14 @@ import { RapportsComponent } from './rapports/rapports.component';
 import { DonateurCompteComponent } from './donateur-compte/donateur-compte.component';
 import { ProfileDonateurComponent } from './profile-donateur/profile-donateur.component';
 import { EffectuerDonComponent } from './effectuer-don/effectuer-don.component';
-import { HistoriquePaiementComponent } from './historique-paiement/historique-paiement.component';
+import { HistoriquePaiementComponent } from './historique-paiement donnateur/historique-paiement.component';
 import { ParinnageEnfantsComponent } from './parinnage-enfants/parinnage-enfants.component';
 import { RapportsDonnateurStandardComponent } from './rapports-donnateur-standard/rapports-donnateur-standard.component';
 import { ChatComponent } from './chat/chat.component';
+import { ProfilBenevoleComponent } from './profil-benevole/profil-benevole.component';
+import { AbonnementBenevoleComponent } from './abonnement-benevole/abonnement-benevole.component';
+import { HistoriquePaiementsComponent } from './historique-paiements benevoles/historique-paiements.component';
+import { ChatAdminComponent } from './chat-admin/chat-admin.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +110,10 @@ import { ChatComponent } from './chat/chat.component';
       HistoriquePaiementComponent,
       ParinnageEnfantsComponent,
       RapportsDonnateurStandardComponent,
+      ProfilBenevoleComponent,
+      AbonnementBenevoleComponent,
+      HistoriquePaiementsComponent,
+      ChatAdminComponent,
 
   ],
   imports: [
@@ -117,6 +129,11 @@ import { ChatComponent } from './chat/chat.component';
     MatTabsModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    MatIconModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatOptionModule
   ],
   providers: [],
   bootstrap: [AppComponent],

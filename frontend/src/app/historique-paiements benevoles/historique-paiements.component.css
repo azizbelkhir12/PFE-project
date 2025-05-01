@@ -1,0 +1,106 @@
+.paiement-container {
+  background: linear-gradient(145deg, #ffffff, #f2f2f2);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 1000px;
+  margin: auto;
+}
+
+h2 {
+  color: #6b3cc9;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+input, select {
+  padding: 10px 14px;
+  border: 1px solid #d6d6d6;
+  border-radius: 12px;
+  font-size: 15px;
+  flex: 1;
+  transition: 0.3s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #6b3cc9;
+  box-shadow: 0 0 5px rgba(107, 60, 201, 0.3);
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th {
+  background-color: #ece4fb;
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #4a3272;
+}
+
+td {
+  padding: 14px;
+  border-bottom: 1px solid #f1f1f1;
+  color: #444;
+}
+
+tr:hover {
+  background-color: #f8f4fe;
+}
+
+.réussi, .réussi span {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.en-attente, .en-attente span {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.échoué, .échoué span {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.btn-recu {
+  color: #6b3cc9;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.btn-recu:hover {
+  text-decoration: underline;
+}
+
+.no-recu {
+  color: #999;
+  font-style: italic;
+}
+
+.no-result {
+  text-align: center;
+  font-size: 16px;
+  color: #888;
+  margin-top: 20px;
+}
+
