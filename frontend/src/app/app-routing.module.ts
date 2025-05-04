@@ -34,7 +34,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'benevolat', component: BenevolatComponent },
-  { path: 'donateur-compte', component: DonateurCompteComponent },
+  { path: 'donateur-compte', component: DonateurCompteComponent, canActivate: [AuthGuard] },
   { path: 'benevole-compte', component: BenevoleCompteComponent, canActivate: [AuthGuard] },
   { path: 'beneficiaire-compte', component: BeneficiaireCompteComponent, canActivate: [AuthGuard] },
 

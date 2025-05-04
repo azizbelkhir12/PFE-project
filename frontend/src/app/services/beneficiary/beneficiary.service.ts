@@ -30,4 +30,17 @@ export class BeneficiaryService {
   deleteBeneficiaire(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete/${id}`);
   }
+
+  uploadPhoto(id: string, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('photo', file); 
+  
+    return this.http.put(`${this.apiUrl}/${id}/photo`, formData);
+  }
+
+  uploadDocuments(id: string, formData: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/documents`, formData);
+  }
+  
+  
 }

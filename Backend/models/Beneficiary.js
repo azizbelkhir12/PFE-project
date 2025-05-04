@@ -11,12 +11,25 @@ const BeneficiarySchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phoneNumber: { type: String, required: true },
+    photoUrl: { type: String },
+    documents: {
+        personalPhoto: String,
+        housePhoto: String,
+        bulletin: mongoose.Schema.Types.Mixed
+      },
     children: [
         {
             name: { type: String, required: true },
             age: { type: Number, required: true }
         }
-    ]
+    ],
+    notifications: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Notification'
+        }],
+        default: []
+    }
 });
 
 // Hash the password before saving it to the database

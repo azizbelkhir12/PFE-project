@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -45,20 +46,38 @@ export class AuthService {
   }
 
   // Login with credentials
-  login(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, credentials).pipe(
-      tap((response: any) => {
-        if (response.token && response.data.user) {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('currentUser', JSON.stringify({userType : response.data.userType})); // ✅ Store full user object
-          this.currentUserSubject.next(response.data.user);
-        }
-      }),
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
-  }
+  // In your AuthService
+login(credentials: any): Observable<any> {
+  return this.http.post(`${this.apiUrl}/auth/login`, credentials).pipe(
+    tap((response: any) => {
+      if (response.token && response.data.user) {
+        localStorage.setItem('token', response.token);
+        
+        // Decode the token to get user info
+        const decodedToken: any = jwtDecode(response.token);
+        
+        const user = {
+          id: decodedToken.userId || response.data.user._id, // Use whichever field contains the ID
+          userType: decodedToken.userType || response.data.userType,
+          email: decodedToken.email || response.data.user.email,
+          nom: decodedToken.nom || response.data.user.nom || ''
+        };
+
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+      }
+    }),
+    catchError(error => throwError(() => error))
+  );
+}
+
+// Add a method to get the current user ID
+getCurrentUserId(): string | null {
+  const currentUser = this.currentUserValue;
+  return currentUser ? currentUser.id : null;
+}
+  
+  
   
   // Get authenticated user profile
   getProfile(): Observable<any> {
@@ -66,6 +85,20 @@ export class AuthService {
       'Authorization': `Bearer ${this.token}`
     });
     return this.http.get(`${this.apiUrl}/auth/me`, { headers });
+  }
+
+  isTokenExpired(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) return true;
+  
+    try {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      return decoded.exp < currentTime;
+    } catch (error) {
+      console.error('Token decode error:', error);
+      return true;
+    }
   }
 
   // Logout the user

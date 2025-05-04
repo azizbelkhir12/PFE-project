@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-nav-bar-membre',
@@ -9,10 +10,11 @@ import { Router } from '@angular/router';
 })
 export class NavBarMembreComponent {
 afficherSection: any;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authservice : AuthService) {}
 
-  seDeconnecter() {
-    // Ici, tu peux aussi vider le localStorage ou les tokens si nécessaire
-    this.router.navigate(['/']);
+  onLogout(): void {
+    this.authservice.logout();
+  }
+    
 
-}}
+}

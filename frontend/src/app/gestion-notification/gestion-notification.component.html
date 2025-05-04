@@ -2,31 +2,29 @@
 <app-sidebar-admin></app-sidebar-admin>
 
 <div class="main-container">
-  <!-- ✅ Cartes de statistiques -->
+  <!-- Statistics Cards -->
   <div class="stats-container">
-    <!-- Carte 1 : Envoyer une Notification -->
+    <!-- Card 1: Send Notification -->
     <div class="stats-card">
       <i class="fas fa-bell icon-yellow"></i>
       <h4>Envoyer une Notification</h4>
     </div>
 
-    <!-- Carte 2 : Total Notifications -->
+    <!-- Card 2: Total Notifications -->
     <div class="stats-card">
       <i class="fas fa-paper-plane icon-yellow"></i>
       <h4>Total Notifications</h4>
       <p>{{ totalNotifications }}</p>
     </div>
 
-    <!-- Carte 3 : Total Bénéficiaires -->
+    <!-- Card 3: Total Beneficiaries -->
     <div class="stats-card">
       <i class="fas fa-users icon-yellow"></i>
       <h4>Total Bénéficiaires</h4>
       <p>{{ listeBeneficiaires.length }}</p>
     </div>
 
-
-
-    <!-- Carte 5 : Dernière Notification -->
+    <!-- Card 5: Last Notification -->
     <div class="stats-card">
       <i class="fas fa-comment-alt icon-yellow"></i>
       <h4>Dernière Notification</h4>
@@ -34,17 +32,17 @@
     </div>
   </div>
 
-  <!-- ✅ Message de succès -->
-  <div *ngIf="message" class="message-box">
+  <!-- Success/Error Message -->
+  <div *ngIf="message" class="message-box" [class.success]="message.includes('✅')" [class.error]="message.includes('❌')">
     {{ message }}
   </div>
 
-  <!-- ✅ Formulaire d'envoi de notification -->
+  <!-- Notification Form -->
   <div class="forms-container">
     <div class="form-card">
       <h3>Notification pour un Bénéficiaire</h3>
 
-      <!-- Barre de recherche -->
+      <!-- Search Bar -->
       <input
         type="text"
         placeholder="Rechercher un bénéficiaire..."
@@ -61,8 +59,8 @@
           name="beneficiaire"
           required
         >
-          <option *ngFor="let b of beneficiairesFiltres" [value]="b.id">
-            {{ b.nom }} {{ b.prenom }}
+          <option *ngFor="let b of beneficiairesFiltres" [value]="b._id">
+            {{ b.name }} {{ b.lastname }} ({{ b.email }})
           </option>
         </select>
 
@@ -81,6 +79,8 @@
           [(ngModel)]="notification.contenu"
           name="contenu"
           required
+          cols="50"
+          rows="4"
         ></textarea>
 
         <button class="btn-blue" type="submit" [disabled]="notificationForm.invalid">

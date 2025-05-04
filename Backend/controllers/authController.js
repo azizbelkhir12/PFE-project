@@ -73,15 +73,14 @@ exports.login = async (req, res) => {
         delete userData.password;
 
         res.status(200).json({
-            status: 'success',
-            token, // Client will store this
-            expiresIn: process.env.JWT_EXPIRES_IN || '1d',
-            data: {
-                user: userData,
-                userType : userType
-            }
+          status: 'success',
+          token,
+          expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+          data: {
+            user: userData,
+            userType: userType
+          }
         });
-
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({

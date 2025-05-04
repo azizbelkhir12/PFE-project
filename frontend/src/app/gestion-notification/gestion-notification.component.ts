@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NotificationService } from '../services/notification/notification.service';
+import { BeneficiaryService } from '../services/beneficiary/beneficiary.service';
 
 @Component({
   selector: 'app-gestion-notification',
@@ -8,7 +10,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionNotificationComponent implements OnInit {
   message: string = '';
-
   notification = {
     idBeneficiaire: '',
     titre: '',
@@ -17,66 +18,92 @@ export class GestionNotificationComponent implements OnInit {
 
   listeBeneficiaires: any[] = [];
   beneficiairesFiltres: any[] = [];
-
   recherche: string = '';
 
-  // Statistiques
+  // Statistics
   totalNotifications: number = 0;
   notificationsAujourdhui: number = 0;
   derniereNotification: any = null;
-  dateDernierEnvoi: string = '';
 
-  constructor() {}
+  constructor(
+    private notificationService: NotificationService,
+    private beneficiaryService: BeneficiaryService
+  ) {}
 
   ngOnInit(): void {
-    this.recupererBeneficiaires();
+    this.loadBeneficiaries();
+    this.loadStatistics();
   }
 
-  recupererBeneficiaires(): void {
-    // 🔄 À remplacer par un service HTTP
-    this.listeBeneficiaires = [
-      { id: '1', nom: 'Ben Salah', prenom: 'Amina' },
-      { id: '2', nom: 'Mejri', prenom: 'Sami' },
-      { id: '3', nom: 'Trabelsi', prenom: 'Nada' },
-      { id: '4', nom: 'Khalil', prenom: 'Youssef' }
-    ];
+  loadBeneficiaries(): void {
+    this.beneficiaryService.getBeneficiaires().subscribe({
+      next: (response: any) => {
+        // Handle both direct array and wrapped responses
+        console.log('Raw Response:', response);
+        this.listeBeneficiaires = Array.isArray(response) 
+          ? response 
+          : (response.data.beneficiaries || []);
+        
+        this.beneficiairesFiltres = [...this.listeBeneficiaires];
+      },
+      error: (err) => {
+        console.error('Error loading beneficiaries:', err);
+        this.message = '❌ Error loading beneficiaries';
+      }
+    });
+  }
 
-    this.beneficiairesFiltres = this.listeBeneficiaires;
+  loadStatistics(): void {
+    this.notificationService.getNotificationStats().subscribe({
+      next: (response: any) => {
+        // Handle both direct and wrapped responses
+        const stats = response.data || response;
+        this.totalNotifications = stats.totalNotifications || 0;
+        this.notificationsAujourdhui = stats.notificationsToday || 0;
+        this.derniereNotification = stats.lastNotification || null;
+      },
+      error: (err) => {
+        console.error('Error loading statistics:', err);
+        this.message = '❌ Error loading statistics';
+      }
+    });
   }
 
   filtrerBeneficiaires(): void {
+    if (!this.recherche) {
+      this.beneficiairesFiltres = [...this.listeBeneficiaires];
+      return;
+    }
+    
     const rechercheLower = this.recherche.toLowerCase();
     this.beneficiairesFiltres = this.listeBeneficiaires.filter(b =>
-      (b.nom + ' ' + b.prenom).toLowerCase().includes(rechercheLower)
+      (b.name + ' ' + b.lastname).toLowerCase().includes(rechercheLower) ||
+      b.email.toLowerCase().includes(rechercheLower)
     );
   }
 
   envoyerNotification(): void {
-    console.log('Notification envoyée :', this.notification);
-    this.message = '✅ Notification envoyée avec succès !';
+    this.notificationService.sendNotification(this.notification).subscribe({
+      next: (response) => {
+        this.message = '✅ Notification sent successfully!';
+        this.loadStatistics(); // Refresh stats after sending
+        this.resetForm();
+      },
+      error: (err) => {
+        this.message = '❌ Error sending notification';
+        console.error('Error:', err);
+      }
+    });
+  }
 
-    // Mettre à jour les statistiques
-    this.totalNotifications++;
-
-    const auj = new Date().toDateString();
-    if (this.dateDernierEnvoi !== auj) {
-      this.dateDernierEnvoi = auj;
-      this.notificationsAujourdhui = 1;
-    } else {
-      this.notificationsAujourdhui++;
-    }
-
-    this.derniereNotification = { ...this.notification };
-
-    // Réinitialiser le formulaire
+  resetForm(): void {
     this.notification = {
       idBeneficiaire: '',
       titre: '',
       contenu: ''
     };
-
     this.recherche = '';
-    this.beneficiairesFiltres = this.listeBeneficiaires;
+    this.beneficiairesFiltres = [...this.listeBeneficiaires];
   }
 }
 

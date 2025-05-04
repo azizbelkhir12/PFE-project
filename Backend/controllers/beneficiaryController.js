@@ -90,6 +90,34 @@ exports.getBeneficiaryById = async (req, res) => {
     }
 }
 
+
+exports.updatePhoto = async (req, res) => {
+  try {
+    if (!req.imgurUrl) {
+      return res.status(400).json({ message: 'Image non téléchargée' });
+    }
+
+    const beneficiary = await Beneficiary.findByIdAndUpdate(
+      req.params.id,
+      { photoUrl: req.imgurUrl },
+      { new: true }
+    );
+
+    if (!beneficiary) {
+      return res.status(404).json({ message: 'Bénéficiaire non trouvé' });
+    }
+
+    res.json({
+      message: 'Photo mise à jour avec succès',
+      beneficiary,
+    });
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour de la photo :', error);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+};
+
+
 exports.updateBeneficiary = async (req, res) => {
     try {
         
@@ -168,4 +196,57 @@ exports.deleteBeneficiary = async (req, res) => {
             error: error.message
         });
     }
+};
+
+
+
+exports.submitDocuments = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedDocuments = {};
+
+    // Imgur URLs from middleware
+    if (req.imgurUrlPersonalPhoto) {
+      updatedDocuments.personalPhoto = req.imgurUrlPersonalPhoto;
+    }
+    if (req.imgurUrlHousePhoto) {
+      updatedDocuments.housePhoto = req.imgurUrlHousePhoto;
+    }
+
+    // Bulletin file info (PDF or image)
+    if (req.files?.bulletin?.[0]) {
+      const bulletinFile = req.files.bulletin[0];
+      // Here you can save metadata or upload the file somewhere (local disk, S3, etc.)
+      // For now, just save metadata in DB
+      updatedDocuments.bulletin = {
+        originalName: bulletinFile.originalname,
+        mimeType: bulletinFile.mimetype,
+        size: bulletinFile.size,
+        // You can add url/path if you upload it somewhere
+      };
+    }
+
+    // Update beneficiary documents in DB
+    const beneficiary = await Beneficiary.findByIdAndUpdate(
+      id,
+      { $set: { documents: updatedDocuments } },
+      { new: true, runValidators: true }
+    );
+
+    if (!beneficiary) {
+      return res.status(404).json({ error: 'Beneficiary not found' });
+    }
+
+    res.status(200).json({
+      message: 'Documents uploaded successfully',
+      documents: updatedDocuments,
+      beneficiary
+    });
+  } catch (error) {
+    console.error('Error uploading documents:', error);
+    res.status(500).json({
+      error: 'Failed to upload documents',
+      details: error.message
+    });
+  }
 };

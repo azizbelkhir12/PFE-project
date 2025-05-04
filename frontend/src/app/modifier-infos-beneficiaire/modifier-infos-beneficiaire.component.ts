@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from '../services/auth/auth.service';
+import { BeneficiaryService } from '../services/beneficiary/beneficiary.service';
+
 
 @Component({
   selector: 'app-modifier-infos-beneficiaire',
@@ -8,9 +12,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./modifier-infos-beneficiaire.component.css']
 })
 export class ModifierInfosBeneficiaireComponent implements OnInit {
-  utilisateur: any;
+  utilisateur: any = {};
   profileForm!: FormGroup;
-  afficherProfil: boolean = true; // <-- Assure que le profil s'affiche par défaut
 
   gouvernorats: string[] = [
     'Ariana', 'Béja', 'Ben Arous', 'Bizerte', 'Gabès',
@@ -21,48 +24,62 @@ export class ModifierInfosBeneficiaireComponent implements OnInit {
   ];
 
   isEditing: { [key: string]: boolean } = {
-    nom: false,
-    prenom: false,
-    dateNaissance: false,
-    sexe: false,
-    telephone: false,
-    gouvernorat: false,
-    delegation: false,
-    adresse: false,
+    name: false,
+    lastname: false,
     email: false,
-    age: false
+    phoneNumber: false,
+    gouvernorat: false,
+    Age: false,
+    address: false
   };
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private authService: AuthService,
+    private beneficiaryService: BeneficiaryService,
+    private fb: FormBuilder
+  ) {}
 
-  ngOnInit() {
-    // Initialisation de l'utilisateur
-    this.utilisateur = {
-      nom: 'Ghazouani',
-      prenom: 'Amal',
-      dateNaissance: '2001-01-01',
-      sexe: 'Femme',
-      telephone: '12345678',
-      gouvernorat: 'Ariana',
-      delegation: 'La Soukra',
-      adresse: 'Rue des Jasmins',
-      age: 22,
-      email: 'amal@example.com',
-      photoUrl: '' // photo par défaut si pas de photo
-    };
+  ngOnInit(): void {
+    this.initializeForm();
+    this.loadBeneficiaryData();
+  }
 
-    // Création du FormGroup avec les valeurs initiales
+  initializeForm(): void {
     this.profileForm = this.fb.group({
-      nom: [this.utilisateur.nom],
-      prenom: [this.utilisateur.prenom],
-      dateNaissance: [this.utilisateur.dateNaissance],
-      sexe: [this.utilisateur.sexe],
-      telephone: [this.utilisateur.telephone],
-      gouvernorat: [this.utilisateur.gouvernorat],
-      delegation: [this.utilisateur.delegation],
-      adresse: [this.utilisateur.adresse],
-      age: [this.utilisateur.age],
-      email: [this.utilisateur.email]
+      name: [''],
+      lastname: [''],
+      email: [''],
+      phoneNumber: [''],
+      gouvernorat: [''],
+      Age: [''],
+      address: ['']
+    });
+  }
+
+  loadBeneficiaryData(): void {
+    const id = this.authService.getCurrentUserId();
+    if (!id) {
+      console.error('No user ID found');
+      return;
+    }
+
+    this.beneficiaryService.getBeneficiaireById(id).subscribe({
+      next: (data) => {
+        const beneficiary = data.data.beneficiary;
+        this.utilisateur = beneficiary;
+        this.profileForm.patchValue({
+          name: beneficiary.name || '',
+          lastname: beneficiary.lastname || '',
+          email: beneficiary.email || '',
+          phoneNumber: beneficiary.phoneNumber || '',
+          gouvernorat: beneficiary.gouvernorat || '',
+          Age: beneficiary.Age || '',
+          address: beneficiary.address || ''
+        });
+      },
+      error: (err) => {
+        console.error('Error loading beneficiary data:', err);
+      }
     });
   }
 
@@ -70,16 +87,50 @@ export class ModifierInfosBeneficiaireComponent implements OnInit {
     this.isEditing[champ] = true;
   }
 
+  saveField(champ: string): void {
+    const id = this.authService.getCurrentUserId();
+    const value = this.profileForm.get(champ)?.value;
+
+    if (!id || value === undefined) return;
+
+    this.beneficiaryService.updateBeneficiaire(id, { [champ]: value }).subscribe({
+      next: () => {
+        this.utilisateur[champ] = value;
+        this.isEditing[champ] = false;
+      },
+      error: (err) => {
+        console.error(`Error updating ${champ}:`, err);
+      }
+    });
+  }
+
   resetForm(): void {
-    // Reset le formulaire à ses valeurs initiales
-    this.profileForm.reset();
+    this.profileForm.patchValue(this.utilisateur);
+    Object.keys(this.isEditing).forEach(key => this.isEditing[key] = false);
   }
 
-  onSubmit(): void {
-    // Logic to handle form submission
+  onPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+  
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Image = reader.result as string;
+  
+        this.beneficiaryService.updateBeneficiaire(this.utilisateur._id, { photoUrl: base64Image }).subscribe({
+          next: (res) => {
+            console.log('Photo updated:', res);
+            this.utilisateur.photoUrl = base64Image;
+          },
+          error: (err) => {
+            console.error('Photo upload failed:', err);
+          }
+        });
+      };
+  
+      reader.readAsDataURL(file);
+    }
   }
-
-  onPhotoSelected(event: any): void {
-    // Logic to handle photo selection
-  }
+  
 }

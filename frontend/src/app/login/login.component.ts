@@ -61,13 +61,13 @@ export class LoginComponent {
         // Redirect based on user type
         switch(this.loginData.userType) {
           case 'donor':
-            this.router.navigate(['/donateur']);
+            this.router.navigate(['/donateur-compte']);
             break;
           case 'volunteer':
-            this.router.navigate(['/volunteer-dashboard']);
+            this.router.navigate(['/benevole-compte']);
             break;
           case 'beneficiary':
-            this.router.navigate(['/beneficiary-dashboard']);
+            this.router.navigate(['/beneficiaire-compte']);
             break;
           default:
             this.router.navigate(['/']);
