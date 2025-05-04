@@ -1,0 +1,45 @@
+<div class="paiement-container">
+  <h2>Historique des Paiements</h2>
+
+  <div class="filters">
+    <input type="text" placeholder="🔍 Rechercher un moyen de paiement..." [(ngModel)]="recherche" />
+    <select [(ngModel)]="filtreStatut">
+      <option value="">Tous les statuts</option>
+      <option value="réussi">Réussi</option>
+      <option value="en attente">En attente</option>
+      <option value="échoué">Échoué</option>
+    </select>
+  </div>
+
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Montant (DT)</th>
+          <th>Moyen</th>
+          <th>Statut</th>
+          <th>Reçu</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let paiement of paiementsFiltres">
+          <td>{{ paiement.date }}</td>
+          <td>{{ paiement.montant }}</td>
+          <td>{{ paiement.moyen }}</td>
+          <td>
+            <span [ngClass]="paiement.statut.replace(' ', '-')">
+              {{ paiement.statut | titlecase }}
+            </span>
+          </td>
+          <td>
+            <a *ngIf="paiement.recu" href="{{ paiement.recu }}" target="_blank" class="btn-recu">📄 Télécharger</a>
+            <span *ngIf="!paiement.recu" class="no-recu">—</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p *ngIf="paiementsFiltres.length === 0" class="no-result">Aucun paiement trouvé.</p>
+</div>

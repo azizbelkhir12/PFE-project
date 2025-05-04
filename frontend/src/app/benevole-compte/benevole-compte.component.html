@@ -1,2 +1,59 @@
-<h2>Bienvenue sur votre Dashboard Bénévole</h2>
-<p>Vous êtes connecté en tant que bénévole.</p>
+<app-nav-bar-membre></app-nav-bar-membre>
+
+<div class="dashboard-container">
+  <!-- En-tête -->
+  <div class="dashboard-header" *ngIf="benevole">
+    <h4 class="dashboard-title">
+      Bienvenue, {{ benevole.prenom }} dans votre Espace Bénévole 👋
+    </h4>
+  </div>
+
+  <!-- Cartes -->
+  <div class="cards-container">
+    <!-- Profil -->
+    <div class="dashboard-card" [class.active]="activeSection === 'profil'" (click)="showSection('profil')">
+      <div class="card-icon-bg">
+        <i class="fas fa-user-edit icon"></i>
+      </div>
+      <h3>Mon Profil</h3>
+      <p>Modifier mes informations</p>
+    </div>
+
+    <!-- Abonnement -->
+    <div class="dashboard-card" [class.active]="activeSection === 'abonnement'" (click)="showSection('abonnement')">
+      <div class="card-icon-bg">
+        <i class="fas fa-credit-card icon"></i>
+      </div>
+      <h3>Abonnement</h3>
+      <p>Payer / Renouveler</p>
+    </div>
+
+    <!-- Historique Paiements -->
+    <div class="dashboard-card" [class.active]="activeSection === 'historique'" (click)="showSection('historique')">
+      <div class="card-icon-bg">
+        <i class="fas fa-history icon"></i>
+      </div>
+      <h3>Historique</h3>
+      <p>Mes paiements</p>
+    </div>
+
+    <!-- Chat -->
+    <div class="dashboard-card" [class.active]="activeSection === 'chat'" (click)="showSection('chat')">
+      <div class="card-icon-bg">
+        <i class="fas fa-comments icon"></i>
+      </div>
+      <h3>Messagerie</h3>
+      <p>Contacter l'admin</p>
+    </div>
+  </div>
+
+  <!-- Section dynamique -->
+  <div class="content-section">
+    <app-profil-benevole *ngIf="activeSection === 'profil'"></app-profil-benevole>
+    <app-abonnement-benevole *ngIf="activeSection === 'abonnement'"></app-abonnement-benevole>
+    <app-historique-paiements-benevoles *ngIf="activeSection === 'historique'"></app-historique-paiements-benevoles>
+    <app-chat-admin *ngIf="activeSection === 'chat'"></app-chat-admin>
+  </div>
+</div>
+
+<app-footer></app-footer>
