@@ -14,15 +14,14 @@
 
   <div class="cards-wrapper">
     <div *ngFor="let beneficiaire of beneficiairesFiltres" class="beneficiaire-card">
-      <h3>{{ beneficiaire.nom }}</h3>
-      <div class="documents">
-        <div *ngFor="let doc of beneficiaire.documents" class="doc-item">
-          <i [ngClass]="doc.icone" class="icon-doc" [style.color]="doc.couleur"></i>
-          <span>{{ doc.nom }}</span>
-          <a [href]="doc.url" target="_blank" class="view-link">Voir</a>
-        </div>
+      <h3>{{ beneficiaire.lastname }} {{ beneficiaire.name }}</h3>
+      <div *ngFor="let doc of beneficiaire.documents | keyvalue" class="doc-item">
+        <i class="fas fa-file-alt icon-doc"></i>
+        <span>{{ doc.key }}</span>
+        <a [href]="doc.value" target="_blank" class="view-link">Voir</a>
       </div>
-      <button class="btn-download">
+      
+      <button class="btn-download" (click)="downloadAllDocuments(beneficiaire)">
         <i class="fas fa-download"></i> Télécharger tous les documents
       </button>
     </div>

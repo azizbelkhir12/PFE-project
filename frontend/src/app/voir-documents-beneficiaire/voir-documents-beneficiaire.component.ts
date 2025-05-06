@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BeneficiaryService } from '../services/beneficiary/beneficiary.service';
 
 @Component({
   selector: 'app-voir-documents-beneficiaire',
@@ -8,36 +9,56 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VoirDocumentsBeneficiaireComponent implements OnInit {
   searchText: string = '';
+  beneficiaires: any[] = [];
 
-  beneficiaires = [
-    {
-      nom: 'Mohamed Ali',
-      documents: [
-        { nom: 'Image personnelle', type: 'image', url: 'docs/ali_photo.jpg', icone: 'fas fa-user', couleur: '#6f42c1' },
-        { nom: 'Image de la maison', type: 'image', url: 'docs/ali_maison.jpg', icone: 'fas fa-home', couleur: '#fd7e14' },
+  constructor(private beneficiaryService: BeneficiaryService) {}
 
-        { nom: 'Bulletin d’étude', type: 'image', url: 'docs/ali_bulletin.jpg', icone: 'fas fa-file-alt', couleur: '#20c997' },
+  ngOnInit(): void {
+    this.fetchBeneficiaires();
+  }
 
-      ]
-    },
-    {
-      nom: 'Amina Bensalah',
-      documents: [
-        { nom: 'Image personnelle', type: 'image', url: 'docs/amina_photo.jpg', icone: 'fas fa-user', couleur: '#6f42c1' },
-        { nom: 'Image de la maison', type: 'image', url: 'docs/amina_maison.jpg', icone: 'fas fa-home', couleur: '#fd7e14' },
-
-        { nom: 'Bulletin d’étude', type: 'image', url: 'docs/amina_bulletin.jpg', icone: 'fas fa-file-alt', couleur: '#20c997' },
-      ]
-    }
-  ];
+  fetchBeneficiaires(): void {
+    this.beneficiaryService.getBeneficiaires().subscribe({
+      next: (response) => {
+        console.log('Bénéficiaires chargés:', response);
+        this.beneficiaires = response.data.beneficiaries;
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des bénéficiaires:', err);
+      }
+    });
+  }
 
   get beneficiairesFiltres() {
     return this.beneficiaires.filter(b =>
-      b.nom.toLowerCase().includes(this.searchText.toLowerCase())
+      (b.name?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+       b.lastname?.toLowerCase().includes(this.searchText.toLowerCase()))
     );
   }
 
-  ngOnInit(): void {}
+
+  downloadAllDocuments(beneficiaire: any) {
+    const documentEntries = Object.entries(beneficiaire.documents || {});
+  
+    documentEntries.forEach(([key, url]) => {
+      if (url) {
+        const link = document.createElement('a');
+        link.href = url as string;
+        
+        // Force the download to use .pdf extension for all documents
+        // You might want to make this more sophisticated if you have different file types
+        link.download = `${beneficiaire.lastname}_${beneficiaire.name}_${key}.pdf`;
+        
+        // Add a timestamp to prevent browser caching issues
+        link.href = link.href + '?download=' + new Date().getTime();
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    });
+  }
+  
 }
 
 
