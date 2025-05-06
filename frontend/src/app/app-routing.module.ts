@@ -27,6 +27,7 @@ import { RapportsComponent } from './rapports/rapports.component';
 import { DonateurCompteComponent } from './donateur-compte/donateur-compte.component';
 
 import { ChatComponent } from './chat/chat.component';
+import { ModifierInfosBeneficiaireComponent } from './modifier-infos-beneficiaire/modifier-infos-beneficiaire.component';
 
 
 const routes: Routes = [
@@ -34,27 +35,29 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path:  'benevole-compte',component:BenevoleCompteComponent},
-  { path: 'beneficiaire-compte', component: BeneficiaireCompteComponent,  },
   { path: 'benevolat', component: BenevolatComponent },
   { path: 'donateur-compte', component: DonateurCompteComponent, canActivate: [AuthGuard] },
   { path: 'benevole-compte', component: BenevoleCompteComponent, canActivate: [AuthGuard] },
-  { path: 'beneficiaire-compte', component: BeneficiaireCompteComponent, canActivate: [AuthGuard] },
-
-
-
+  {
+    path: 'beneficiaire-compte',
+    component: BeneficiaireCompteComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    children: [
+      { path: 'profil', component: ModifierInfosBeneficiaireComponent },
+      { path: 'notifications', component: VoirDocumentsBeneficiaireComponent },
+      { path: 'documents', component: VoirDocumentsBeneficiaireComponent },
+      { path: '', redirectTo: 'profil', pathMatch: 'full' }
+    ]
+  },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'payment', component: DonRapideComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'payment-success', component: PaymentSuccessComponent },
   { path: 'payment-fail', component: PaymentFailComponent },
-  { path: 'rapports', component: RapportsComponent,  },
-
-
-
-
-
+  { path: 'rapports', component: RapportsComponent },
   // Admin routes group (protected)
-  {
+  { 
     path: 'admin-compte',
     canActivate: [AuthGuard, AdminGuard], // Protect the entire admin section
     children: [
@@ -68,7 +71,6 @@ const routes: Routes = [
       { path: 'gestion-feedback', component: GestionFeedbackComponent },
       { path: 'voir-documents-beneficiaire', component: VoirDocumentsBeneficiaireComponent },
       { path: 'chat', component: ChatComponent }, // Add chat component here
-
     ]
   }
 ];

@@ -1,90 +1,194 @@
-<div class="profile-container" *ngIf="afficherProfil">
+<div class="profile-container" *ngIf="!isLoading; else loading">
   <h1><i class="fas fa-user-edit"></i> Votre Profil</h1>
 
-  <div class="forms-container">
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div class="forms-container" *ngIf="volunteerData">
     <div class="form-card">
-      <!-- Section photo de profil -->
+      <!-- Profile Photo Section -->
       <div class="profile-photo-section">
-        <img [src]="utilisateur.photoUrl || 'https://images.pexels.com/photos/4098343/pexels-photo-4098343.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'" alt="Photo de profil" class="profile-photo">
+        <div class="photo-container">
+          <img [src]="previewUrl || volunteerData.photoUrl || 'assets/images/default-profile.png'" 
+               alt="Photo de profil" 
+               class="profile-photo"
+               [class.uploading]="uploadInProgress">
+          
+          <div *ngIf="uploadInProgress" class="upload-progress">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Envoi en cours...</span>
+          </div>
+        </div>
 
-        <!-- Input file caché -->
-        <input
-          type="file"
-          #photoInput
-          accept="image/*"
-          (change)="onPhotoSelected($event)"
-          style="display: none;"
-        />
+        <div class="photo-actions">
+          <!-- Hidden file input -->
+          <input type="file" 
+                 #photoInput
+                 accept="image/*" 
+                 (change)="onFileSelected($event)"
+                 style="display: none;">
 
-        <!-- Bouton qui déclenche le click sur l'input file -->
-        <button class="btn-toggle" (click)="photoInput.click()">
-          <i class="fas fa-camera"></i> Modifier la photo
-        </button>
+          <!-- Upload button -->
+          <button class="btn-toggle" 
+                  (click)="photoInput.click()"
+                  [disabled]="uploadInProgress">
+            <i class="fas fa-camera"></i> {{ selectedFile ? 'Changer' : 'Modifier' }}
+          </button>
+          
+          <!-- Upload confirmation -->
+          <button *ngIf="selectedFile" 
+                  class="btn-toggle confirm" 
+                  (click)="uploadPhoto()"
+                  [disabled]="uploadInProgress">
+            <i class="fas fa-check"></i> Confirmer
+          </button>
+        </div>
       </div>
 
       <h3>Informations personnelles</h3>
 
       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
-        <!-- Prénom -->
-        <div class="form-group readonly">
-          <label>Prénom</label>
-          <div class="static-value">{{ utilisateur.prenom }}</div>
+        <!-- Name -->
+        <div class="form-group">
+          <label>Nom</label>
+          <div class="editable-field">
+            <input *ngIf="isEditing" 
+                   formControlName="name" 
+                   type="text"
+                   [class.invalid]="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" />
+            <span *ngIf="!isEditing">{{ volunteerData.name }}</span>
+          </div>
+          <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="error-text">
+            Nom requis
+          </div>
         </div>
 
-        <!-- Nom -->
-        <div class="form-group readonly">
-          <label>Nom</label>
-          <div class="static-value">{{ utilisateur.nom }}</div>
+        <!-- Last Name -->
+        <div class="form-group">
+          <label>Prénom</label>
+          <div class="editable-field">
+            <input *ngIf="isEditing" 
+                   formControlName="lastName" 
+                   type="text"
+                   [class.invalid]="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" />
+            <span *ngIf="!isEditing">{{ volunteerData.lastName }}</span>
+          </div>
+          <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" class="error-text">
+            Prénom requis
+          </div>
         </div>
 
         <!-- Email -->
         <div class="form-group">
           <label>Email</label>
           <div class="editable-field">
-            <input *ngIf="isEditing['email']" formControlName="email" type="email" />
-            <span *ngIf="!isEditing['email']">{{ utilisateur.email }}</span>
-            <i class="fas fa-pen edit-icon" (click)="modifierChamp('email')"></i>
+            <input *ngIf="isEditing" 
+                   formControlName="email" 
+                   type="email"
+                   [class.invalid]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" />
+            <span *ngIf="!isEditing">{{ volunteerData.email }}</span>
+          </div>
+          <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="error-text">
+            Email invalide
           </div>
         </div>
 
-        <!-- Téléphone -->
+        <!-- Phone -->
         <div class="form-group">
           <label>Téléphone</label>
           <div class="editable-field">
-            <input *ngIf="isEditing['telephone']" formControlName="telephone" />
-            <span *ngIf="!isEditing['telephone']">{{ utilisateur['telephone'] }}</span>
-            <i class="fas fa-pen edit-icon" (click)="modifierChamp('telephone')"></i>
+            <input *ngIf="isEditing" 
+                   formControlName="phone" 
+                   type="tel"
+                   [class.invalid]="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched" />
+            <span *ngIf="!isEditing">{{ volunteerData.phone }}</span>
+          </div>
+          <div *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched" class="error-text">
+            Téléphone invalide
           </div>
         </div>
 
-        <!-- Gouvernorat -->
+        <!-- Governorate -->
         <div class="form-group">
           <label>Gouvernorat</label>
           <div class="editable-field">
-            <select *ngIf="isEditing['gouvernorat']" formControlName="gouvernorat">
+            <select *ngIf="isEditing" 
+                    formControlName="gouvernorat"
+                    [class.invalid]="profileForm.get('gouvernorat')?.invalid && profileForm.get('gouvernorat')?.touched">
+              <option value="">Sélectionner</option>
               <option *ngFor="let gov of gouvernorats" [value]="gov">{{ gov }}</option>
             </select>
-            <span *ngIf="!isEditing['gouvernorat']">{{ utilisateur['gouvernorat'] }}</span>
-            <i class="fas fa-pen edit-icon" (click)="modifierChamp('gouvernorat')"></i>
+            <span *ngIf="!isEditing">{{ volunteerData.gouvernorat }}</span>
+          </div>
+          <div *ngIf="profileForm.get('gouvernorat')?.invalid && profileForm.get('gouvernorat')?.touched" class="error-text">
+            Gouvernorat requis
           </div>
         </div>
 
-        <!-- Âge -->
+        <!-- Address -->
+        <div class="form-group">
+          <label>Adresse</label>
+          <div class="editable-field">
+            <textarea *ngIf="isEditing" 
+                      formControlName="address" 
+                      rows="2"
+                      [class.invalid]="profileForm.get('address')?.invalid && profileForm.get('address')?.touched"></textarea>
+            <span *ngIf="!isEditing">{{ volunteerData.address }}</span>
+          </div>
+          <div *ngIf="profileForm.get('address')?.invalid && profileForm.get('address')?.touched" class="error-text">
+            Adresse requise
+          </div>
+        </div>
+
+        <!-- Age -->
         <div class="form-group">
           <label>Âge</label>
           <div class="editable-field">
-            <input *ngIf="isEditing['age']" formControlName="age" type="number" />
-            <span *ngIf="!isEditing['age']">{{ utilisateur['age'] }}</span>
-            <i class="fas fa-pen edit-icon" (click)="modifierChamp('age')"></i>
+            <input *ngIf="isEditing" 
+                   formControlName="age" 
+                   type="number"
+                   min="18"
+                   [class.invalid]="profileForm.get('age')?.invalid && profileForm.get('age')?.touched" />
+            <span *ngIf="!isEditing">{{ volunteerData.age }}</span>
+          </div>
+          <div *ngIf="profileForm.get('age')?.invalid && profileForm.get('age')?.touched" class="error-text">
+            Âge doit être ≥ 18
           </div>
         </div>
 
+        <!-- Form Actions -->
         <div class="form-actions">
-          <button class="btn-toggle" type="submit">Enregistrer</button>
-          <button class="btn-toggle cancel" type="button" (click)="resetForm()">Annuler</button>
+          <button *ngIf="!isEditing" 
+                  class="btn-toggle" 
+                  type="button" 
+                  (click)="toggleEdit()">
+            <i class="fas fa-edit"></i> Modifier le profil
+          </button>
+          
+          <div *ngIf="isEditing" class="edit-actions">
+            <button class="btn-toggle confirm" 
+                    type="submit"
+                    [disabled]="profileForm.invalid || updateInProgress">
+              <i class="fas" [class.fa-spinner]="updateInProgress" [class.fa-save]="!updateInProgress" [class.fa-spin]="updateInProgress"></i> 
+              {{ updateInProgress ? 'Enregistrement...' : 'Enregistrer' }}
+            </button>
+            <button class="btn-toggle cancel" 
+                    type="button" 
+                    (click)="toggleEdit()"
+                    [disabled]="updateInProgress">
+              <i class="fas fa-times"></i> Annuler
+            </button>
+          </div>
         </div>
       </form>
     </div>
   </div>
 </div>
 
+<ng-template #loading>
+  <div class="loading-container">
+    <i class="fas fa-spinner fa-spin fa-2x"></i>
+    <p>Chargement de votre profil...</p>
+  </div>
+</ng-template>

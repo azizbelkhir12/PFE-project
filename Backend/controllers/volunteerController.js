@@ -10,9 +10,38 @@ exports.getAllVolunteers = async (req, res) => {
     }
 };
 
+exports.getVolunteerById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find volunteer by ID
+        const volunteer = await Volunteer.findById(id).select('-password'); // Exclude password
+
+        // Check if volunteer exists
+        if (!volunteer) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No volunteer found with that ID'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: { volunteer }
+        });
+    } catch (error) {
+        console.error('Error fetching volunteer:', error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Something went wrong!',
+            error: error.message
+        });
+    }
+};
+
 exports.changeVolunteerStatus = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const { status } = req.body; // Expecting { status: 'active' or 'inactive' }
 
         // 1. Check if status is provided
@@ -46,13 +75,78 @@ exports.changeVolunteerStatus = async (req, res) => {
         }
         res.status(200).json({
             status: 'success',
-            data: {volunteer}
+            data: { volunteer }
         });
-    }  catch (err) {
+    } catch (err) {
         res.status(500).json({
             status: 'error',
             message: 'Something went wrong!',
             error: err.message
         });
     }
-}
+};
+
+exports.updateVolunteer = async (req, res) => {
+    try {
+      const volunteer = await Volunteer.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+      ).select('-password');
+  
+      if (!volunteer) {
+        return res.status(404).json({
+          status: 'fail',
+          message: 'No volunteer found with that ID'
+        });
+      }
+  
+      res.status(200).json({
+        status: 'success',
+        data: { volunteer }
+      });
+    } catch (error) {
+      res.status(500).json({ status: 'error', message: error.message });
+    }
+  };
+  
+
+  exports.updatePhoto = async (req, res) => {
+    try {
+      if (!req.imgurUrl) {
+        return res.status(400).json({ 
+          success: false,
+          message: 'Image non téléchargée' 
+        });
+      }
+  
+      const volunteer = await Volunteer.findByIdAndUpdate(
+        req.params.id,
+        { photoUrl: req.imgurUrl },
+        { new: true }
+      );
+  
+      if (!volunteer) {
+        return res.status(404).json({ 
+          success: false,
+          message: 'Bénévole non trouvé' 
+        });
+      }
+  
+      res.json({
+        success: true,
+        message: 'Photo mise à jour avec succès',
+        data: {
+          photoUrl: req.imgurUrl,
+          volunteer
+        }
+      });
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de la photo :', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Erreur serveur',
+        error: error.message 
+      });
+    }
+  };

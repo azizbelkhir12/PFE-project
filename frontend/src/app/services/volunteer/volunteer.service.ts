@@ -19,5 +19,23 @@ export class VolunteerService {
     return this.http.put(`${this.apiUrl}/${id}/status`, { status });
   }
   
+  getVolunteerById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/getvolunteers/${id}`);
+  }
 
+  uploadPhoto(id: string, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('photo', file);
+    
+    // Clean ID if it contains any file extensions
+    const cleanId = id.replace(/\..+$/, '');
+    
+    return this.http.put(`${this.apiUrl}/photo/${cleanId}`, formData, {
+      reportProgress: true
+    });
+  }
+
+  updateVolunteer(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update/${id}`, data);
+  }
 }

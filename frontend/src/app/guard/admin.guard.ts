@@ -1,32 +1,21 @@
-// admin.guard.ts
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
-    const currentUserString = localStorage.getItem('currentUser');
-  
-    if (currentUserString) {
-      try {
-        const currentUser = JSON.parse(currentUserString);
-        console.log('Parsed currentUser:', currentUser);
-        
-        if (currentUser.userType === 'admin') {
-          console.log('Admin access granted');
-          return true;
-        }
-      } catch (e) {
-        console.error('Error parsing currentUser:', e);
-      }
+    if (this.authService.isLoggedIn && this.authService.isAdmin) {
+      console.log('Admin access granted');
+      return true;
     }
-  
+
+    console.warn('Admin access denied, redirecting to admin login');
     this.router.navigate(['/admin-login']);
     return false;
   }
-  
 }

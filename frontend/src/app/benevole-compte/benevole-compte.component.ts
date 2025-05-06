@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-
+import { VolunteerService } from '../services/volunteer/volunteer.service';
+import { AuthService } from '../services/auth/auth.service'
 
 @Component({
   selector: 'app-benevole-compte',
@@ -8,35 +9,44 @@ import { Component } from '@angular/core';
   styleUrl: './benevole-compte.component.css'
 })
 export class BenevoleCompteComponent {
-  activeSection: string = 'profil'; // Section par défaut
+  activeSection: string = 'profil';
+  benevole: any = null;
+  isLoading: boolean = true;
+  errorMessage: string = '';
+  
 
-  // Données statiques pour le bénévole
-  benevole = {
-    nom: 'Dupont',
-    prenom: 'Jean',
-    email: 'jean.dupont@example.com',
-    telephone: '0123456789',
-    adresse: {
-      rue: '123 Rue de la Solidarité',
-      ville: 'Paris',
-      codePostal: '75000'
-    },
-    abonnementActif: false
-  };
+  constructor(
+    private volunteerService: VolunteerService,
+    private authService: AuthService
+  ) {}
 
-  // Historique de paiements simulé
-  historiquePaiements = [
-    { date: '2023-01-15', montant: 30, methode: 'Carte', statut: 'Réussi' },
-    { date: '2022-01-10', montant: 30, methode: 'PayPal', statut: 'Réussi' }
-  ];
+  ngOnInit(): void {
+    this.loadVolunteerData();
+  }
 
-  // Messages de chat simulés
-  messages = [
-    { expediteur: 'admin', contenu: 'Bonjour, comment puis-je vous aider ?', date: '2023-11-20T10:30' },
-    { expediteur: 'benevole', contenu: 'Je souhaite modifier mon adresse.', date: '2023-11-20T10:32' }
-  ];
-
-  constructor() {} // Pas besoin de BenevoleService en mode statique
+  loadVolunteerData(): void {
+    const userId = this.authService.getCurrentUserId();
+    
+    if (!userId) {
+      this.errorMessage = 'User not authenticated';
+      this.isLoading = false;
+      return;
+    }
+  
+    this.volunteerService.getVolunteerById(userId).subscribe({
+      next: (response) => {
+        console.log('Volunteer data loaded:', response);
+        // Extract the volunteer object from the nested response
+        this.benevole = response.data.volunteer;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error loading volunteer data:', err);
+        this.errorMessage = 'Failed to load volunteer data';
+        this.isLoading = false;
+      }
+    });
+  }
 
   // Basculer entre les sections
   showSection(section: string) {
@@ -50,16 +60,6 @@ export class BenevoleCompteComponent {
 
   // Simuler un paiement
   payerAbonnement() {
-    this.benevole.abonnementActif = true;
-    this.historiquePaiements.unshift({
-      date: new Date().toISOString().split('T')[0],
-      montant: 30,
-      methode: 'Carte',
-      statut: 'Réussi'
-    });
-    alert('Paiement simulé ! Abonnement activé.');
+    
   }
 }
-
-
-

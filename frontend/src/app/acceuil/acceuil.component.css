@@ -218,7 +218,6 @@ banner-container {
   line-height: 1.4;
   margin-bottom: 80px; /* Augmenté de 50px à 80px */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  text-align: center;
   position: relative;
   top: 50px;
 }

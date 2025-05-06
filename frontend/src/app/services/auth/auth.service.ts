@@ -14,7 +14,6 @@ export class AuthService {
   currentUser: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient, private router: Router) {
-    // Safely parse localStorage data
     const storedUser = localStorage.getItem('currentUser');
     try {
       this.currentUserSubject = new BehaviorSubject<any>(
@@ -25,7 +24,6 @@ export class AuthService {
       localStorage.removeItem('currentUser');
       this.currentUserSubject = new BehaviorSubject<any>(null);
     }
-    
   }
 
   public get currentUserValue() {
@@ -40,68 +38,75 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
+  // Helper to get auth headers
+  getAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`
+    });
+  }
+
   // Register a new donor
   register(donorData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/donors/register`, donorData);
   }
 
-  // Login with credentials
-  // In your AuthService
-login(credentials: any): Observable<any> {
-  return this.http.post(`${this.apiUrl}/auth/login`, credentials).pipe(
-    tap((response: any) => {
-      if (response.token && response.data.user) {
-        localStorage.setItem('token', response.token);
-        
-        // Decode the token to get user info
-        const decodedToken: any = jwtDecode(response.token);
-        
-        const user = {
-          id: decodedToken.userId || response.data.user._id, // Use whichever field contains the ID
-          userType: decodedToken.userType || response.data.userType,
-          email: decodedToken.email || response.data.user.email,
-          nom: decodedToken.nom || response.data.user.nom || ''
-        };
+  // Login method
+  login(credentials: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/login`, credentials).pipe(
+      tap((response: any) => {
+        if (response.token && response.data.user) {
+          localStorage.setItem('token', response.token);
 
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-      }
-    }),
-    catchError(error => throwError(() => error))
-  );
-}
+          // Decode token to extract user info
+          const decodedToken: any = jwtDecode(response.token);
 
-// Add a method to get the current user ID
-getCurrentUserId(): string | null {
-  const currentUser = this.currentUserValue;
-  return currentUser ? currentUser.id : null;
-}
-  
-  
-  
-  // Get authenticated user profile
-  getProfile(): Observable<any> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`
-    });
-    return this.http.get(`${this.apiUrl}/auth/me`, { headers });
+          const user = {
+            id: decodedToken.userId || response.data.user._id,
+            userType: decodedToken.userType || response.data.user.userType,
+            email: decodedToken.email || response.data.user.email,
+            nom: decodedToken.nom || response.data.user.nom || ''
+          };
+
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+        }
+      }),
+      catchError(error => {
+        console.error('Login error:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
+  // Get current user ID
+  getCurrentUserId(): string | null {
+    const currentUser = this.currentUserValue;
+    return currentUser ? currentUser.id : null;
+  }
+
+  // Get authenticated user profile
+  getProfile(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/auth/me`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  // Check token expiration
   isTokenExpired(): boolean {
-    const token = localStorage.getItem('token');
+    const token = this.token;
     if (!token) return true;
-  
+
     try {
       const decoded: any = jwtDecode(token);
       const currentTime = Date.now() / 1000;
       return decoded.exp < currentTime;
     } catch (error) {
-      console.error('Token decode error:', error);
       return true;
     }
   }
 
-  // Logout the user
+
+  // Logout method
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
@@ -109,9 +114,9 @@ getCurrentUserId(): string | null {
     this.router.navigate(['/login']);
   }
 
-  // Check if user has a specific role
+  // Check for specific user role (based on `userType`)
   hasRole(role: string): boolean {
-    return this.currentUserValue?.role === role;
+    return this.currentUserValue?.userType === role;
   }
 
   // Check if user is admin
@@ -119,14 +124,20 @@ getCurrentUserId(): string | null {
     return this.hasRole('admin');
   }
 
-  // Auto login if token exists
+  // Automatically log in from token if available
   autoLogin(): void {
     const token = this.token;
-    if (token) {
+    if (token && !this.isTokenExpired()) {
       this.getProfile().subscribe({
         next: (user) => {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
+          const userInfo = {
+            id: user._id,
+            userType: user.userType,
+            email: user.email,
+            nom: user.nom || ''
+          };
+          localStorage.setItem('currentUser', JSON.stringify(userInfo));
+          this.currentUserSubject.next(userInfo);
         },
         error: () => {
           this.logout();

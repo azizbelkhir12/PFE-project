@@ -12,6 +12,7 @@ const volunteerSchema = new mongoose.Schema({
     address: { type: String, required: true },
     gouvernorat: { type: String, required: true },
     status: { type: String, enum: ['active', 'inactive'], default: 'active' },
+    photoUrl: {type: String},
     role: { type: String, default: 'volunteer' },
     joinedAt: { type: Date, default: Date.now }
 });
