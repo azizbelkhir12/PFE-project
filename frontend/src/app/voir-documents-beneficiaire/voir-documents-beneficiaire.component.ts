@@ -36,6 +36,15 @@ export class VoirDocumentsBeneficiaireComponent implements OnInit {
     );
   }
 
+  // Fonction pour déterminer l'icône à afficher en fonction du type de document
+  getIconClass(docKey: string): string {
+    if (docKey.toLowerCase().includes('maison')) {
+      return 'fas fa-home';  // Icône maison
+    } else if (docKey.toLowerCase().includes('photo')) {
+      return 'fas fa-camera'; // Icône photo
+    }
+    return 'fas fa-file-alt'; // Icône par défaut
+  }
 
   
 }

@@ -1,1 +1,60 @@
-<p>effectuer-don works!</p>
+<div class="payment-container">
+  <div class="form-section">
+    <h2 class="title">Effectuer le paiement</h2>
+    <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+      <label>Prix (TND)</label>
+      <input formControlName="amount" type="number" placeholder="Entrer le prix" />
+      <div *ngIf="paymentForm.get('amount')?.touched && paymentForm.get('amount')?.invalid" class="error">
+        <p *ngIf="paymentForm.get('amount')?.errors?.['required']">Le prix est requis.<p>
+        <p *ngIf="paymentForm.get('amount')?.errors?.['min']">Le prix doit être supérieur à 0.</p>
+      </div>
+
+      <label>Méthode de paiement</label>
+      <select formControlName="paymentMethod">
+        <option value="credit_card">Carte Bancaire</option>
+        <option value="bank_transfer">Virement Bancaire</option>
+        <option value="cash">Cash</option>
+      </select>
+      <div *ngIf="paymentForm.get('paymentMethod')?.touched && paymentForm.get('paymentMethod')?.invalid" class="error">
+        <p *ngIf="paymentForm.get('paymentMethod')?.errors?.['required']">La méthode de paiement est requise.</p>
+      </div>
+
+      <label>Nom complet</label>
+      <input formControlName="guestName" type="text" placeholder="Votre nom" />
+      <div *ngIf="paymentForm.get('guestName')?.touched && paymentForm.get('guestName')?.invalid" class="error">
+        <p *ngIf="paymentForm.get('guestName')?.errors?.['required']">Le nom est requis.</p>
+      </div>
+
+      <label>Email</label>
+      <input formControlName="guestEmail" type="email" placeholder="Votre email" />
+      <div *ngIf="paymentForm.get('guestEmail')?.touched && paymentForm.get('guestEmail')?.invalid" class="error">
+        <p *ngIf="paymentForm.get('guestEmail')?.errors?.['required']">L'email est requis.</p>
+        <p *ngIf="paymentForm.get('guestEmail')?.errors?.['email']">L'email n'est pas valide.</p>
+      </div>
+
+      <label>Projet</label>
+        <select formControlName="project" required>
+          <option value="" disabled selected>-- Sélectionnez un projet --</option>
+          <option value="Parrainage enfant">Parrainage d'enfant</option>
+          <option value="Rentrée scolaire">Rentrée scolaire</option>
+          <option value="Ramadan">Ramadan</option>
+          <option value="Aid Idh'ha">Aid Idh'ha</option>
+          <option value="Aid Fiter">Aid Fiter</option>
+        </select>
+        <div *ngIf="paymentForm.get('project')?.touched && paymentForm.get('project')?.invalid" class="error">
+          <p>Le projet est requis.</p>
+        </div>
+
+
+      <button type="submit" [disabled]="paymentForm.invalid || isLoading">
+        {{ isLoading ? 'Traitement...' : 'Payer Maintenant' }}
+      </button>
+
+      <p *ngIf="message">{{ message }}</p>
+    </form>
+  </div>
+
+
+
+
+</div>
