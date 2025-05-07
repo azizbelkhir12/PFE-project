@@ -2,47 +2,64 @@
 <app-sidebar-admin></app-sidebar-admin>
 
 <div class="container-fluid chat-page">
-  <div class="row">
-    <div class="col-md-12">
-      <h1 style="text-align: center;margin-bottom: 20px;">Chat with Volunteers</h1>
-    </div>
-  </div>
-<div class="chat-container">
-    <!-- Volunteer selection -->
-    <div class="volunteer-select">
-      <input type="text" placeholder="Search volunteer..." [(ngModel)]="volunteerSearch" (input)="filterVolunteers()" />
-      <select (change)="onVolunteerSelect($event)">
-        <option disabled selected value="">Select a volunteer</option>
-        <option *ngFor="let v of filteredVolunteers" [value]="v._id">
-          {{ v.name }}
-        </option>
-      </select>
-    </div>
-  
-    <!-- Show current chat target -->
-    <div *ngIf="receiverId" class="selected-volunteer">
-      <h4>Chatting with: {{ selectedVolunteerName }}</h4>
-    </div>
-  
-    <!-- Message area -->
-    <div class="messages">
-      <div
-        *ngFor="let msg of messages"
-        [ngClass]="{
-          'my-message': msg.senderId === senderId,
-          'other-message': msg.senderId !== senderId
-        }"
-      >
-        <div class="message-bubble">
-          <strong>{{ msg.senderRole }}:</strong> {{ msg.text }}
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <h1 class="text-center mb-4">Chat with Volunteers</h1>
+
+      <div class="chat-container">
+        <!-- Volunteer selection -->
+        <div class="volunteer-select">
+          <input
+            type="text"
+            placeholder="Search volunteer..."
+            [(ngModel)]="volunteerSearch"
+            (input)="filterVolunteers()"
+            aria-label="Search volunteers"
+          />
+          <select (change)="onVolunteerSelect($event)" aria-label="Select volunteer">
+            <option disabled selected value="">Select a volunteer</option>
+            <option *ngFor="let v of filteredVolunteers" [value]="v._id">
+              {{ v.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Show current chat target -->
+        <div *ngIf="receiverId" class="selected-volunteer">
+          <h4>Chatting with: <span class="volunteer-name">{{ selectedVolunteerName }}</span></h4>
+        </div>
+
+        <!-- Message area -->
+        <div class="messages" tabindex="0" role="log" aria-live="polite" aria-relevant="additions">
+          <div
+            *ngFor="let msg of messages"
+            [ngClass]="{
+              'my-message': msg.senderId === senderId,
+              'other-message': msg.senderId !== senderId
+            }"
+            class="message-wrapper"
+          >
+            <div class="message-bubble" [title]="msg.senderRole">
+              <strong>{{ msg.senderRole }}:</strong> {{ msg.text }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Input area -->
+        <div class="input-area">
+          <input
+            [(ngModel)]="newMessage"
+            placeholder="Type a message..."
+            (keyup.enter)="sendMessage()"
+            aria-label="Type your message"
+          />
+          <button (click)="sendMessage()" [disabled]="!receiverId || !newMessage.trim()" aria-label="Send message">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
+              <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
-  
-    <!-- Input area -->
-    <div class="input-area">
-      <input [(ngModel)]="newMessage" placeholder="Type a message..." />
-      <button (click)="sendMessage()" [disabled]="!receiverId">Send</button>
-    </div>
   </div>
-  
+</div>

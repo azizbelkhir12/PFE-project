@@ -25,6 +25,9 @@ import { GestionFeedbackComponent } from './gestion-feedback/gestion-feedback.co
 import { VoirDocumentsBeneficiaireComponent } from './voir-documents-beneficiaire/voir-documents-beneficiaire.component';
 import { RapportsComponent } from './rapports/rapports.component';
 import { DonateurCompteComponent } from './donateur-compte/donateur-compte.component';
+import { AbonnementBenevoleComponent } from './abonnement-benevole/abonnement-benevole.component';
+import { HistoriquePaiementsComponent } from './historique-paiements benevoles/historique-paiements.component';
+import { ChatAdminComponent } from './chat-admin/chat-admin.component';
 
 import { ChatComponent } from './chat/chat.component';
 import { ModifierInfosBeneficiaireComponent } from './modifier-infos-beneficiaire/modifier-infos-beneficiaire.component';
@@ -34,10 +37,20 @@ const routes: Routes = [
   { path: '', component: AcceuilComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path:  'benevole-compte',component:BenevoleCompteComponent},
   { path: 'benevolat', component: BenevolatComponent },
   { path: 'donateur-compte', component: DonateurCompteComponent, canActivate: [AuthGuard] },
-  { path: 'benevole-compte', component: BenevoleCompteComponent, canActivate: [AuthGuard] },
+  {
+    path: 'benevole-compte',
+    component: BenevoleCompteComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    children: [
+      { path: 'abonnement', component: AbonnementBenevoleComponent },
+      { path: 'historique-paiement', component: HistoriquePaiementsComponent },
+      { path: 'chat-admin', component: ChatAdminComponent },
+      { path: '', redirectTo: 'abonnement', pathMatch: 'full' } // Default child route
+    ]
+  },
   {
     path: 'beneficiaire-compte',
     component: BeneficiaireCompteComponent,

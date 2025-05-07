@@ -37,27 +37,6 @@ export class VoirDocumentsBeneficiaireComponent implements OnInit {
   }
 
 
-  downloadAllDocuments(beneficiaire: any) {
-    const documentEntries = Object.entries(beneficiaire.documents || {});
-  
-    documentEntries.forEach(([key, url]) => {
-      if (url) {
-        const link = document.createElement('a');
-        link.href = url as string;
-        
-        // Force the download to use .pdf extension for all documents
-        // You might want to make this more sophisticated if you have different file types
-        link.download = `${beneficiaire.lastname}_${beneficiaire.name}_${key}.pdf`;
-        
-        // Add a timestamp to prevent browser caching issues
-        link.href = link.href + '?download=' + new Date().getTime();
-        
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    });
-  }
   
 }
 

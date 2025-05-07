@@ -39,22 +39,28 @@ export class ChatComponent {
     });
   }
 
-  sendMessage() {
-    if (!this.newMessage.trim() || !this.receiverId) return;
-
-    const message = {
-      senderId: this.senderId,
-      senderRole: this.senderRole,
-      receiverId: this.receiverId,
-      receiverRole: this.receiverRole,
-      text: this.newMessage
-    };
-
-    this.socketService.sendMessage(message);
-    this.messageService.sendMessage(message).subscribe();
-    this.newMessage = '';
-  }
-
+ 
+    sendMessage() {
+      if (!this.newMessage.trim() || !this.receiverId) return;
+    
+      const message = {
+        senderId: this.senderId,
+        senderRole: this.senderRole,
+        receiverId: this.receiverId,
+        receiverRole: this.receiverRole,
+        text: this.newMessage
+      };
+    
+      // Add message locally immediately
+      this.messages.push(message);
+    
+      // Send via socket and API
+      this.socketService.sendMessage(message);
+      this.messageService.sendMessage(message).subscribe();
+    
+      this.newMessage = '';
+    }
+    
   ngOnDestroy(): void {
     this.socketService.disconnect();
   }
