@@ -36,29 +36,36 @@ export class VoirDocumentsBeneficiaireComponent implements OnInit {
     );
   }
 
+  // Fonction pour déterminer l'icône à afficher en fonction du type de document
+  getIconClass(docKey: string): string {
+    if (docKey.toLowerCase().includes('maison')) {
+      return 'fas fa-home';  // Icône maison
+    } else if (docKey.toLowerCase().includes('photo')) {
+      return 'fas fa-camera'; // Icône photo
+    }
+    return 'fas fa-file-alt'; // Icône par défaut
+  }
 
   downloadAllDocuments(beneficiaire: any) {
     const documentEntries = Object.entries(beneficiaire.documents || {});
-  
+
     documentEntries.forEach(([key, url]) => {
       if (url) {
         const link = document.createElement('a');
         link.href = url as string;
-        
-        // Force the download to use .pdf extension for all documents
-        // You might want to make this more sophisticated if you have different file types
+
+        // Forcer le téléchargement avec l'extension .pdf pour tous les documents
         link.download = `${beneficiaire.lastname}_${beneficiaire.name}_${key}.pdf`;
-        
-        // Add a timestamp to prevent browser caching issues
+
+        // Ajouter un timestamp pour éviter les problèmes de mise en cache dans le navigateur
         link.href = link.href + '?download=' + new Date().getTime();
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       }
     });
   }
-  
 }
 
 

@@ -5,7 +5,7 @@
     <div class="form-card">
       <!-- Profile Photo -->
       <div class="profile-photo-section">
-        <img [src]="utilisateur?.photoUrl || 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'" 
+        <img [src]="utilisateur?.photoUrl || 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'"
              alt="Photo de profil" class="profile-photo">
         <input type="file" #photoInput accept="image/*" (change)="onPhotoSelected($event)" style="display: none;">
         <button class="btn-toggle" (click)="photoInput.click()">
@@ -114,7 +114,7 @@
         </div>
 
         <div class="form-actions">
-          <button class="btn-toggle" type="button" (click)="resetForm()">Annuler les modifications</button>
+          <button class="btn-toggle" type="button" (click)="resetForm()">Modifier</button>
         </div>
       </form>
     </div>
