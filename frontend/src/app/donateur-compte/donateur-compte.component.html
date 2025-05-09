@@ -3,7 +3,7 @@
 <div class="dashboard-container">
   <!-- En-tête -->
   <div class="dashboard-header">
-    <h4 class="dashboard-title">Bienvenue, {{ utilisateur?.nom }} dans votre Espace 👋</h4>
+    <h4 class="dashboard-title">Bienvenue, {{ utilisateur?.name }} dans votre Espace 👋</h4>
 
     <!-- Badge Type Donateur -->
     <div class="badge-type" *ngIf="typeDonateur === 'parrain'">Donateur Parrain</div>
@@ -11,11 +11,8 @@
   </div>
 
   <!-- Message personnalisé -->
-  <div class="donateur-message" *ngIf="typeDonateur === 'parrain'">
-    <p>Merci de parrainer {{ utilisateur?.enfants?.length || 0 }} enfant(s) 🧒👧 !</p>
-  </div>
-  <div class="donateur-message" *ngIf="typeDonateur === 'standard'">
-    <p>Merci pour vos dons réguliers à notre association ❤️</p>
+  <div class="donateur-message" *ngIf="typeDonateur === 'standard' || typeDonateur === 'parrain'">
+    <p style="font-size: 20px; text-align: center;">Merci pour vos dons réguliers à notre association ❤️</p>
   </div>
 
   <!-- Cartes -->

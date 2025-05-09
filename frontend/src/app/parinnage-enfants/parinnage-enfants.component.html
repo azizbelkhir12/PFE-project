@@ -1,1 +1,15 @@
-<p>parinnage-enfants works!</p>
+<div *ngIf="donorData?.assignedBeneficiaries?.length">
+  <h3>Bénéficiaires Assignés</h3>
+  <div *ngFor="let b of donorData.assignedBeneficiaries">
+    <p><strong>Nom:</strong> {{ b.name }} {{ b.lastname }}</p>
+    <p><strong>Enfants:</strong></p>
+    <ul>
+      <li *ngFor="let child of b.children">
+        {{ child.name }} - {{ child.age }} ans
+      </li>
+    </ul>
+    <img *ngIf="b.photoUrl" [src]="b.photoUrl" alt="Photo" width="100">
+    <hr>
+  </div>
+</div>
+

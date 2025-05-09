@@ -3,6 +3,7 @@ import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
 import Swal from 'sweetalert2';
 import { BeneficiaryService } from '../services/beneficiary/beneficiary.service';
+import { DonorsService } from '../services/donors/donors.service';
 
 @Component({
   selector: 'app-gestion-beneficiaires',
@@ -41,11 +42,13 @@ export class GestionBeneficiairesComponent {
 
   filtreNom: string = '';
   filtreAge: number | null = null;
+  donors: any[]=[] ;
 
-  constructor(private beneficiaryService: BeneficiaryService) {}
+  constructor(private beneficiaryService: BeneficiaryService, private donorService : DonorsService) {}
 
   ngOnInit(): void {
     this.getBeneficiaires();
+    this.loadDonors();
   }
 
   private updateStatistics(): void {
@@ -76,6 +79,53 @@ export class GestionBeneficiairesComponent {
       }
     });
   }
+
+  loadDonors(): void {
+    this.donorService.getDonors().subscribe({
+      next: (data) => {
+        console.log('Liste des donateurs:', data);
+        this.donors = data;
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des donateurs :', err);
+      }
+    });
+  }
+
+  assign(): void {
+    const donorId = this.affectation.idDonateur;
+    const beneficiaryId = this.affectation.idBeneficiaire;
+
+    console.log('ID Donateur:', donorId);
+    console.log('ID Bénéficiaire:', beneficiaryId);
+    if (!donorId || !beneficiaryId) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez sélectionner un donateur et un bénéficiaire.',
+      });
+      return;
+    }
+
+    this.donorService.assignBeneficiaryToDonor(donorId, beneficiaryId).subscribe({
+      next: (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Bénéficiaire assigné avec succès!',
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Échec de l\'assignation: ' + (err.error?.message || err.message),
+        });
+      }
+    });
+  }
+
+
 
   creerBeneficiaire() {
     if (!this.nouveauBeneficiaire.name || !this.nouveauBeneficiaire.lastname || !this.nouveauBeneficiaire.email) {

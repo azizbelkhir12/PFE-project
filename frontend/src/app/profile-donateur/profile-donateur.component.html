@@ -1,11 +1,11 @@
-<div class="profile-container">
+<div class="form-actions"></div>
   <h1><i class="fas fa-user-edit"></i> Votre Profil</h1>
 
   <div class="forms-container">
     <div class="form-card">
       <!-- Profile Photo -->
       <div class="profile-photo-section">
-        <img [src]="utilisateur?.photoUrl || 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'"
+        <img [src]="utilisateur?.img || 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'"
              alt="Photo de profil" class="profile-photo">
         <input type="file" #photoInput accept="image/*" (change)="onPhotoSelected($event)" style="display: none;">
         <button class="btn-toggle" (click)="photoInput.click()">
@@ -16,17 +16,12 @@
       <h3>INFORMATIONS PERSONNELLES</h3>
 
       <form [formGroup]="profileForm" class="profile-form">
-
         <!-- Name -->
         <div class="form-group">
           <label>Nom</label>
           <div class="editable-field">
-            <input *ngIf="isEditing['name']"
-                   formControlName="name"
-                   type="text"
-                   (blur)="saveField('name')"
-                   (keydown.enter)="saveField('name')">
-            <span *ngIf="!isEditing['name']">{{ profileForm.get('name')?.value || 'Non spécifié' }}</span>
+            <input *ngIf="isEditing['name']" formControlName="name" type="text">
+            <span *ngIf="!isEditing['name']">{{ utilisateur?.name || 'Non spécifié' }}</span>
             <i class="fas fa-pen edit-icon" (click)="modifierChamp('name')"></i>
           </div>
         </div>
@@ -35,12 +30,8 @@
         <div class="form-group">
           <label>Prénom</label>
           <div class="editable-field">
-            <input *ngIf="isEditing['lastname']"
-                   formControlName="lastname"
-                   type="text"
-                   (blur)="saveField('lastname')"
-                   (keydown.enter)="saveField('lastname')">
-            <span *ngIf="!isEditing['lastname']">{{ profileForm.get('lastname')?.value || 'Non spécifié' }}</span>
+            <input *ngIf="isEditing['lastname']" formControlName="lastname" type="text">
+            <span *ngIf="!isEditing['lastname']">{{ utilisateur?.lastname || 'Non spécifié' }}</span>
             <i class="fas fa-pen edit-icon" (click)="modifierChamp('lastname')"></i>
           </div>
         </div>
@@ -49,12 +40,8 @@
         <div class="form-group">
           <label>Email</label>
           <div class="editable-field">
-            <input *ngIf="isEditing['email']"
-                   formControlName="email"
-                   type="email"
-                   (blur)="saveField('email')"
-                   (keydown.enter)="saveField('email')">
-            <span *ngIf="!isEditing['email']">{{ profileForm.get('email')?.value || 'Non spécifié' }}</span>
+            <input *ngIf="isEditing['email']" formControlName="email" type="email">
+            <span *ngIf="!isEditing['email']">{{ utilisateur?.email || 'Non spécifié' }}</span>
             <i class="fas fa-pen edit-icon" (click)="modifierChamp('email')"></i>
           </div>
         </div>
@@ -63,12 +50,19 @@
         <div class="form-group">
           <label>Téléphone</label>
           <div class="editable-field">
-            <input *ngIf="isEditing['phoneNumber']"
-                   formControlName="phoneNumber"
-                   (blur)="saveField('phoneNumber')"
-                   (keydown.enter)="saveField('phoneNumber')">
-            <span *ngIf="!isEditing['phoneNumber']">{{ profileForm.get('phoneNumber')?.value || 'Non spécifié' }}</span>
+            <input *ngIf="isEditing['phoneNumber']" formControlName="phoneNumber" type="tel">
+            <span *ngIf="!isEditing['phoneNumber']">{{ utilisateur?.phone || 'Non spécifié' }}</span>
             <i class="fas fa-pen edit-icon" (click)="modifierChamp('phoneNumber')"></i>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="form-group">
+          <label>Adresse</label>
+          <div class="editable-field">
+            <input *ngIf="isEditing['address']" formControlName="address" type="text">
+            <span *ngIf="!isEditing['address']">{{ utilisateur?.address || 'Non spécifié' }}</span>
+            <i class="fas fa-pen edit-icon" (click)="modifierChamp('address')"></i>
           </div>
         </div>
 
@@ -76,12 +70,10 @@
         <div class="form-group">
           <label>Gouvernorat</label>
           <div class="editable-field">
-            <select *ngIf="isEditing['gouvernorat']"
-                    formControlName="gouvernorat"
-                    (blur)="saveField('gouvernorat')">
-              <option *ngFor="let gov of gouvernorats" [value]="gov">{{ gov }}</option>
+            <select *ngIf="isEditing['gouvernorat']" formControlName="gouvernorat">
+              <option *ngFor="let gov of gouvernorats" [value]="gov">{{gov}}</option>
             </select>
-            <span *ngIf="!isEditing['gouvernorat']">{{ profileForm.get('gouvernorat')?.value || 'Non spécifié' }}</span>
+            <span *ngIf="!isEditing['gouvernorat']">{{ utilisateur?.gouvernorat || 'Non spécifié' }}</span>
             <i class="fas fa-pen edit-icon" (click)="modifierChamp('gouvernorat')"></i>
           </div>
         </div>
@@ -90,33 +82,17 @@
         <div class="form-group">
           <label>Âge</label>
           <div class="editable-field">
-            <input *ngIf="isEditing['Age']"
-                   formControlName="Age"
-                   type="number"
-                   (blur)="saveField('Age')"
-                   (keydown.enter)="saveField('Age')">
-            <span *ngIf="!isEditing['Age']">{{ profileForm.get('Age')?.value || 'Non spécifié' }}</span>
+            <input *ngIf="isEditing['Age']" formControlName="Age" type="number">
+            <span *ngIf="!isEditing['Age']">{{ utilisateur?.Age || 'Non spécifié' }}</span>
             <i class="fas fa-pen edit-icon" (click)="modifierChamp('Age')"></i>
           </div>
         </div>
 
-        <!-- Address -->
-        <div class="form-group">
-          <label>Adresse</label>
-          <div class="editable-field">
-            <input *ngIf="isEditing['address']"
-                   formControlName="address"
-                   (blur)="saveField('address')"
-                   (keydown.enter)="saveField('address')">
-            <span *ngIf="!isEditing['address']">{{ profileForm.get('address')?.value || 'Non spécifié' }}</span>
-            <i class="fas fa-pen edit-icon" (click)="modifierChamp('address')"></i>
-          </div>
-        </div>
-
+        <!-- Action Buttons -->
         <div class="form-actions">
-          <button class="btn-toggle" type="button" (click)="resetForm()">Modifier</button>
+          <button class="btn-toggle" type="button" (click)="enableAllEditing()">Modifier les informations</button>
+          <button *ngIf="showSaveButton" class="btn-save" type="button" (click)="saveAllFields()">Enregistrer les modifications</button>
         </div>
       </form>
     </div>
   </div>
-</div>

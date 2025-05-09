@@ -111,22 +111,20 @@
     <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'affectation'">
       <div class="form-card">
         <h3>Affecter un Bénéficiaire à un Donateur</h3>
-        <form #affectationForm="ngForm">
-          <label for="idBeneficiaire">Sélectionner un Bénéficiaire :</label>
-          <select id="idBeneficiaire" [(ngModel)]="affectation.idBeneficiaire" name="idBeneficiaire" required>
-            <option *ngFor="let beneficiaire of beneficiaries" [value]="beneficiaire._id">
-              {{ beneficiaire.name }} {{ beneficiaire.lastname }}
-            </option>
-          </select>
+        <form>
+  <label for="donateur">Sélectionner un Donateur :</label>
+  <select [(ngModel)]="affectation.idDonateur" name="idDonateur" required>
+    <option *ngFor="let donor of donors" [value]="donor._id">{{ donor.name }}</option>
+  </select>
 
-          <label for="idDonateur">Sélectionner un Donateur :</label>
-          <select id="idDonateur" [(ngModel)]="affectation.idDonateur" name="idDonateur" required>
-            <option value="">-- Sélectionner un donateur --</option>
-            <!-- You'll need to add donateur options here -->
-          </select>
+<label for="beneficiaire">Sélectionner un Bénéficiaire :</label>
+  <select [(ngModel)]="affectation.idBeneficiaire" name="idBeneficiaire" required>
+    <option *ngFor="let b of beneficiaries" [value]="b._id">{{ b.name }} {{b.lastname}}</option>
+  </select>
 
-          <button class="btn-blue" type="submit" [disabled]="affectationForm.invalid">Affecter le Bénéficiaire</button>
-        </form>
+  <button class="btn-blue" type="button" (click)="assign()">Affecter le Bénéficiaire</button>
+</form>
+
       </div>
     </div>
 

@@ -25,16 +25,16 @@
       <tbody>
         <tr *ngFor="let paiement of paiementsFiltres">
           <td>{{ paiement.date }}</td>
-          <td>{{ paiement.montant }}</td>
-          <td>{{ paiement.moyen }}</td>
+          <td>{{ paiement.amount }}</td>
+          <td>{{ paiement.paymentMethod }}</td>
           <td>
-            <span [ngClass]="paiement.statut.replace(' ', '-')">
-              {{ paiement.statut | titlecase }}
+            <span [ngClass]="paiement.status.replace(' ', '-')">
+              {{ paiement.status | titlecase }}
             </span>
           </td>
           <td>
-            <a *ngIf="paiement.recu" href="{{ paiement.recu }}" target="_blank" class="btn-recu">📄 Télécharger</a>
-            <span *ngIf="!paiement.recu" class="no-recu">—</span>
+            <a *ngIf="paiement.receiptUrl" href="{{ paiement.receiptUrl }}" target="_blank" class="btn-recu">📄 Télécharger</a>
+            <span *ngIf="!paiement.receiptUrl" class="no-recu">—</span>
           </td>
         </tr>
       </tbody>

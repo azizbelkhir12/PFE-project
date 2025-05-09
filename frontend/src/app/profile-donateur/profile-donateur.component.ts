@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuthService } from '../services/auth/auth.service';
-import { BeneficiaryService } from '../services/beneficiary/beneficiary.service';
+import { DonorsService } from '../services/donors/donors.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-profile-donateur',
@@ -10,14 +11,12 @@ import { BeneficiaryService } from '../services/beneficiary/beneficiary.service'
   styleUrl: './profile-donateur.component.css'
 })
 export class ProfileDonateurComponent {
-onPhotoSelected($event: Event) {
-throw new Error('Method not implemented.');
-}
-resetForm() {
-throw new Error('Method not implemented.');
-}
- utilisateur: any = {};
+
+
+  utilisateur: any = {};
   profileForm!: FormGroup;
+  showSaveButton: boolean = false;
+
 
   gouvernorats: string[] = [
     'Ariana', 'Béja', 'Ben Arous', 'Bizerte', 'Gabès',
@@ -39,13 +38,13 @@ throw new Error('Method not implemented.');
 
   constructor(
     private authService: AuthService,
-    private beneficiaryService: BeneficiaryService,
+    private donorService: DonorsService,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.initializeForm();
-    this.loadBeneficiaryData();
+    this.loadDonorData();
   }
 
   initializeForm(): void {
@@ -60,52 +59,119 @@ throw new Error('Method not implemented.');
     });
   }
 
-  loadBeneficiaryData(): void {
-    const id = this.authService.getCurrentUserId();
-    if (!id) {
-      console.error('No user ID found');
-      return;
+  loadDonorData(): void {
+    const userId = this.authService.getCurrentUserId();
+    if (userId) {
+      this.donorService.getDonorsById(userId).subscribe({
+        next: (donor) => {
+          console.log('Donor data:', donor);
+          this.utilisateur = donor;
+          // Patch the form with the utilisateur data
+          this.profileForm.patchValue({
+            name: donor.name || '',
+            lastname: donor.lastname || '',
+            email: donor.email || '',
+            phoneNumber: donor.phone || '',
+            gouvernorat: donor.gouvernorat || '',
+            Age: donor.Age || '',
+            address: donor.address || ''
+          });
+        },
+        error: (error) => {
+          console.error('Erreur lors du chargement du donateur :', error);
+        }
+      });
     }
+  }
 
-    this.beneficiaryService.getBeneficiaireById(id).subscribe({
-      next: (data: { data: { beneficiary: any } }) => {
-        const beneficiary = data.data.beneficiary;
-        this.utilisateur = beneficiary;
-        this.profileForm.patchValue({
-          name: beneficiary.name || '',
-          lastname: beneficiary.lastname || '',
-          email: beneficiary.email || '',
-          phoneNumber: beneficiary.phoneNumber || '',
-          gouvernorat: beneficiary.gouvernorat || '',
-          Age: beneficiary.Age || '',
-          address: beneficiary.address || ''
+  onPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const formData = new FormData();
+      formData.append('img', file);
+
+      const userId = this.authService.getCurrentUserId();
+      if (userId) {
+        this.donorService.updateDonor(userId, formData).subscribe({
+          next: (res) => {
+            console.log('Image updated:', res);
+            this.utilisateur.img = res.donor.img; // Access the img from res.donor
+            // Force UI refresh if needed
+            this.utilisateur = { ...this.utilisateur };
+
+            // Show success confirmation
+            Swal.fire({
+              icon: 'success',
+              title: 'Image Updated',
+              text: 'Your profile image has been successfully updated!'
+            });
+          },
+          error: (err) => {
+            console.error('Error uploading image:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'There was an error uploading your image. Please try again.'
+            });
+          }
         });
-      },
-      error: (err: any) => {
-        console.error('Error loading beneficiary data:', err);
       }
-    });
+    }
+  }
+
+  saveAllFields(): void {
+    const updatedData = this.profileForm.value;
+    const userId = this.authService.getCurrentUserId();
+    if (userId) {
+      this.donorService.updateDonor(userId, updatedData).subscribe({
+        next: (res) => {
+          console.log('All fields updated:', res);
+          this.utilisateur = { ...this.utilisateur, ...updatedData };
+          for (const key in this.isEditing) {
+            this.isEditing[key] = false;
+          }
+
+          // Show success confirmation
+          Swal.fire({
+            icon: 'success',
+            title: 'Profile Updated',
+            text: 'Votre profil est mis à jour avec succès !'
+          });
+        },
+        error: (err) => {
+          console.error('Error updating profile:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'There was an error updating your profile. Please try again.'
+          });
+        }
+      });
+    }
   }
 
   modifierChamp(champ: string): void {
     this.isEditing[champ] = true;
   }
 
-  saveField(champ: string): void {
-    const id = this.authService.getCurrentUserId();
-    const value = this.profileForm.get(champ)?.value;
-
-    if (!id || value === undefined) return;
-
-    this.beneficiaryService.updateBeneficiaire(id, { [champ]: value }).subscribe({
-      next: () => {
-        this.utilisateur[champ] = value;
-        this.isEditing[champ] = false;
-      },
-      error: (err: any) => {
-        console.error(`Error updating ${champ}:`, err);
+  enableAllEditing() {
+    for (const key in this.isEditing) {
+      if (this.isEditing.hasOwnProperty(key)) {
+        this.isEditing[key] = true;
       }
+    }
+    // Ensure the form is populated with the current utilisateur data
+    const [name, lastname] = (this.utilisateur.name || '').split(' ', 2);
+    this.profileForm.patchValue({
+      name: name || '',
+      lastname: lastname || this.utilisateur.lastname || '',
+      email: this.utilisateur.email || '',
+      phoneNumber: this.utilisateur.phone || '',
+      gouvernorat: this.utilisateur.gouvernorat || '',
+      Age: this.utilisateur.Age || '',
+      address: this.utilisateur.address || ''
     });
+    this.showSaveButton = true;
   }
-
 }

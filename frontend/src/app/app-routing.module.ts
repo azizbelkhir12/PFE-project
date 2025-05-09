@@ -28,7 +28,11 @@ import { DonateurCompteComponent } from './donateur-compte/donateur-compte.compo
 import { AbonnementBenevoleComponent } from './abonnement-benevole/abonnement-benevole.component';
 import { HistoriquePaiementsComponent } from './historique-paiements benevoles/historique-paiements.component';
 import { ChatAdminComponent } from './chat-admin/chat-admin.component';
-
+import { ProfileDonateurComponent } from './profile-donateur/profile-donateur.component';
+import { EffectuerDonComponent } from './effectuer-don/effectuer-don.component';
+import { HistoriquePaiementComponent } from './historique-paiement donnateur/historique-paiement.component';
+import { ParinnageEnfantsComponent } from './parinnage-enfants/parinnage-enfants.component';
+import { RapportsDonnateurStandardComponent } from './rapports-donnateur-standard/rapports-donnateur-standard.component';
 import { ChatComponent } from './chat/chat.component';
 import { ModifierInfosBeneficiaireComponent } from './modifier-infos-beneficiaire/modifier-infos-beneficiaire.component';
 
@@ -38,8 +42,21 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'benevolat', component: BenevolatComponent },
-  { path: 'donateur-compte', component: DonateurCompteComponent, canActivate: [AuthGuard] },
   {
+    path: 'donateur-compte',
+    component: DonateurCompteComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    children: [
+      { path: 'profil', component: ProfileDonateurComponent },
+      { path: 'effectuer-don', component: EffectuerDonComponent },
+      { path: 'historique-payment', component: HistoriquePaiementComponent },
+      { path: 'parrainage-enfant', component: ParinnageEnfantsComponent },
+      { path: 'rapport', component: RapportsDonnateurStandardComponent },
+      { path: '', redirectTo: 'profil', pathMatch: 'full' } // Default child route
+    ]
+  },
+  { 
     path: 'benevole-compte',
     component: BenevoleCompteComponent,
     canActivate: [AuthGuard],

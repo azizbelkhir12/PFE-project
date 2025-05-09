@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../services/auth/auth.service';
 import { PaymentService } from '../services/payment/payment.service';
-import { DonationService } from '../services/donation/donation.service';
+import { DonorsService } from '../services/donors/donors.service';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-effectuer-don',
@@ -37,8 +37,8 @@ export class EffectuerDonComponent {
 
   constructor(
     private fb: FormBuilder,
-    private paymentService: PaymentService,
-    private donationService: DonationService,
+    private donorsService: DonorsService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) {
     this.paymentForm = this.fb.group({
@@ -123,17 +123,17 @@ export class EffectuerDonComponent {
 
   onSubmit() {
     if (this.paymentForm.invalid) return;
-
+  
     this.isLoading = true;
     const formData = this.paymentForm.value;
-
+  
     // Determine payment method based on type selection
     if (formData.paymentMethod === 'credit_card' && formData.paymentType === 'flouci') {
       formData.paymentType = 'local';  // Keep paymentType separately
     }
-
+  
     console.log('Form Data:', formData); // Ensure it has paymentType
-
+  
     if (formData.paymentMethod === 'bank_transfer' || formData.paymentMethod === 'cash') {
       // Handle bank transfer or cash payment (add your Swal logic here)
       this.handleBankOrCashPayment(formData);
@@ -144,102 +144,111 @@ export class EffectuerDonComponent {
     }
   }
 
-  handleBankOrCashPayment(formData: any) {
-    Swal.fire({
-      title: 'Rappel Important',
-      html: formData.paymentMethod === 'bank_transfer'
-        ? 'Veuillez inclure votre nom dans la référence de virement bancaire.'
-        : 'Veuillez apporter le montant exact à notre bureau pendant les heures de travail.',
-      icon: 'warning',
-      confirmButtonText: 'Je Comprends',
-      showCancelButton: true,
-      cancelButtonText: 'Annuler'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.createDonation(formData);
-      } else {
-        this.isLoading = false;
-      }
-    });
-  }
 
-  initiatePaymentFlow(formData: any) {
-    // Ensure paymentType is set
-    if (!formData.paymentType) {
-      formData.paymentType = 'local'; // default value
-    }
-    this.paymentService.makePayment(formData).subscribe({
-      next: (res: any) => {
-        if (res?.result?.link) {
-          window.location.href = res.result.link; // Redirect to Flouci
+  handleBankOrCashPayment(formData: any) {
+      Swal.fire({
+        title: 'Rappel Important',
+        html: formData.paymentMethod === 'bank_transfer'
+          ? 'Veuillez inclure votre nom dans la référence de virement bancaire.'
+          : 'Veuillez apporter le montant exact à notre bureau pendant les heures de travail.',
+        icon: 'warning',
+        confirmButtonText: 'Je Comprends',
+        showCancelButton: true,
+        cancelButtonText: 'Annuler'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.createDonation(formData);
         } else {
-          Swal.fire('Erreur', 'Lien de paiement non reçu', 'error');
           this.isLoading = false;
         }
-      },
-      error: (error) => {
-        Swal.fire('Erreur', error.error?.message || 'Échec de l\'initialisation du paiement', 'error');
-        this.isLoading = false;
+      });
+    }
+
+  initiatePaymentFlow(formData: any) {
+      // Ensure paymentType is set
+      if (!formData.paymentType) {
+        formData.paymentType = 'local'; // default value
       }
-    });
-  }
+      this.donorsService.Payment(formData).subscribe({
+        next: (res: any) => {
+          if (res?.result?.link) {
+            window.location.href = res.result.link; // Redirect to Flouci
+          } else {
+            Swal.fire('Erreur', 'Lien de paiement non reçu', 'error');
+            this.isLoading = false;
+          }
+        },
+        error: (error) => {
+          Swal.fire('Erreur', error.error?.message || 'Échec de l\'initialisation du paiement', 'error');
+          this.isLoading = false;
+        }
+      });
+    }
 
 
   handlePaymentCallback(paymentId: string) {
-    this.isLoading = true;
-    const pendingDonation = JSON.parse(sessionStorage.getItem('pendingDonation') || '{}');
-
-    if (!pendingDonation.amount) {
-      Swal.fire('Erreur', 'Informations de don non trouvées', 'error');
-      this.isLoading = false;
-      return;
+      this.isLoading = true;
+      const pendingDonation = JSON.parse(sessionStorage.getItem('pendingDonation') || '{}');
+    
+      if (!pendingDonation.amount) {
+        Swal.fire('Erreur', 'Informations de don non trouvées', 'error');
+        this.isLoading = false;
+        return;
+      }
+    
+      this.donorsService.verifyPayment(paymentId, pendingDonation).subscribe({
+        next: (verification: any) => {
+          if (verification.success) {
+            const donationData = {
+              ...pendingDonation,
+              paymentId: paymentId,
+              paymentDetails: verification.paymentDetails,
+              status: 'completed'
+            };
+            this.createDonation(donationData);
+          } else {
+            this.handlePaymentError('Échec de la vérification du paiement');
+          }
+        },
+        error: (error) => {
+          this.handlePaymentError(error.error?.message || 'Erreur de vérification du paiement');
+        }
+      });
     }
 
-    this.paymentService.verifyPayment(paymentId, pendingDonation).subscribe({
-      next: (verification: any) => {
-        if (verification.success) {
-          const donationData = {
-            ...pendingDonation,
-            paymentId: paymentId,
-            paymentDetails: verification.paymentDetails,
-            status: 'completed'
-          };
-          this.createDonation(donationData);
-        } else {
-          this.handlePaymentError('Échec de la vérification du paiement');
+    private createDonation(donationData: any) {
+      const donorId = this.authService.getCurrentUserId();
+    
+      if (!donorId) {
+        this.handlePaymentError("Utilisateur non authentifié.");
+        return;
+      }
+    
+      const completeDonationData = {
+        ...donationData,
+        paymentType: donationData.paymentType || 'local',
+        donorId: donorId // include donor ID
+      };
+    
+      this.donorsService.createDonation(completeDonationData).subscribe({
+        next: () => {
+          Swal.fire('Succès', 'Merci pour votre don!', 'success');
+          this.paymentSuccess = true;
+          sessionStorage.removeItem('pendingDonation');
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.handlePaymentError(err.error?.message || err.message || 'Erreur lors de l\'enregistrement du don');
         }
-      },
-      error: (error) => {
-        this.handlePaymentError(error.error?.message || 'Erreur de vérification du paiement');
-      }
-    });
-  }
-
-  private createDonation(donationData: any) {
-    // Ensure paymentType is included
-    const completeDonationData = {
-      ...donationData,
-      paymentType: donationData.paymentType || 'local' // default to 'local' if not provided
-    };
-
-    this.donationService.createDonation(completeDonationData).subscribe({
-      next: () => {
-        Swal.fire('Succès', 'Merci pour votre don!', 'success');
-        this.paymentSuccess = true;
-        sessionStorage.removeItem('pendingDonation');
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.handlePaymentError(err.error?.message || err.message || 'Erreur lors de l\'enregistrement du don');
-      }
-    });
-  }
-
+      });
+    }
+    
+    
   private handlePaymentError(errorMessage: string) {
-    Swal.fire('Erreur', errorMessage, 'error');
-    this.isLoading = false;
-    sessionStorage.removeItem('pendingDonation');
-    console.error(errorMessage);
-
-  }
+      Swal.fire('Erreur', errorMessage, 'error');
+      this.isLoading = false;
+      sessionStorage.removeItem('pendingDonation');
+      console.error(errorMessage);
+      
+    }
 }

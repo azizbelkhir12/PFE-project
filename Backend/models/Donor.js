@@ -10,12 +10,12 @@ const DonorSchema = new mongoose.Schema({
     phone: { type: String, required: true },
     status: { type: String, enum: ['parrain', 'standard'], default: 'standard' },
     img: { type: String, default: '' },
-    /*donationHistory: [{
-        amount: { type: Number, required: true },
-        date: { type: Date, default: Date.now },
-        beneficiary: { type: mongoose.Schema.Types.ObjectId, ref: 'Beneficiary' }
-    }],*/
-}) ;
+    assignedBeneficiaries: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Beneficiary'
+    }]
+});
+
 
 // Hash the password before saving it to the database
 DonorSchema.pre('save', async function(next) {
