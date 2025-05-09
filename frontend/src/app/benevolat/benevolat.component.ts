@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PatternValidatorsService } from '../services/patternValidators/patern-validators.service';
 import { ConfirmPasswordService } from '../services/confirm-password/confirm-password.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DemandeService } from '../services/demande/demande.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-benevolat',
@@ -21,7 +21,7 @@ export class BenevolatComponent {
   user: any;
   isLoading: boolean = false;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private demandeService : DemandeService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private demandeService: DemandeService) { }
 
   signupForm: FormGroup = new FormGroup({
     name: new FormControl('', [
@@ -58,20 +58,19 @@ export class BenevolatComponent {
     ]),
     gouvernorat: new FormControl('', [
       Validators.required,
-      //Validators.pattern(/^\d{4}$/)
     ]),
     phone: new FormControl('', [
       Validators.required,
       Validators.pattern(/^\+216\d{8}$/)
     ]),
-    reason: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]), 
+    reason: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]),
 
-    age : new FormControl('', [
+    age: new FormControl('', [
       Validators.required,
       Validators.min(18),
       Validators.max(99)
     ])
-    
+
   }, { validators: ConfirmPasswordService.matchingPassword() });
 
   gouvernorats: string[] = [
@@ -83,51 +82,47 @@ export class BenevolatComponent {
   ngOnInit() {
     this.path = this.router.url;
   }
-  
 
-  // Function to set the active tab
- 
   submit() {
-    // Mark all fields as touched to show validation messages
     this.signupForm.markAllAsTouched();
-  
-    // Debug: Log form status and errors
-    console.log('Form status:', this.signupForm.status);
-    console.log('Form errors:', this.signupForm.errors);
-    Object.keys(this.signupForm.controls).forEach(key => {
-      const control = this.signupForm.get(key);
-      console.log(`${key} valid: ${control?.valid}, errors: ${control?.errors}`);
-    });
-  
+
     if (this.signupForm.invalid) {
-      this.errorMsg = 'Veuillez remplir tous les champs correctement';
-      console.error('Form invalid. Details above.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs correctement',
+      });
       return;
     }
-  
-    const formData = { 
+
+    const formData = {
       ...this.signupForm.value,
-      Prenom: this.signupForm.value.Prenom.trim(), // Ensure Prenom is trimmed
-      age: Number(this.signupForm.value.age) // Ensure age is a number
+      Prenom: this.signupForm.value.Prenom.trim(),
+      age: Number(this.signupForm.value.age)
     };
     delete formData.confirmPassword;
-  
+
     this.isLoading = true;
-    this.errorMsg = '';
-  
+
     this.demandeService.Demande(formData).subscribe({
       next: (response) => {
-        console.log('Inscription réussie', response);
         this.isLoading = false;
         this.signupForm.reset();
-        alert('Inscription réussie !');
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Inscription réussie !',
+        });
       },
       error: (error) => {
-        console.error('Erreur lors de linscription', error);
         this.isLoading = false;
-        this.errorMsg = error.error?.message || 'Une erreur est survenue. Veuillez réessayer.';
-        alert(this.errorMsg);
+        const errorMessage = error.error?.message || 'Une erreur est survenue. Veuillez réessayer.';
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: errorMessage,
+        });
       }
     });
   }
-  }
+}

@@ -5,6 +5,7 @@ import { PatternValidatorsService } from '../services/patternValidators/patern-v
 import { ConfirmPasswordService } from '../services/confirm-password/confirm-password.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -100,28 +101,42 @@ export class RegisterComponent {
     // Handle form submission
     submit() {
       const donorData = {
-        name: this.signupForm.get('name')?.value,
-        email: this.signupForm.get('email')?.value,
-        password: this.signupForm.get('password')?.value, 
-        confirmPassword: this.signupForm.get('confirmPassword')?.value, // Add this
-        address: this.signupForm.get('adress')?.value, // Fix typo to "address"
-        zipCode: this.signupForm.get('zipCode')?.value,
-        phone: this.signupForm.get('phone')?.value,
-        status: this.signupForm.value.status, // Ensure selected status is saved
-        img: this.signupForm.get('img')?.value ?? '', // Ensure it's not undefined
-        
+      name: this.signupForm.get('name')?.value,
+      email: this.signupForm.get('email')?.value,
+      password: this.signupForm.get('password')?.value, 
+      confirmPassword: this.signupForm.get('confirmPassword')?.value, // Add this
+      address: this.signupForm.get('adress')?.value, // Fix typo to "address"
+      zipCode: this.signupForm.get('zipCode')?.value,
+      phone: this.signupForm.get('phone')?.value,
+      status: this.signupForm.value.status, // Ensure selected status is saved
+      img: this.signupForm.get('img')?.value ?? '', // Ensure it's not undefined
       };
+
       console.log('Payload being sent:', donorData);
+
       // Exclude confirmPassword before sending the request
-       const { confirmPassword, ...donorDataWithoutConfirm } = this.signupForm.value;
+      const { confirmPassword, ...donorDataWithoutConfirm } = this.signupForm.value;
+
       this.AuthService.register(donorData).subscribe(
-        (response) => {
-          console.log('Signup successful', response);
-          this.successMessage = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
-        },
-        (error) => {
-          console.error('Signup failed', error);
-        }
+      (response) => {
+        console.log('Signup successful', response);
+        this.successMessage = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+        Swal.fire({
+        icon: 'success',
+        title: 'Inscription réussie',
+        text: 'Vous pouvez maintenant vous connecter.',
+        confirmButtonText: 'OK'
+        });
+      },
+      (error) => {
+        console.error('Signup failed', error);
+        Swal.fire({
+        icon: 'error',
+        title: 'Échec de l\'inscription',
+        text: 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.',
+        confirmButtonText: 'OK'
+        });
+      }
       );
     }
 }

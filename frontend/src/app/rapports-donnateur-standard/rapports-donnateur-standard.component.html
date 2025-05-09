@@ -1,1 +1,22 @@
-<p>rapports-donnateur-standard works!</p>
+<table class="rapport-table">
+  <thead style="background-color: #eee6fc;">
+    <tr>
+      <th>Date</th>
+      <th>Titre</th>
+      <th>Type</th>
+      <th>Reçu</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let rapport of rapports">
+      <td>{{ rapport.date | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ rapport.titre }}</td>
+      <td>{{ rapport.type === 'financier' ? 'Financier' : 'Littéraire' }}</td>
+      <td>
+        <button (click)="downloadRapport(rapport)" class="btn btn-primary">
+          Télécharger
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
