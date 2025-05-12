@@ -307,7 +307,3 @@ throw new Error('Method not implemented.');
 }
 
 
-function index(value: any, index: number, array: any[]): void {
-  throw new Error('Function not implemented.');
-}
-
