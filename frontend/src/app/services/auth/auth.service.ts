@@ -78,6 +78,14 @@ export class AuthService {
     );
   }
 
+  forgotPassword(email: string, userType: string) {
+    return this.http.post(`${this.apiUrl}/auth/forgot-password`, { email, userType });
+  }
+
+  resetPassword(token: string, newPassword: string) {
+    return this.http.post(`${this.apiUrl}/auth/reset-password`, { token, newPassword });
+  }
+
   // Get current user ID
   getCurrentUserId(): string | null {
     const currentUser = this.currentUserValue;

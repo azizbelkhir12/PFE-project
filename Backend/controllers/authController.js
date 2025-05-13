@@ -113,102 +113,134 @@ exports.registerAdmin = async (req, res) => {
 };
 
 
+
+
 exports.forgotPassword = async (req, res) => {
   const { email, userType } = req.body;
+  const JWT_SECRET = process.env.JWT_SECRET;
+  const JWT_EXPIRES_IN = '1h'; // Token expires in 1 hour
 
   try {
-    let user = null;
-    let Model = null;
-
-    switch (userType) {
-      case 'admin':
-        Model = Admin;
-        break;
-      case 'beneficiary':
-        Model = Beneficiary;
-        break;
-      case 'volunteer':
-        Model = Volunteer;
-        break;
-      case 'donor':
-        Model = Donor;
-        break;
-      default:
-        return res.status(400).json({ message: 'Invalid user type' });
+    // Validate userType
+    const validTypes = ['admin', 'beneficiary', 'volunteer', 'donor'];
+    if (!validTypes.includes(userType)) {
+      return res.status(400).json({ message: 'Type d\'utilisateur invalide.' });
     }
 
-    user = await Model.findOne({ email });
+    // Get the correct model
+    const Models = {
+      admin: Admin,
+      beneficiary: Beneficiary,
+      volunteer: Volunteer,
+      donor: Donor
+    };
+    const Model = Models[userType];
 
+    // Find user
+    const user = await Model.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'Utilisateur non trouvé.' });
     }
 
-    const token = crypto.randomBytes(20).toString('hex');
-    user.resetPasswordToken = token;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 heure
-    await user.save();
-
-    // Configuration Nodemailer avec SMTP Brevo
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST, // ex: smtp-relay.brevo.com
-      port: parseInt(process.env.EMAIL_PORT, 10), // ex: 587
-      secure: false, // true si port 465, false pour 587
-      auth: {
-        user: process.env.EMAIL_USER, // votre email SMTP Brevo
-        pass: process.env.EMAIL_PASS, // votre clé SMTP Brevo
+    // Create signed token
+    const token = jwt.sign(
+      { 
+        email: user.email, 
+        userType, 
+        id: user._id,
+        purpose: 'password_reset' // Add purpose to prevent token misuse
       },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    // URL encode the token for safety
+    const encodedToken = encodeURIComponent(token);
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${encodedToken}`;
+    
+    // Send email
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT, 10),
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
     });
 
-    const resetUrl = `http://${req.headers.host}/reset-password/${token}`;
-
-    const mailOptions = {
-      from: `"Support" <${process.env.EMAIL_USER}>`, // expéditeur
+    await transporter.sendMail({
+      from: `"Support" <${process.env.EMAIL_USER}>`,
       to: user.email,
-      subject: 'Réinitialisation de votre mot de passe',
-      text: `Vous recevez cet email car vous (ou quelqu'un d'autre) avez demandé la réinitialisation du mot de passe de votre compte.\n\n
-Veuillez cliquer sur le lien suivant ou copiez-le dans votre navigateur pour finaliser la procédure :\n\n
-${resetUrl}\n\n
-Si vous n'avez pas demandé cette réinitialisation, ignorez simplement cet email.\n`,
-      // Optionnel : ajoutez un html si vous voulez un email plus joli
-      html: `<p>Vous recevez cet email car vous (ou quelqu'un d'autre) avez demandé la réinitialisation du mot de passe de votre compte.</p>
-<p>Veuillez cliquer sur le lien suivant ou copiez-le dans votre navigateur pour finaliser la procédure :</p>
-<p><a href="${resetUrl}">${resetUrl}</a></p>
-<p>Si vous n'avez pas demandé cette réinitialisation, ignorez simplement cet email.</p>`
-    };
+      subject: 'Réinitialisation de mot de passe',
+      html: `<p>Cliquez sur ce lien pour réinitialiser votre mot de passe (valable 1 heure):</p>
+             <a href="${resetUrl}">Réinitialiser mon mot de passe</a>
+             <p>Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>`
+    });
 
-    await transporter.sendMail(mailOptions);
-
-    res.status(200).json({ message: 'Un email a été envoyé à ' + user.email + ' avec les instructions.' });
+    res.status(200).json({ message: 'Email envoyé avec instructions.' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erreur lors de l’envoi de l’email de réinitialisation.' });
+    console.error('Forgot Password Error:', error);
+    res.status(500).json({ message: 'Erreur du serveur.' });
   }
 };
 
 exports.resetPassword = async (req, res) => {
-  const { token, newPassword } = req.body;
+  // Get token from either body or query
+  const token = req.body.token || req.query.token;
+  const { newPassword } = req.body;
+  const JWT_SECRET = process.env.JWT_SECRET;
 
   try {
-    let user = null;
-
-    user = await Admin.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-    if (!user) user = await Beneficiary.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-    if (!user) user = await Volunteer.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-    if (!user) user = await Donor.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-
-    if (!user) {
-      return res.status(400).json({ message: 'Le token est invalide ou a expiré.' });
+    if (!token || !newPassword) {
+      return res.status(400).json({ message: 'Token et nouveau mot de passe requis.' });
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
+    // Decode the token if it came from URL
+    const decodedToken = decodeURIComponent(token);
+
+    // Verify token
+    const decoded = jwt.verify(decodedToken, JWT_SECRET);
+    
+    // Additional security check
+    if (decoded.purpose !== 'password_reset') {
+      return res.status(400).json({ message: 'Token invalide.' });
+    }
+
+    // Get correct model based on token contents
+    const Models = {
+      admin: Admin,
+      beneficiary: Beneficiary,
+      volunteer: Volunteer,
+      donor: Donor
+    };
+    const Model = Models[decoded.userType];
+
+    if (!Model) {
+      return res.status(400).json({ message: 'Type d\'utilisateur invalide.' });
+    }
+
+    // Find user
+    const user = await Model.findById(decoded.id);
+    if (!user) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+    }
+
+    // Update password
+    user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
 
-    res.status(200).json({ message: 'Votre mot de passe a été mis à jour avec succès.' });
+    res.status(200).json({ message: 'Mot de passe mis à jour avec succès.' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erreur lors de la réinitialisation du mot de passe.' });
+    console.error('Reset Password Error:', error);
+    
+    if (error.name === 'TokenExpiredError') {
+      return res.status(400).json({ message: 'Le lien a expiré. Veuillez faire une nouvelle demande.' });
+    }
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(400).json({ message: 'Lien de réinitialisation invalide.' });
+    }
+    
+    res.status(500).json({ message: 'Erreur du serveur.' });
   }
 };

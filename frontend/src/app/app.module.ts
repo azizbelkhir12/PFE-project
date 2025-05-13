@@ -65,6 +65,8 @@ import { ProfilBenevoleComponent } from './profil-benevole/profil-benevole.compo
 import { AbonnementBenevoleComponent } from './abonnement-benevole/abonnement-benevole.component';
 import { HistoriquePaiementsComponent } from './historique-paiements benevoles/historique-paiements.component';
 import { ChatAdminComponent } from './chat-admin/chat-admin.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +116,8 @@ import { ChatAdminComponent } from './chat-admin/chat-admin.component';
       AbonnementBenevoleComponent,
       HistoriquePaiementsComponent,
       ChatAdminComponent,
+      ForgotPasswordComponent,
+      ResetPasswordComponent,
 
   ],
   imports: [

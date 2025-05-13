@@ -15,6 +15,7 @@ export class AcceuilComponent {
   scriptsService: any;
   successMessage: string = '';
   activeTab: string = 'about';
+   private chatWidget: any;
 
   services = [
     { icon: 'flaticon-diet', title: ' Soutien à lÉducation des Enfants ', description: 'Fournir des fournitures scolaires et du soutien aux enfants orphelins.' },
@@ -62,14 +63,14 @@ export class AcceuilComponent {
   }
 
   ngOnInit() {
-    //this.scriptsService.initializeScripts();
-    this.chargerProjets()
+    this.chargerProjets();
   }
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
     this.animateNumbers();
   }
 
+  
   chargerProjets() {
     this.projetService.getProjects().subscribe({
       next: (projets) => {
@@ -113,4 +114,6 @@ export class AcceuilComponent {
       });
     }
   }
+
+
 }
