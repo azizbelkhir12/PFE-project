@@ -27,10 +27,6 @@
 <!-- Navbar End -->
 
 
-<!-- Chat Widget Container - Positioned at the bottom right -->
-<div id="n8n-chat-container" class="n8n-chat-container"></div>
-
-
 
 <!-- Banner Section -->
 <!-- Banner Section -->
@@ -190,7 +186,14 @@
 
 
 
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
+	createChat({
+		webhookUrl: 'https://azizbelkhir12.app.n8n.cloud/webhook/9a2a284e-92e0-4cd2-af6e-bc43b821ba6f/chat'
+	});
+</script>
 
 
 <app-footer></app-footer>

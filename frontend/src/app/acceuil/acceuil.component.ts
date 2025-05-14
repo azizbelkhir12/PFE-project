@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ContactService } from '../services/contact/contact.service';
 import { ProjetService } from '../services/projet/projet.service';
+import '@n8n/chat/style.css';
+import { createChat } from '@n8n/chat';
+import Swal from 'sweetalert2';
 //import { ScriptsService } from '../services/scripts.service';
 
 @Component({
@@ -64,6 +67,7 @@ export class AcceuilComponent {
 
   ngOnInit() {
     this.chargerProjets();
+    this.initializeChat();
   }
 
   async ngAfterViewInit() {
@@ -107,13 +111,30 @@ export class AcceuilComponent {
         next: (response: { message: string }) => {
           this.successMessage = response.message;
           this.contactForm.reset();
+          Swal.fire({
+            icon: 'success',
+            title: 'Form Submitted',
+            text: this.successMessage,
+            confirmButtonText: 'OK'
+          });
         },
         error: (error: any) => {
           console.error('Error submitting form:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Submission Failed',
+            text: 'There was an error submitting the form. Please try again later.',
+            confirmButtonText: 'OK'
+          });
         }
       });
     }
   }
-
+initializeChat() {
+  this.chatWidget = createChat({
+    webhookUrl: 'https://azizbelkhir12.app.n8n.cloud/webhook/9a2a284e-92e0-4cd2-af6e-bc43b821ba6f/chat'
+  });
+}
+;
 
 }
