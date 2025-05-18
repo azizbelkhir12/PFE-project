@@ -40,10 +40,23 @@
   <!-- Notification Form -->
   <div class="forms-container">
     <div class="form-card">
-      <h3>Notification pour un Bénéficiaire</h3>
+      <h3>Envoyer une Notification</h3>
 
-      <!-- Search Bar -->
+      <!-- Broadcast Checkbox -->
+      <div class="broadcast-checkbox">
+        <input
+          type="checkbox"
+          id="broadcast"
+          [(ngModel)]="isBroadcastMode"
+          name="broadcast"
+          (change)="onBroadcastChange()"
+        />
+        <label for="broadcast">Envoyer à tous les bénéficiaires ({{ listeBeneficiaires.length }})</label>
+      </div>
+
+      <!-- Search Bar (hidden in broadcast mode) -->
       <input
+        *ngIf="!isBroadcastMode"
         type="text"
         placeholder="Rechercher un bénéficiaire..."
         [(ngModel)]="recherche"
@@ -51,19 +64,23 @@
         class="search-input"
       />
 
-      <form #notificationForm="ngForm" (ngSubmit)="envoyerNotification()">
-        <label for="beneficiaire">Sélectionner un Bénéficiaire :</label>
-        <select
-          id="beneficiaire"
-          [(ngModel)]="notification.idBeneficiaire"
-          name="beneficiaire"
-          required
-        >
-          <option *ngFor="let b of beneficiairesFiltres" [value]="b._id">
-            {{ b.name }} {{ b.lastname }} ({{ b.email }})
-          </option>
-        </select>
+      <form #notificationForm="ngForm" (ngSubmit)="isBroadcastMode ? envoyerBroadcast() : envoyerNotification()">
+        <!-- Beneficiary Select (hidden in broadcast mode) -->
+        <div *ngIf="!isBroadcastMode">
+          <label for="beneficiaire">Sélectionner un Bénéficiaire :</label>
+          <select
+            id="beneficiaire"
+            [(ngModel)]="notification.idBeneficiaire"
+            name="beneficiaire"
+            required
+          >
+            <option *ngFor="let b of beneficiairesFiltres" [value]="b._id">
+              {{ b.name }} {{ b.lastname }} ({{ b.email }})
+            </option>
+          </select>
+        </div>
 
+        <!-- Common Fields -->
         <label for="titre">Titre :</label>
         <input
           id="titre"
@@ -83,8 +100,9 @@
           rows="4"
         ></textarea>
 
-        <button class="btn-blue" type="submit" [disabled]="notificationForm.invalid">
-          Envoyer
+        <button class="btn-blue" type="submit" [disabled]="notificationForm.invalid || (isBroadcastMode && listeBeneficiaires.length === 0)">
+          <i class="fas" [class.fa-paper-plane]="!isBroadcastMode" [class.fa-bullhorn]="isBroadcastMode"></i>
+          {{ isBroadcastMode ? 'Diffuser à tous' : 'Envoyer' }}
         </button>
       </form>
     </div>

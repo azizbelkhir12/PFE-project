@@ -1,0 +1,15 @@
+<!-- language-switcher.component.html -->
+<div class="dropdown" [class.show]="isOpen">
+  <button class="btn btn-secondary dropdown-toggle" type="button" (click)="toggleDropdown($event)">
+    <i class="fas fa-language"></i>
+    <span *ngIf="showText">{{ currentLang === 'en' ? 'English' : 'Français' }}</span>
+  </button>
+  <div class="dropdown-menu" [class.show]="isOpen">
+    <button class="dropdown-item" (click)="switchLanguage('fr', $event)" [class.active]="currentLang === 'fr'">
+      <i class="fas fa-flag"></i> Français
+    </button>
+    <button class="dropdown-item" (click)="switchLanguage('en', $event)" [class.active]="currentLang === 'en'">
+      <i class="fas fa-flag-usa"></i> English
+    </button>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GoogleMapsModule } from '@angular/google-maps';
@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 
 import { AppComponent } from './app.component';
@@ -67,6 +68,12 @@ import { HistoriquePaiementsComponent } from './historique-paiements benevoles/h
 import { ChatAdminComponent } from './chat-admin/chat-admin.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { LanguageSwitcherComponent } from './language-switcher/language-switcher.component';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -118,6 +125,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
       ChatAdminComponent,
       ForgotPasswordComponent,
       ResetPasswordComponent,
+      LanguageSwitcherComponent,
 
   ],
   imports: [
@@ -128,6 +136,13 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     FontAwesomeModule,
     HttpClientModule,
     GoogleMapsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     QuillModule.forRoot(),
     SweetAlert2Module.forRoot(),
     MatTabsModule,
