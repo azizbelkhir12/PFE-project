@@ -14,9 +14,7 @@ export class ContactComponent {
     phone: "+216 28 391 000",
     email: " contact@tunisiacharity.org",
     hours: "Lundi - Vendredi: 9:00  - 17:00 ",
-    location: { lat: 40.7128, lng: -74.0060 } // Replace with your coordinates
+  
   };
 
-  center = this.contactInfo.location;
-  zoom = 15;
 }

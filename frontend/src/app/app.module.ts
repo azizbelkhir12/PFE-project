@@ -68,8 +68,7 @@ import { HistoriquePaiementsComponent } from './historique-paiements benevoles/h
 import { ChatAdminComponent } from './chat-admin/chat-admin.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { LanguageSwitcherComponent } from './language-switcher/language-switcher.component';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+
 
 
 
@@ -124,7 +123,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
       ChatAdminComponent,
       ForgotPasswordComponent,
       ResetPasswordComponent,
-      LanguageSwitcherComponent,
 
   ],
   imports: [
@@ -135,10 +133,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
     FontAwesomeModule,
     HttpClientModule,
     GoogleMapsModule,
-    TranslateModule.forRoot({
-
-    }),
-    // TranslateModule.forRoot({
     QuillModule.forRoot(),
     SweetAlert2Module.forRoot(),
     MatTabsModule,
