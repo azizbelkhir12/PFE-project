@@ -71,9 +71,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { LanguageSwitcherComponent } from './language-switcher/language-switcher.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+
+
 
 @NgModule({
   declarations: [
@@ -137,12 +136,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     GoogleMapsModule,
     TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
+
     }),
+    // TranslateModule.forRoot({
     QuillModule.forRoot(),
     SweetAlert2Module.forRoot(),
     MatTabsModule,
