@@ -88,17 +88,25 @@
           [(ngModel)]="notification.titre"
           name="titre"
           required
+          minlength="3"
+          maxlength="100"
+          pattern="^[A-Za-zÀ-ÿ0-9 ,.'\-!?()]+$"
+          #titre="ngModel"
         />
+        <div *ngIf="titre.invalid && (titre.dirty || titre.touched)" class="validation-error">
+          <div *ngIf="titre.errors?.['required']">Le titre est requis.</div>
+          <div *ngIf="titre.errors?.['minlength']">Le titre doit contenir au moins 3 caractères.</div>
+          <div *ngIf="titre.errors?.['maxlength']">Le titre ne doit pas dépasser 100 caractères.</div>
+          
+        </div>
 
         <label for="contenu">Contenu :</label>
-        <textarea
-          id="contenu"
-          [(ngModel)]="notification.contenu"
-          name="contenu"
-          required
-          cols="50"
-          rows="4"
-        ></textarea>
+        <textarea id="contenu" [(ngModel)]="notification.contenu" name="contenu" required minlength="5" maxlength="500" pattern="^[A-Za-zÀ-ÿ0-9 ,.'\-!?()]+$" #contenu="ngModel" cols="50" rows="4"></textarea>
+        <div *ngIf="contenu.invalid && (contenu.dirty || contenu.touched)" class="validation-error">
+          <div *ngIf="contenu.errors?.['required']">Le contenu est requis.</div>
+          <div *ngIf="contenu.errors?.['minlength']">Le contenu doit contenir au moins 5 caractères.</div>
+          <div *ngIf="contenu.errors?.['maxlength']">Le contenu ne doit pas dépasser 500 caractères.</div>
+        </div>
 
         <button class="btn-blue" type="submit" [disabled]="notificationForm.invalid || (isBroadcastMode && listeBeneficiaires.length === 0)">
           <i class="fas" [class.fa-paper-plane]="!isBroadcastMode" [class.fa-bullhorn]="isBroadcastMode"></i>

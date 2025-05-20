@@ -53,42 +53,108 @@
   </div>
 
   <!-- ✅ Formulaire d’ajout de projet -->
-  <div class="forms-container" *ngIf="formulaireActif === 'ajout'">
-    <div class="form-card">
-      <h3>Ajout d’un projet</h3>
-      <form (ngSubmit)="soumettreProjet()" #projetForm="ngForm" enctype="multipart/form-data">
-        <label for="titre">Titre</label>
-        <input type="text" id="titre" [(ngModel)]="nouveauProjet.titre" name="titre" required>
+<div class="forms-container" *ngIf="formulaireActif === 'ajout'">
+  <div class="form-card">
+    <h3>Ajout d’un projet</h3>
+    <form (ngSubmit)="soumettreProjet()" #projetForm="ngForm" enctype="multipart/form-data">
+      <!-- Titre -->
+      <label for="titre">Titre</label>
+      <input type="text" id="titre" 
+             [(ngModel)]="nouveauProjet.titre" 
+             name="titre" 
+             #titre="ngModel"
+             required
+             minlength="3"
+             maxlength="100">
+      <div *ngIf="titre.invalid && (titre.dirty || titre.touched)" class="error-message">
+        <div *ngIf="titre.errors?.['required']">Le titre est requis</div>
+        <div *ngIf="titre.errors?.['minlength']">Le titre doit faire au moins 3 caractères</div>
+        <div *ngIf="titre.errors?.['maxlength']">Le titre ne peut pas dépasser 100 caractères</div>
+      </div>
 
-        <label for="description">Description</label>
-        <textarea id="description" [(ngModel)]="nouveauProjet.description" name="description" rows="10" required></textarea>
+      <!-- Description -->
+      <label for="description">Description</label>
+      <textarea id="description" 
+                [(ngModel)]="nouveauProjet.description" 
+                name="description" 
+                #description="ngModel"
+                rows="10" 
+                required
+                minlength="10"
+                maxlength="2000"></textarea>
+      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="error-message">
+        <div *ngIf="description.errors?.['required']">La description est requise</div>
+        <div *ngIf="description.errors?.['minlength']">La description doit faire au moins 10 caractères</div>
+        <div *ngIf="description.errors?.['maxlength']">La description ne peut pas dépasser 2000 caractères</div>
+      </div>
 
-        <label for="dateDebut">Date de début</label>
-        <input type="date" id="dateDebut" [(ngModel)]="nouveauProjet.dateDebut" name="dateDebut" required>
+      <!-- Date de début -->
+      <label for="dateDebut">Date de début</label>
+      <input type="date" id="dateDebut" 
+             [(ngModel)]="nouveauProjet.dateDebut" 
+             name="dateDebut" 
+             #dateDebut="ngModel"
+             required>
+      <div *ngIf="dateDebut.invalid && (dateDebut.dirty || dateDebut.touched)" class="error-message">
+        <div *ngIf="dateDebut.errors?.['required']">La date de début est requise</div>
+      </div>
 
-        <label for="dateFin">Date de fin</label>
-        <input type="date" id="dateFin" [(ngModel)]="nouveauProjet.dateFin" name="dateFin" required>
+      <!-- Date de fin -->
+      <label for="dateFin">Date de fin</label>
+      <input type="date" id="dateFin" 
+             [(ngModel)]="nouveauProjet.dateFin" 
+             name="dateFin" 
+             #dateFin="ngModel"
+             required
+             [min]="nouveauProjet.dateDebut">
+      <div *ngIf="dateFin.invalid && (dateFin.dirty || dateFin.touched)" class="error-message">
+        <div *ngIf="dateFin.errors?.['required']">La date de fin est requise</div>
+        <div *ngIf="dateFin.errors?.['min']">La date de fin doit être après la date de début</div>
+      </div>
 
-        <label for="montantSoutenu">Montant soutenu</label>
-        <input type="number" id="montantSoutenu" [(ngModel)]="nouveauProjet.montantSoutenu" name="montantSoutenu" required>
+      <!-- Montant soutenu -->
+      <label for="montantSoutenu">Montant soutenu</label>
+      <input type="number" id="montantSoutenu" 
+             [(ngModel)]="nouveauProjet.montantSoutenu" 
+             name="montantSoutenu" 
+             #montantSoutenu="ngModel"
+             required
+             min="0"
+             step="0.01">
+      <div *ngIf="montantSoutenu.invalid && (montantSoutenu.dirty || montantSoutenu.touched)" class="error-message">
+        <div *ngIf="montantSoutenu.errors?.['required']">Le montant est requis</div>
+        <div *ngIf="montantSoutenu.errors?.['min']">Le montant ne peut pas être négatif</div>
+      </div>
 
-        <label for="image">Image du projet</label>
-        <input type="file" id="image" (change)="onImageChange($event)" name="image" required>
+      <!-- Image du projet -->
+      <label for="image">Image du projet</label>
+      <input type="file" id="image" 
+             (change)="onImageChange($event)" 
+             name="image" 
+             required
+             accept="image/*">
 
-        <label for="statut">Statut</label>
-        <select id="statut" [(ngModel)]="nouveauProjet.statut" name="statut" required>
-          <option value="en_cours">En cours</option>
-          <option value="termine">Terminé</option>
-          <option value="en_retard">En retard</option>
-        </select>
+      <!-- Statut -->
+      <label for="statut">Statut</label>
+      <select id="statut" 
+              [(ngModel)]="nouveauProjet.statut" 
+              name="statut" 
+              #statut="ngModel"
+              required>
+        <option value="en_cours">En cours</option>
+        <option value="termine">Terminé</option>
+        <option value="en_retard">En retard</option>
+      </select>
+      <div *ngIf="statut.invalid && (statut.dirty || statut.touched)" class="error-message">
+        <div *ngIf="statut.errors?.['required']">Le statut est requis</div>
+      </div>
 
-        <button type="submit" class="btn btn-jaune" [disabled]="!projetForm.form.valid">
-          {{ enEdition ? 'Valider les modifications' : 'Ajouter le projet' }}
-        </button>
-      </form>
-    </div>
+      <button type="submit" class="btn btn-jaune" [disabled]="!projetForm.form.valid">
+        {{ enEdition ? 'Valider les modifications' : 'Ajouter le projet' }}
+      </button>
+    </form>
   </div>
-
+</div>
   <!-- ✅ Liste des projets -->
   <div class="row justify-content-center" *ngIf="formulaireActif === 'liste'">
     <div class="card-article" *ngFor="let projet of getProjetsFiltres()">

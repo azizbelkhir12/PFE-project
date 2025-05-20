@@ -47,15 +47,24 @@
   <div class="forms-container" *ngIf="afficherFormulaire">
     <div class="form-card">
       <h3>Ajouter un rapport</h3>
-      <input type="text" placeholder="Titre du rapport" [(ngModel)]="rapport.titre">
-      <select [(ngModel)]="rapport.type">
-        <option value="">-- Sélectionner le type --</option>
-        <option value="financier">Financier</option>
-        <option value="litteraire">Littéraire</option>
-      </select>
-      <input type="file" (change)="onFileSelected($event)">
-      <button (click)="ajouterRapport()">Joindre le rapport</button>
-    </div>
+        <input type="text" placeholder="Titre du rapport" [(ngModel)]="rapport.titre" required minlength="3" maxlength="100">
+        <div *ngIf="(rapport.titre ?? '').length < 3 && rapport.titre">
+          <small class="text-danger">Le titre doit comporter au moins 3 caractères.</small>
+        </div>
+        <div *ngIf="(rapport.titre ?? '').length > 100">
+          <small class="text-danger">Le titre ne doit pas dépasser 100 caractères.</small>
+        </div>
+        <select [(ngModel)]="rapport.type" required>
+          <option value="">-- Sélectionner le type --</option>
+          <option value="financier">Financier</option>
+          <option value="litteraire">Littéraire</option>
+        </select>
+        <div *ngIf="!rapport.type">
+          <small class="text-danger">Le type de rapport est requis.</small>
+        </div>
+        <input type="file" (change)="onFileSelected($event)">
+        <button (click)="ajouterRapport()">Joindre le rapport</button>
+      </div>
   </div>
 
   <!-- Liste des rapports -->

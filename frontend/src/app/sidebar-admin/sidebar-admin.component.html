@@ -1,22 +1,28 @@
-<div class="sidebar" [class.active]="isSidebarOpen">
+<!-- Hamburger Menu Button (visible on mobile) -->
+<div class="hamburger-menu" (click)="toggleSidebar()">
+  <fa-icon [icon]="faBars"></fa-icon>
+</div>
+
+<!-- Sidebar with toggle class 'open' -->
+<div class="sidebar" [class.open]="isSidebarOpen">
   <ul>
     <!-- Gestion des Bénévoles -->
     <li routerLinkActive="active">
-      <a routerLink="/admin-compte/gestion-benevoles" routerLinkActive="active">
+      <a routerLink="/admin-compte/gestion-benevoles">
         <fa-icon [icon]="faUsers"></fa-icon> Gestion des Bénévoles
       </a>
     </li>
 
     <!-- Gestion des Bénéficiaires -->
     <li routerLinkActive="active">
-      <a routerLink="/admin-compte/gestion-beneficiaires" routerLinkActive="active">
+      <a routerLink="/admin-compte/gestion-beneficiaires">
         <fa-icon [icon]="faHandHoldingHeart"></fa-icon> Gestion des Bénéficiaires
       </a>
     </li>
 
     <!-- Gestion des Dons -->
     <li routerLinkActive="active">
-      <a routerLink="/admin-compte/gestion-des-dons" routerLinkActive="active">
+      <a routerLink="/admin-compte/gestion-des-dons">
         <fa-icon [icon]="faDonate"></fa-icon> Gestion des Dons
       </a>
     </li>
@@ -38,7 +44,7 @@
     <!-- Gestion des documents -->
     <li routerLinkActive="active">
       <a routerLink="/admin-compte/voir-documents-beneficiaire">
-        <fa-icon [icon]="faNewspaper"></fa-icon>  voir Documents
+        <fa-icon [icon]="faNewspaper"></fa-icon> voir Documents
       </a>
     </li>
 
@@ -60,5 +66,6 @@
 
 <!-- Partie principale -->
 <div class="main-content">
- <!-- This is CRUCIAL for child routes to appear -->
+  <!-- Here goes your routed content -->
+  <router-outlet></router-outlet>
 </div>

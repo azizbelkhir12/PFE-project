@@ -18,6 +18,7 @@ import {
   faDownload,
   faUpload,
   faTrash,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -38,6 +39,7 @@ export class SidebarAdminComponent {
   faProjectDiagram = faProjectDiagram;
   faComments = faComments;
   faTrash = faTrash;
+  faBars = faBars;
 
   // Icônes pour les sous-menus
   faChevronUp = faChevronUp;

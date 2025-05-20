@@ -21,6 +21,13 @@ export class AdminCompteComponent implements OnInit {
   beneficiaries: any[] = [];
   benevoles: any[] = [];
   volunteers: any[] = [];
+  selectedYear: number = new Date().getFullYear();
+  availableYears: number[] = [2023, 2024, 2025];
+  monthlyComparisonChart: Chart | null = null;
+  monthNames: string[] = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
 
   statistics: any = {
     totalDons: 0,
@@ -85,7 +92,7 @@ constructor(private donorsService: DonorsService,
       const total = this.donations.reduce((sum, donation) => sum + (donation.amount || 0), 0);
       this.statistics.totalDons = total;
 
-      console.log("Donations fetched:", this.donations);
+      this.createMonthlyComparisonChart(); // <- Add this here
     },
     error: (err) => {
       console.error('Failed to fetch donations:', err);
@@ -187,12 +194,89 @@ createDonorPieChart() {
         ],
         backgroundColor: ['#ff6384', '#ffcd56']
       }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false  // ✅ Hides the legend
+        },
+        title: {
+          display: true,
+          text: 'Répartition des donateurs'
+        }
+      }
     }
   });
 }
 
 
 
+createMonthlyComparisonChart() {
+  const canvas = document.getElementById('monthlyComparisonChart') as HTMLCanvasElement;
+  if (!canvas) return;
+
+  // Destroy previous chart if it exists
+  if (this.monthlyComparisonChart) {
+    this.monthlyComparisonChart.destroy();
+  }
+
+  // Prepare monthly data
+  const monthlyData = Array(12).fill(0);
+  this.donations.forEach(donation => {
+    const date = new Date(donation.date);
+    if (date.getFullYear() === this.selectedYear) {
+      const month = date.getMonth();
+      monthlyData[month] += donation.amount || 0;
+    }
+  });
+
+  this.monthlyComparisonChart = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: this.monthNames,
+      datasets: [{
+        label: `Dons ${this.selectedYear} (TND)`,
+        data: monthlyData,
+        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: `Comparaison mensuelle des dons - ${this.selectedYear}`,
+          font: { size: 16 }
+        },
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+              return `${context.dataset.label}: ${(context.raw as number).toLocaleString()} TND`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: (value) => {
+              return `${value.toLocaleString()} TND`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+onYearChange() {
+    this.createMonthlyComparisonChart();
+  }
 
   
 }
