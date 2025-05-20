@@ -1,10 +1,11 @@
-/* Suppression de l'espace blanc sous la navbar */
+/* Réinitialisation de base */
 body, html {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  font-family: Arial, sans-serif;
 }
 
 /* Navbar fixe */
@@ -28,7 +29,7 @@ app-sidebar-admin {
   z-index: 999;
 }
 
-/* Ajustement du Dashboard */
+/* Contenu du dashboard */
 .dashboard {
   margin-left: 250px;
   margin-top: 80px;
@@ -37,9 +38,10 @@ app-sidebar-admin {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  gap: 30px;
 }
 
-/* Conteneur des cartes */
+/* Cartes statistiques */
 .stat-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -47,14 +49,13 @@ app-sidebar-admin {
   justify-items: center;
 }
 
-/* Style des cartes statistiques */
 .card {
   background: white;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #0056b3; /* Bordure bleue en haut */
+  border-top: 4px solid #0056b3;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 90%;
   max-width: 280px;
@@ -65,17 +66,15 @@ app-sidebar-admin {
   min-height: 140px;
 }
 
-/* Effet au survol */
 .card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Style des icônes (JAUNES) */
 .card i {
   font-size: 35px;
   color: white;
-  background: #ffc107; /* Jaune */
+  background: #ffc107;
   padding: 12px;
   border-radius: 50%;
   margin-bottom: 8px;
@@ -83,12 +82,10 @@ app-sidebar-admin {
   transition: background 0.3s ease;
 }
 
-/* Effet au survol sur l'icône */
 .card:hover i {
-  background: #e0a800; /* Jaune foncé */
+  background: #e0a800;
 }
 
-/* Style du texte */
 .card h3 {
   font-size: 18px;
   font-weight: bold;
@@ -102,18 +99,21 @@ app-sidebar-admin {
   color: #555;
 }
 
-/*charts css*/
+/* Conteneur des graphiques */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 par ligne */
+  gap: 30px;
+}
 
+/* Style d’un seul graphique */
 .chart-container {
-  width: 100%;
-  max-width: 600px; /* Make each chart smaller */
-  height: auto;
-  padding: 20px;
-  margin: 0 auto; /* Center the chart */
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
   text-align: center;
+  width: 100%;
 }
 
 .chart-container h3 {
@@ -124,9 +124,8 @@ app-sidebar-admin {
 
 canvas {
   width: 100% !important;
-  height: 350px !important; /* Control chart height */
+  height: 350px !important;
 }
-
 
 /* Responsive */
 @media (max-width: 992px) {
@@ -143,13 +142,18 @@ canvas {
   .stat-cards {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .charts-grid {
+    grid-template-columns: 1fr; /* 1 par ligne en petit écran */
+  }
 }
 
 @media (max-width: 600px) {
   .stat-cards {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: 1fr;
   }
 }
+
 
 
 

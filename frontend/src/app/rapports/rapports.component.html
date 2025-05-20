@@ -24,7 +24,8 @@
               <div class="col-md-6">
                   <div class="input-group">
                       <input type="text" class="form-control" placeholder="Rechercher un rapport..."
-                             [(ngModel)]="searchTerm" (input)="currentPage = 1">
+       [(ngModel)]="searchTerm" (input)="filterRapports(); currentPage = 1">
+
                       <div class="input-group-append">
                           <span class="input-group-text"><i class="fa fa-search"></i></span>
                       </div>

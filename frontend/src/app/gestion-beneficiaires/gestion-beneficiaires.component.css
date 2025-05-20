@@ -1,4 +1,9 @@
 /* ✅ Ajustement pour éviter que la sidebar masque le contenu */
+@media (max-width: 991px) {
+  .main-container {
+    margin-left: 0;
+    padding: 10px;
+  }}
 .main-container {
   margin-left: 250px; /* Ajuste selon la largeur de ta sidebar */
   padding: 10px;
