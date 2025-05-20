@@ -61,6 +61,70 @@ exports.sendNotification = async (req, res) => {
     }
 };
 
+
+exports.broadcastNotification = async (req, res) => {
+    try {
+        const { titre, contenu } = req.body;
+
+        // Validate input
+        if (!titre || !contenu) {
+            return res.status(400).json({ 
+                success: false,
+                message: 'Title and content are required' 
+            });
+        }
+
+        // Get all beneficiaries
+        const beneficiaries = await Beneficiary.find();
+
+        if (!beneficiaries || beneficiaries.length === 0) {
+            return res.status(404).json({ 
+                success: false,
+                message: 'No beneficiaries found' 
+            });
+        }
+
+        const broadcastDate = new Date();
+        const notificationIds = [];
+        const notifications = [];
+
+        // Create a notification for each beneficiary
+        for (const beneficiary of beneficiaries) {
+            const notification = new Notification({
+                idBeneficiaire: beneficiary._id,
+                titre,
+                contenu,
+                dateEnvoi: broadcastDate
+            });
+
+            const savedNotification = await notification.save();
+            notificationIds.push(savedNotification._id);
+            notifications.push(savedNotification);
+
+            // Add notification to beneficiary's notifications array
+            beneficiary.notifications.push(savedNotification._id);
+            await beneficiary.save();
+        }
+
+        res.status(201).json({
+            success: true,
+            message: `Notification broadcasted successfully to ${beneficiaries.length} beneficiaries`,
+            data: {
+                notificationsCount: notifications.length,
+                broadcastDate
+            }
+        });
+
+    } catch (error) {
+        console.error('Error broadcasting notification:', error);
+        res.status(500).json({ 
+            success: false,
+            message: 'Error broadcasting notification',
+            error: error.message
+        });
+    }
+};
+
 exports.getAllNotifications = async (req, res) => {
     try {
         const notifications = await Notification.find()

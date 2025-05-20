@@ -382,17 +382,24 @@ deactivateVolunteer(volunteer: Benevole) {
         if (index !== -1) {
           this.volunteers[index].status = newStatus;
         }
-        this.updateStatistics(); 
-        this.snackBar.open(`Statut mis à jour avec succès`, 'Fermer', {
-          duration: 3000,
+        this.updateStatistics();
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: `Statut mis à jour avec succès`,
+          timer: 2000,
+          showConfirmButton: false
         });
         this.isLoading = false;
       },
       error: (err) => {
         console.error('Error changing status:', err);
-        this.snackBar.open('Erreur lors de la mise à jour du statut', 'Fermer', {
-          duration: 3000,
-          panelClass: ['error-snackbar']
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de la mise à jour du statut',
+          timer: 3000,
+          showConfirmButton: false
         });
         this.isLoading = false;
       }

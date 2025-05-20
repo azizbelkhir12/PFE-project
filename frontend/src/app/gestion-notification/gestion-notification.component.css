@@ -210,7 +210,24 @@ button:hover {
   color: #222;
   font-weight: bold;
 }
+.broadcast-checkbox {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
+.broadcast-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #4285F4;
+}
+
+.broadcast-checkbox label {
+  margin: 0;
+  font-weight: normal;
+  cursor: pointer;
+}
 /* ✅ Responsive */
 @media (max-width: 1024px) {
   .forms-container {

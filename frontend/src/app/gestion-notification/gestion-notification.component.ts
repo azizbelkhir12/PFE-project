@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../services/notification/notification.service';
 import { BeneficiaryService } from '../services/beneficiary/beneficiary.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-notification',
@@ -9,12 +10,20 @@ import { BeneficiaryService } from '../services/beneficiary/beneficiary.service'
   styleUrls: ['./gestion-notification.component.css'],
 })
 export class GestionNotificationComponent implements OnInit {
+  isBroadcastMode = false;
+  broadcastType = 'all';
+  broadcastGroup = '';
   message: string = '';
+  beneficiaryGroups: any[] = [];
   notification = {
     idBeneficiaire: '',
     titre: '',
     contenu: ''
   };
+  broadcastNotification = {
+  titre: '',
+  contenu: ''
+};
 
   listeBeneficiaires: any[] = [];
   beneficiairesFiltres: any[] = [];
@@ -85,15 +94,74 @@ export class GestionNotificationComponent implements OnInit {
   envoyerNotification(): void {
     this.notificationService.sendNotification(this.notification).subscribe({
       next: (response) => {
-        this.message = '✅ Notification sent successfully!';
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Notification envoyée avec succès!',
+          timer: 5000,
+          timerProgressBar: true
+        });
         this.loadStatistics(); // Refresh stats after sending
         this.resetForm();
       },
       error: (err) => {
-        this.message = '❌ Error sending notification';
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de l\'envoi de la notification',
+          timer: 5000,
+          timerProgressBar: true
+        });
         console.error('Error:', err);
       }
     });
+  }
+
+  onBroadcastChange(): void {
+  if (this.isBroadcastMode) {
+    this.notification.idBeneficiaire = ''; // Clear individual selection
+  }
+}
+
+envoyerBroadcast(): void {
+  const data = {
+    titre: this.notification.titre,
+    contenu: this.notification.contenu
+  };
+
+  this.notificationService.broadcastNotification(data).subscribe({
+    next: (response) => {
+      const count = response.data?.count || 0;
+      Swal.fire({
+        icon: 'success',
+        title: 'Succès',
+        text: `Notification envoyée à ${count} bénéficiaires`,
+        timer: 5000,
+        timerProgressBar: true
+      });
+      this.resetForm();
+      this.loadStatistics();
+    },
+    error: (err) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Erreur lors de la diffusion',
+        timer: 5000,
+        timerProgressBar: true
+      });
+    }
+  });
+}
+
+   private showSuccess(msg: string): void {
+    this.message = `✅ ${msg}`;
+    setTimeout(() => this.message = '', 5000);
+  }
+
+  private showError(msg: string): void {
+    this.message = `❌ ${msg}`;
+    console.error(msg);
   }
 
   resetForm(): void {
