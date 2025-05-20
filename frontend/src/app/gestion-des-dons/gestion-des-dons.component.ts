@@ -47,12 +47,13 @@ throw new Error('Method not implemented.');
 
   constructor(private donorsService: DonorsService, private donationService: DonationService) {
     this.donForm = new FormGroup({
-      donateur: new FormControl('', [Validators.required]),
-      montant: new FormControl(0, [Validators.required, Validators.min(1)]),
-      typeDon: new FormControl('', [Validators.required]),
-      modePaiement: new FormControl('', [Validators.required]),
-      statut: new FormControl('', [Validators.required])
-    });
+    guestName: new FormControl('', [Validators.required]),
+    guestEmail: new FormControl('', [Validators.required, Validators.email]),
+    amount: new FormControl(null, [Validators.required, Validators.min(1)]),
+    paymentMethod: new FormControl('', [Validators.required]),
+    paymentType: new FormControl('', [Validators.required]),
+    status: new FormControl('', [Validators.required])
+  });
   }
 
   ngOnInit() {
@@ -250,15 +251,20 @@ throw new Error('Method not implemented.');
   }
 
   ajouterDon() {
-    const donationData = {
-      amount: this.nouveauDon.amount,
-      paymentMethod: this.nouveauDon.paymentMethod,
-      paymentType: this.nouveauDon.paymentType.toLowerCase(),
-      status: this.nouveauDon.status,
-      guestName: this.nouveauDon.guestName,
-      guestEmail: this.nouveauDon.guestEmail,
-      paymentId: this.generatePaymentId()
-    };
+  if (this.donForm.invalid) {
+    this.donForm.markAllAsTouched();
+    return;
+  }
+
+  const donationData = {
+    amount: this.donForm.value.amount,
+    paymentMethod: this.donForm.value.paymentMethod,
+    paymentType: this.donForm.value.paymentType.toLowerCase(),
+    status: this.donForm.value.status,
+    guestName: this.donForm.value.guestName,
+    guestEmail: this.donForm.value.guestEmail,
+    paymentId: this.generatePaymentId()
+  };
 
     this.donationService.createDonation(donationData).subscribe({
       next: (res) => {
