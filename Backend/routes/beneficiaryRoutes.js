@@ -16,11 +16,8 @@ router.get('/get/:id', beneficiaryController.getBeneficiaryById);
 router.patch('/update/:id', beneficiaryController.updateBeneficiary);
 router.delete('/delete/:id', beneficiaryController.deleteBeneficiary);
 router.put('/:id/photo',uploadImage.single('photo'),imgurUpload,beneficiaryController.updatePhoto);
-router.put(
-  '/:id/documents',
-  combinedUpload,
-  uploadPersonalPhoto,
-  uploadHousePhoto,
-  beneficiaryController.submitDocuments
-);
+router.put('/:id/documents',combinedUpload,uploadPersonalPhoto,uploadHousePhoto,beneficiaryController.submitDocuments);
+router.get('/:id/bulletin', beneficiaryController.downloadBulletin);
+
+
 module.exports = router;

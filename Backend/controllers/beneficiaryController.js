@@ -215,16 +215,14 @@ exports.submitDocuments = async (req, res) => {
 
     // Bulletin file info (PDF or image)
     if (req.files?.bulletin?.[0]) {
-      const bulletinFile = req.files.bulletin[0];
-      // Here you can save metadata or upload the file somewhere (local disk, S3, etc.)
-      // For now, just save metadata in DB
-      updatedDocuments.bulletin = {
-        originalName: bulletinFile.originalname,
-        mimeType: bulletinFile.mimetype,
-        size: bulletinFile.size,
-        // You can add url/path if you upload it somewhere
-      };
-    }
+  const bulletinFile = req.files.bulletin[0];
+  updatedDocuments.bulletin = {
+    data: bulletinFile.buffer, // actual file data
+    originalName: bulletinFile.originalname,
+    mimeType: bulletinFile.mimetype,
+    size: bulletinFile.size
+  };
+}
 
     // Update beneficiary documents in DB
     const beneficiary = await Beneficiary.findByIdAndUpdate(
@@ -250,3 +248,27 @@ exports.submitDocuments = async (req, res) => {
     });
   }
 };
+
+
+exports.downloadBulletin = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const beneficiary = await Beneficiary.findById(id);
+    if (!beneficiary || !beneficiary.documents?.bulletin) {
+      return res.status(404).json({ message: 'Bulletin not found' });
+    }
+
+    const { data, originalName, mimeType } = beneficiary.documents.bulletin;
+
+    res.set({
+      'Content-Type': mimeType,
+      'Content-Disposition': `attachment; filename="${originalName}"`
+    });
+
+    res.send(data);
+  } catch (error) {
+    res.status(500).json({ message: 'Error downloading bulletin', error: error.message });
+  }
+};
+
