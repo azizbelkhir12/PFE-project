@@ -35,10 +35,10 @@ export class AcceuilComponent {
   ];
 
   facts = [
-  { icon: 'fa-solid fa-hands-helping', value: 0, text: 'Bénévole' },
-  { icon: 'fa-solid fa-hand-holding-dollar', value: 0, text: 'Donateurs' },
-  { icon: 'fa-solid fa-people-group', value: 0, text: 'Beneficiaire' },
-  { icon: 'fa-solid fa-list-check', value: 0, text: 'Projets' }
+  { value: 0, text: 'Bénévole' },
+  {  value: 0, text: 'Donateurs' },
+  {  value: 0, text: 'Beneficiaire' },
+  {  value: 0, text: 'Projets' }
 ];
 
   
