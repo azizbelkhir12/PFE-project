@@ -6,7 +6,7 @@
     <!-- Tab 1 Content -->
     <div id="tab-content-1" class="container" >
         <h1 class="title">Faire de bénévolat avec nous</h1>
-        
+
       <!-- Signup Section -->
       <section class="contact login_box_area" id="contact">
         <div class="row container">
@@ -80,7 +80,7 @@
               <div *ngIf="signupForm.get('confirmPassword')?.errors?.['notMatching']">Passwords do not match</div>
             </div> <br>
 
-            
+
 
 
             <!-- Address Field -->
@@ -97,8 +97,8 @@
               <option value="" disabled selected>Choose a governorate</option>
               <option *ngFor="let gov of gouvernorats" [value]="gov">{{ gov }}</option>
             </select>
-            
-        
+
+
             <div *ngIf="signupForm.get('gouvernorat')?.invalid && (signupForm.get('gouvernorat')?.dirty || signupForm.get('gouvernorat')?.touched)" class="errorMsg">
               <div *ngIf="signupForm.get('gouvernorat')?.errors?.['required']">Gouvernorat is required</div>
             </div> <br>
@@ -118,13 +118,13 @@
                 <div *ngIf="signupForm.get('reason')?.errors?.['maxlength']">Cannot exceed 300 characters</div>
               </div>
             </form>
-            
-            
-            
+
+
+
 
             <!-- Submit Button -->
             <button type="submit" class="btn-Flower"  [ngClass]="{'no-hover': signupForm.invalid}" (click)="submit()">Signup</button>
-            
+
           </form>
 
           <!-- Side Image (Permanently on the Right Side) -->
@@ -132,11 +132,11 @@
             <div class="login_box_img">
               <img class="img-fluid" src="assets/register.png" alt="">
               <div class="hover">
-                <h4>New to our website?</h4>
+                <h4>Nouveau sur notre site ?</h4>
                 <p>
-                  Sign up now and help others, share beauty, love, and emotions through the charity!
+                  Inscrivez-vous dès maintenant et aidez les autres, partagez la beauté, l’amour et les émotions à travers la charité !
                 </p>
-                <span><a routerLink="/login" class="btn-Flower">login</a></span>
+                <span><a routerLink="/login" class="btn-Flower">Connexion</a></span>
               </div>
             </div>
           </div>
