@@ -13,10 +13,16 @@ const BeneficiarySchema = new mongoose.Schema({
     phoneNumber: { type: String, required: true },
     photoUrl: { type: String },
     documents: {
-        personalPhoto: String,
-        housePhoto: String,
-        bulletin: mongoose.Schema.Types.Mixed
-      },
+    personalPhoto: String,
+    housePhoto: String,
+    bulletin: {
+    data: Buffer,
+    originalName: String,
+    mimeType: String,
+    size: Number
+    }
+    },
+
     children: [
         {
             name: { type: String, required: true },

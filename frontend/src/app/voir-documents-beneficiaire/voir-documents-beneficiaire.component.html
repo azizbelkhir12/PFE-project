@@ -18,7 +18,16 @@
       <div *ngFor="let doc of beneficiaire.documents | keyvalue" class="doc-item">
         <i class="fas fa-file-alt icon-doc"></i>
         <span>{{ doc.key }}</span>
-        <a [href]="doc.value" target="_blank" class="view-link">Voir</a>
+        <a *ngIf="doc.key === 'bulletin'; else otherDocs"
+   (click)="downloadBulletin(beneficiaire._id)"
+   style="cursor: pointer; color: blue; padding-left:90px ;">
+   Télécharger
+</a>
+
+<ng-template #otherDocs>
+  <a [href]="doc.value" target="_blank" class="view-link">Voir</a>
+</ng-template>
+
       </div>
       
      

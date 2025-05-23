@@ -42,5 +42,10 @@ export class BeneficiaryService {
     return this.http.put(`${this.apiUrl}/${id}/documents`, formData);
   }
   
-  
+  downloadBulletin(id: string): Observable<Blob> {
+  return this.http.get(`${this.apiUrl}/${id}/bulletin`, {
+    responseType: 'blob'
+  });
+}
+
 }

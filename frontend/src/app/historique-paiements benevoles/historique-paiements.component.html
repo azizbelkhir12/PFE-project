@@ -19,7 +19,7 @@
           <th>Montant (DT)</th>
           <th>Moyen</th>
           <th>Statut</th>
-          <th>Reçu</th>
+          
         </tr>
       </thead>
       <tbody>
@@ -32,10 +32,7 @@
               {{ paiement.statut | titlecase }}
             </span>
           </td>
-          <td>
-            <a *ngIf="paiement.recu" href="{{ paiement.recu }}" target="_blank" class="btn-recu">📄 Télécharger</a>
-            <span *ngIf="!paiement.recu" class="no-recu">—</span>
-          </td>
+          
         </tr>
       </tbody>
     </table>

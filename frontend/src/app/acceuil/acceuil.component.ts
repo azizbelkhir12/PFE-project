@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ContactService } from '../services/contact/contact.service';
 import { ProjetService } from '../services/projet/projet.service';
+import { BeneficiaryService } from '../services/beneficiary/beneficiary.service';
+import { VolunteerService } from '../services/volunteer/volunteer.service';
+import { DonorsService } from '../services/donors/donors.service';
 import '@n8n/chat/style.css';
 import { createChat } from '@n8n/chat';
 import Swal from 'sweetalert2';
@@ -32,11 +35,11 @@ export class AcceuilComponent {
   ];
 
   facts = [
-    { icon: 'flaticon-home', value: 150, text: 'Countries' },
-    { icon: 'flaticon-charity', value: 400, text: 'Volunteers' },
-    { icon: 'flaticon-kindness', value: 10000, text: 'Our Goal', prefix: `$` },
-    { icon: 'flaticon-donation', value: 5000, text: 'Raised', prefix: `$` }
-  ];
+  { icon: 'fa-solid fa-hands-helping', value: 0, text: 'Bénévole' },
+  { icon: 'fa-solid fa-hand-holding-dollar', value: 0, text: 'Donateurs' },
+  { icon: 'fa-solid fa-people-group', value: 0, text: 'Beneficiaire' },
+  { icon: 'fa-solid fa-list-check', value: 0, text: 'Projets' }
+];
 
   
   donateForm: FormGroup;
@@ -49,7 +52,10 @@ export class AcceuilComponent {
     private fb: FormBuilder,
     private contactService: ContactService,
     private http: HttpClient, 
-    private projetService: ProjetService 
+    private projetService: ProjetService ,
+    private beneficiaryService: BeneficiaryService,
+    private volunteerService: VolunteerService,
+    private donorService: DonorsService
   ) {
     this.donateForm = this.fb.group({
       name: ['', Validators.required],
@@ -68,11 +74,41 @@ export class AcceuilComponent {
   ngOnInit() {
     this.chargerProjets();
     this.initializeChat();
+    this.loadCounts();
   }
 
   async ngAfterViewInit() {
     this.animateNumbers();
   }
+
+  loadCounts() {
+  // Load Volunteers count
+  this.volunteerService.getVolunteers().subscribe(volunteers => {
+    this.facts[0].value = volunteers.length || 0;
+    this.animateNumbers();
+  });
+
+  // Load Donors count
+  this.donorService.getDonors().subscribe(donors => {
+    this.facts[1].value = donors.length || 0;
+    this.animateNumbers();
+  });
+
+  // Load Beneficiaries count
+  this.beneficiaryService.getBeneficiaires().subscribe(response => {
+    console.log('Beneficiaries:', response);
+    // Access the beneficiaries array from the data property
+    const beneficiaries = response.data.beneficiaries;
+    this.facts[2].value = beneficiaries.length || 0;
+    this.animateNumbers();
+});
+
+  // Load Projects count
+  this.projetService.getProjects().subscribe(projects => {
+    this.facts[3].value = projects.length || 0;
+    this.animateNumbers();
+  });
+}
 
   
   chargerProjets() {
@@ -87,23 +123,29 @@ export class AcceuilComponent {
   }
 
   animateNumbers() {
-    this.facts.forEach((fact, index) => {
-      let start = 0;
-      const end = fact.value;
-      const duration = 2000; // Animation en 2 secondes
+  this.facts.forEach((fact, index) => {
+    const end = fact.value;
+    let start = 0;
+    const duration = 2000; // Animation in 2 seconds
+    
+    // Only animate if the value is greater than 0
+    if (end > 0) {
       const stepTime = Math.abs(Math.floor(duration / end));
+      const increment = Math.ceil(end / 100); // Increment value
 
       const timer = setInterval(() => {
         if (start < end) {
-          start += Math.ceil(end / 100); // Incrémentation progressive
-          this.facts[index].value = start;
+          start += increment;
+          // Create a new array to trigger change detection
+          this.facts = [...this.facts];
+          this.facts[index].value = Math.min(start, end);
         } else {
-          this.facts[index].value = end; // S'assurer que la valeur finale est correcte
           clearInterval(timer);
         }
       }, stepTime);
-    });
-  }
+    }
+  });
+}
 
   onSubmitForm() {
     if (this.contactForm.valid) {
@@ -132,7 +174,7 @@ export class AcceuilComponent {
   }
 initializeChat() {
   this.chatWidget = createChat({
-    webhookUrl: 'https://azizbelkhir12.app.n8n.cloud/webhook/9a2a284e-92e0-4cd2-af6e-bc43b821ba6f/chat'
+    webhookUrl: 'https://azizbenbelkhir.app.n8n.cloud/webhook/9a2a284e-92e0-4cd2-af6e-bc43b821ba6f/chat'
   });
 }
 ;

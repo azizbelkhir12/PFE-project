@@ -46,6 +46,22 @@ export class VoirDocumentsBeneficiaireComponent implements OnInit {
     return 'fas fa-file-alt'; // Icône par défaut
   }
 
+  downloadBulletin(id: string): void {
+  this.beneficiaryService.downloadBulletin(id).subscribe({
+    next: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bulletin.pdf'; // or set dynamically if you fetch original name
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      console.error('Erreur lors du téléchargement du bulletin:', err);
+    }
+  });
+}
+
   
 }
 
