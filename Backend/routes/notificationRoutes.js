@@ -8,5 +8,6 @@ router.post('/sendmultiple', notificationController.broadcastNotification);
 router.get('/getbeneficiary/:id', notificationController.getNotificationsByBeneficiaryId);
 router.get('/stats', notificationController.getNotificationStats);
 router.get('/getall', notificationController.getAllNotifications);
+router.post('/emailBeneficiary', notificationController.emailBeneficiary);
 
 module.exports = router;

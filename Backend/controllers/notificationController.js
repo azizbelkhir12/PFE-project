@@ -1,5 +1,6 @@
 const Notification = require('../models/Notification');
 const Beneficiary = require('../models/Beneficiary');
+const nodemailer = require('nodemailer');
 
 // Send notification to beneficiary
 exports.sendNotification = async (req, res) => {
@@ -264,4 +265,63 @@ exports.searchBeneficiaries = async (req, res) => {
             error: error.message
         });
     }
+};
+
+
+
+exports.emailBeneficiary = async (req, res) => {
+  const { email, broadcast } = req.body;
+
+  try {
+    let beneficiaries;
+
+    if (broadcast) {
+      // Fetch all beneficiaries
+      beneficiaries = await Beneficiary.find({}, 'email firstName');
+    } else {
+      // Fetch a specific beneficiary
+      const single = await Beneficiary.findOne({ email }, 'email firstName');
+      if (!single) {
+        return res.status(404).json({ message: 'Bénéficiaire non trouvé.' });
+      }
+      beneficiaries = [single];
+    }
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT, 10),
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    // Send emails
+    for (const beneficiary of beneficiaries) {
+      const htmlContent = `
+        <p>Bonjour ${beneficiary.firstName || ''},</p>
+        <p>Vous avez de nouveaux notification(s) disponible(s) dans votre compte sur la plateforme.</p>
+        <p>Connectez-vous pour les consulter.</p>
+        <br/>
+        <p>Cordialement,<br/>L'équipe de la plateforme</p>
+      `;
+
+      await transporter.sendMail({
+        from: `"Support" <${process.env.EMAIL_USER}>`,
+        to: beneficiary.email,
+        subject: 'Nouveaux rendez-vous disponibles',
+        html: htmlContent
+      });
+    }
+
+    res.status(200).json({
+      message: broadcast
+        ? 'Emails envoyés à tous les bénéficiaires.'
+        : 'Email envoyé au bénéficiaire.'
+    });
+  } catch (error) {
+    console.error('Erreur lors de l’envoi des notifications :', error);
+    res.status(500).json({ message: 'Erreur du serveur.' });
+  }
 };

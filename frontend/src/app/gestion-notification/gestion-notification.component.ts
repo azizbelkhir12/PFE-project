@@ -92,30 +92,64 @@ export class GestionNotificationComponent implements OnInit {
   }
 
   envoyerNotification(): void {
-    this.notificationService.sendNotification(this.notification).subscribe({
-      next: (response) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Succès',
-          text: 'Notification envoyée avec succès!',
-          timer: 5000,
-          timerProgressBar: true
-        });
-        this.loadStatistics(); // Refresh stats after sending
-        this.resetForm();
-      },
-      error: (err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Erreur lors de l\'envoi de la notification',
-          timer: 5000,
-          timerProgressBar: true
-        });
-        console.error('Error:', err);
-      }
+  // Find the selected beneficiary
+  const selectedBeneficiary = this.listeBeneficiaires.find(
+    b => b._id === this.notification.idBeneficiaire
+  );
+
+  if (!selectedBeneficiary) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: 'Bénéficiaire non trouvé',
+      timer: 5000,
+      timerProgressBar: true
     });
+    return;
   }
+
+  // Send the regular notification
+  this.notificationService.sendNotification(this.notification).subscribe({
+    next: (response) => {
+      // After successful notification, send email
+      this.notificationService.sendEmailNotification(selectedBeneficiary.email).subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Succès',
+            text: 'Notification et email envoyés avec succès!',
+            timer: 5000,
+            timerProgressBar: true
+          });
+          this.loadStatistics();
+          this.resetForm();
+        },
+        error: (emailErr) => {
+          console.error('Email error:', emailErr);
+          Swal.fire({
+            icon: 'warning',
+            title: 'Notification envoyée',
+            text: 'La notification a été envoyée mais l\'email a échoué',
+            timer: 5000,
+            timerProgressBar: true
+          });
+          this.loadStatistics();
+          this.resetForm();
+        }
+      });
+    },
+    error: (err) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Erreur lors de l\'envoi de la notification',
+        timer: 5000,
+        timerProgressBar: true
+      });
+      console.error('Error:', err);
+    }
+  });
+}
 
   onBroadcastChange(): void {
   if (this.isBroadcastMode) {
@@ -129,18 +163,36 @@ envoyerBroadcast(): void {
     contenu: this.notification.contenu
   };
 
+  // Send the broadcast notification
   this.notificationService.broadcastNotification(data).subscribe({
     next: (response) => {
-      const count = response.data?.count || 0;
-      Swal.fire({
-        icon: 'success',
-        title: 'Succès',
-        text: `Notification envoyée à ${count} bénéficiaires`,
-        timer: 5000,
-        timerProgressBar: true
+      // After successful broadcast, send emails to all
+      this.notificationService.sendEmailNotification('', true).subscribe({
+        next: () => {
+          const count = response.data?.count || 0;
+          Swal.fire({
+            icon: 'success',
+            title: 'Succès',
+            text: `Notification et emails envoyés à ${count} bénéficiaires`,
+            timer: 5000,
+            timerProgressBar: true
+          });
+          this.resetForm();
+          this.loadStatistics();
+        },
+        error: (emailErr) => {
+          console.error('Email error:', emailErr);
+          Swal.fire({
+            icon: 'warning',
+            title: 'Notification diffusée',
+            text: 'La notification a été diffusée mais les emails ont échoué',
+            timer: 5000,
+            timerProgressBar: true
+          });
+          this.resetForm();
+          this.loadStatistics();
+        }
       });
-      this.resetForm();
-      this.loadStatistics();
     },
     error: (err) => {
       Swal.fire({
