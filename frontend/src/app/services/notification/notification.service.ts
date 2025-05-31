@@ -31,4 +31,9 @@ export class NotificationService {
     return this.http.get(`${this.apiUrl}/all`);
   }
 
+  
+  sendEmailNotification(email: string, broadcast: boolean = false): Observable<any> {
+  return this.http.post(`${this.apiUrl}/emailBeneficiary`, { email, broadcast });
+  }
+
 }

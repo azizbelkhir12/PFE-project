@@ -133,7 +133,7 @@ export class RegisterComponent {
         Swal.fire({
         icon: 'error',
         title: 'Échec de l\'inscription',
-        text: 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.',
+        text: 'Ces coordonnées sont déjà utilisées.',
         confirmButtonText: 'OK'
         });
       }
