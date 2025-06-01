@@ -6,6 +6,7 @@ body, html {
   height: 100%;
   overflow-x: hidden;
   font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
 }
 
 /* Navbar fixe */
@@ -64,6 +65,7 @@ app-sidebar-admin {
   align-items: center;
   justify-content: center;
   min-height: 140px;
+  cursor: default;
 }
 
 .card:hover {
@@ -71,6 +73,16 @@ app-sidebar-admin {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Suppression des effets résiduels après clic */
+.card:focus,
+.card:active,
+.card:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background-color: inherit;
+}
+
+/* Icônes dans les cartes */
 .card i {
   font-size: 35px;
   color: white;
@@ -86,6 +98,7 @@ app-sidebar-admin {
   background: #e0a800;
 }
 
+/* Titres et paragraphes dans les cartes */
 .card h3 {
   font-size: 18px;
   font-weight: bold;
@@ -102,11 +115,10 @@ app-sidebar-admin {
 /* Conteneur des graphiques */
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 par ligne */
+  grid-template-columns: repeat(2, 1fr);
   gap: 30px;
 }
 
-/* Style d’un seul graphique */
 .chart-container {
   background-color: #fff;
   border-radius: 10px;
@@ -127,7 +139,7 @@ canvas {
   height: 350px !important;
 }
 
-/* Responsive */
+/* Responsive design */
 @media (max-width: 992px) {
   .dashboard {
     margin-left: 0;
@@ -144,7 +156,7 @@ canvas {
   }
 
   .charts-grid {
-    grid-template-columns: 1fr; /* 1 par ligne en petit écran */
+    grid-template-columns: 1fr;
   }
 }
 
@@ -154,6 +166,12 @@ canvas {
   }
 }
 
-
+/* Si un overlay sombre est resté actif par erreur */
+.overlay {
+  display: none !important;
+  visibility: hidden !important;
+  z-index: -1 !important;
+  opacity: 0 !important;
+}
 
 
