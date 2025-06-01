@@ -301,7 +301,7 @@ exports.emailBeneficiary = async (req, res) => {
     for (const beneficiary of beneficiaries) {
       const htmlContent = `
         <p>Bonjour ${beneficiary.firstName || ''},</p>
-        <p>Vous avez de nouveaux notification(s) disponible(s) dans votre compte sur la plateforme.</p>
+        <p>Vous avez des nouveaux notification(s) disponible(s) dans votre compte sur la plateforme.</p>
         <p>Connectez-vous pour les consulter.</p>
         <br/>
         <p>Cordialement,<br/>L'équipe de la plateforme</p>
@@ -310,7 +310,7 @@ exports.emailBeneficiary = async (req, res) => {
       await transporter.sendMail({
         from: `"Support" <${process.env.EMAIL_USER}>`,
         to: beneficiary.email,
-        subject: 'Nouveaux rendez-vous disponibles',
+        subject: '[- Nouvelles Notifications réçu ! Rendez-vous sur la plateforme -]',
         html: htmlContent
       });
     }

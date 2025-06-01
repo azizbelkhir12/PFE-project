@@ -165,7 +165,7 @@ async function sendRejectionEmail(email, fullName) {
     html: `
       <p>Bonjour ${Demande.fullName || fullName || ''},</p>
         <p>Malheuresement votre demande de bénévolat déposé via notre platforme n'a pas  été acceptée !</p>
-        <p>Il semble que il y'a des erreurs dans votre demande. Si vous voulez plus d'informations n'hésite pas aà nous contacter</p>
+        <p>Il semble que il y'a des erreurs dans votre demande. Si vous voulez plus d'informations n'hésite pas à nous contacter</p>
         <p><a href="${process.env.FRONTEND_URL}/contact">contacter-nous</a></p>
         <br/>
         <p>L'équipe Support Tunisia Charity</p>
