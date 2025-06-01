@@ -92,40 +92,6 @@
   font-weight: 600;
   text-transform: uppercase;
 }
-/* ✅ Liste des enfants - version sans scroll */
-.table td ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-}
-
-/* ✅ Tableau responsive sans scroll horizontal */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; /* important pour une répartition homogène */
-  word-wrap: break-word;
-}
-
-/* ✅ En-têtes du tableau */
-.table th {
-  background: #0056b3;
-  color: white;
-  padding: 12px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-/* ✅ Cellules du tableau */
-.table td {
-  padding: 12px;
-  text-align: center;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  vertical-align: top;
-}
 
 /* ✅ Supprime le scroll horizontal */
 .benevoles-table {
@@ -221,29 +187,8 @@ button:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ Design du tableau */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
 
-/* ✅ Entêtes */
-.table th {
-  background: #0056b3;
-  color: white;
-  padding: 14px;
-  text-align: center;
-  font-size: 14px;
-  border-radius: 10px;
-}
 
-/* ✅ Cellules */
-.table td {
-  padding: 12px;
-  text-align: center;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
 
 /* ✅ Effet au survol des lignes */
 .table tr:hover {
@@ -329,51 +274,61 @@ button:hover {
   width: 100%;
   overflow-x: auto;
   margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
-/* Table header styling */
 .table th {
-  background-color: #0056b3; /* Light gray background */
-  color: white; /* Dark text color */
-  padding: 12px 15px; /* Vertical and horizontal padding */
-  text-align: center; /* Left-aligned text */
-  font-weight: 600; /* Semi-bold font */
+  background-color: #0056b3;
+  color: white;
+  padding: 12px 15px;
+  text-align: center;
+  font-weight: 600;
   font-size: 14px;
-  border-bottom: 2px solid #dee2e6; /* Bottom border */
-  text-transform: uppercase; /* Uppercase text */
-  letter-spacing: 0.5px; /* Slight letter spacing */
+  border-bottom: 2px solid #dee2e6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
-/* Remove the border radius from previous styling */
-.table th {
-  border-radius: 0;
+.table td {
+  padding: 12px 15px;
+  white-space: normal;
+  word-break: break-word;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/* Specific column widths */
+.table td:nth-child(1) { min-width: 120px; } /* Nom */
+.table td:nth-child(2) { min-width: 120px; } /* Prénom */
+.table td:nth-child(3) { min-width: 200px; max-width: 250px; } /* Email */
+.table td:nth-child(4) { min-width: 80px; max-width: 80px; text-align: center; } /* Âge */
+.table td:nth-child(5) { min-width: 130px; } /* Téléphone */
+.table td:nth-child(6) { min-width: 150px; } /* Adresse */
+.table td:nth-child(7) { min-width: 120px; } /* Gouvernorat */
+.table td:nth-child(8) { min-width: 180px; } /* Enfants */
+.table td:nth-child(9) { min-width: 120px; text-align: center; } /* Actions */
 
-
-.table th:first-child {
+/* Children list styling */
+.table td ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   text-align: left;
 }
 
-.table th:not(:first-child) {
-  text-align: center;
+/* Hover effect */
+.table tr:hover {
+  background: rgba(0, 123, 255, 0.1);
 }
 
-/* For the specific table in your image */
-.table thead tr {
-  background-color: transparent;
-}
-
-/* Remove any box shadows or gradients from headers */
-.table th {
-  box-shadow: none;
-  background-image: none;
-}
 
 .table tr:hover {
   background: #eaf1fb;
@@ -511,14 +466,86 @@ button:hover {
 }
 
 /* ✅ Responsive */
-@media (max-width: 1024px) {
-  .forms-container {
-    flex-direction: column;
-    align-items: center;
+@media (max-width: 991px) {
+  .main-container {
+    margin-left: 0;
+    padding: 15px;
   }
+}
 
-  .form-card {
-    width: 90%;
+/* Stats Card */
+.stats-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.icon-yellow {
+  font-size: 2rem;
+  color: #f4c542;
+}
+
+/* Buttons */
+.form-toggle-container .btn {
+  min-width: 180px;
+  font-weight: 500;
+}
+
+/* Forms */
+.form-card {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Child Entry Box */
+.child-entry {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #eef1f7;
+  border-radius: 8px;
+}
+
+/* Remove Child Button */
+.remove-child-btn {
+  margin-top: 8px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+}
+
+/* Submit Button */
+.btn-blue {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  margin-top: 15px;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+/* Table */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent text from wrapping */
+.table td,
+.table th {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+
+/* Modal Responsive */
+@media (max-width: 576px) {
+  .modal-dialog {
+    width: 90% !important;
+    margin: auto;
   }
 }
 
