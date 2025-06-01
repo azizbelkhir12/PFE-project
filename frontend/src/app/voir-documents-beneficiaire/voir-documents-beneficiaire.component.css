@@ -90,4 +90,59 @@ h2 {
 .btn-download:hover {
   background-color: #0056b3;
 }
+.beneficiaire-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+  border-left: 5px solid #007bff;
+  padding: 20px;
+  width: 320px;
+  position: relative;
+}
+
+.beneficiaire-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 18px;
+}
+
+.beneficiaire-card h3::before {
+  content: "\f2bd";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #007bff;
+  font-size: 20px;
+}
+
+.doc-item {
+  background: #f1f5fb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.icon-doc {
+  color: #007bff;
+  font-size: 16px;
+}
+
+.doc-item span {
+  font-weight: 500;
+  margin-left: 10px;
+  flex: 1;
+}
+
+.view-link,
+a[style*="padding-left"] {
+  font-size: 13px;
+  font-weight: 600;
+  color: #007bff;
+}
+
 
