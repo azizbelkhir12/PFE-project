@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjetService } from '../services/projet/projet.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-des-projets',
@@ -79,20 +80,32 @@ export class GestionDesProjetsComponent implements OnInit {
 
   soumettreProjet(): void {
     if (!this.selectedImage) {
-      alert('Veuillez sélectionner une image');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Image requise',
+        text: 'Veuillez sélectionner une image'
+      });
       return;
     }
-  
+
     this.projectService.addProject(this.nouveauProjet, this.selectedImage).subscribe({
       next: () => {
-        alert('Projet ajouté avec succès');
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Projet ajouté avec succès'
+        });
         this.reinitialiserFormulaire();
         this.chargerProjets();
         this.afficherFormulaire('liste');
       },
       error: (err) => {
         console.error('Erreur lors de l\'ajout du projet:', err);
-        alert('Erreur lors de l\'ajout du projet: ' + err.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de l\'ajout du projet: ' + err.message
+        });
       }
     });
   }
@@ -111,50 +124,94 @@ export class GestionDesProjetsComponent implements OnInit {
 
   modifierProjet(): void {
     this.projectService.updateProject(
-      this.projetEnEdition._id, 
-      this.projetEnEdition, 
+      this.projetEnEdition._id,
+      this.projetEnEdition,
       this.selectedImageForEdit || undefined
     ).subscribe({
       next: () => {
-        alert('Projet modifié avec succès');
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Projet modifié avec succès'
+        });
         this.closeModal();
         this.chargerProjets();
       },
       error: (err) => {
         console.error('Erreur lors de la modification:', err);
-        alert('Erreur lors de la modification: ' + err.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de la modification: ' + err.message
+        });
       }
     });
   }
 
   supprimerProjet(projet: any): void {
-    if (confirm(`Êtes-vous sûr de vouloir supprimer le projet "${projet.titre}"?`)) {
-      this.projectService.deleteProject(projet._id).subscribe({
-        next: () => {
-          alert('Projet supprimé avec succès');
-          this.chargerProjets();
-        },
-        error: (err) => {
-          console.error('Erreur lors de la suppression du projet:', err);
-          alert('Erreur lors de la suppression du projet');
-        }
-      });
-    }
+    Swal.fire({
+      title: `Êtes-vous sûr de vouloir supprimer le projet "${projet.titre}" ?`,
+      text: "Cette action est irréversible !",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, supprimer',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.projectService.deleteProject(projet._id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Supprimé !',
+              text: 'Projet supprimé avec succès'
+            });
+            this.chargerProjets();
+          },
+          error: (err) => {
+            console.error('Erreur lors de la suppression du projet:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Erreur lors de la suppression du projet'
+            });
+          }
+        });
+      }
+    });
   }
 
   terminerProjet(projet: any): void {
-    const updatedProjet = { ...projet, statut: 'termine' };
-    this.projectService.updateProject(projet._id, updatedProjet)
-      .subscribe({
-        next: () => {
-          alert('Projet marqué comme terminé');
-          this.chargerProjets();
-        },
-        error: (err) => {
-          console.error('Erreur lors de la mise à jour du projet:', err);
-          alert('Erreur lors de la mise à jour du projet');
-        }
-      });
+    Swal.fire({
+      title: 'Marquer comme terminé',
+      text: `Voulez-vous vraiment marquer le projet "${projet.titre}" comme terminé ?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, terminer',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedProjet = { ...projet, statut: 'termine' };
+        this.projectService.updateProject(projet._id, updatedProjet)
+          .subscribe({
+            next: () => {
+              Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: 'Projet marqué comme terminé'
+              });
+              this.chargerProjets();
+            },
+            error: (err) => {
+              console.error('Erreur lors de la mise à jour du projet:', err);
+              Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: 'Erreur lors de la mise à jour du projet'
+              });
+            }
+          });
+      }
+    });
   }
 
   getProjetsFiltres(): any[] {
