@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,EventEmitter, Output  } from '@angular/core';
 import {
   faAlignJustify,
   faEnvelope,
@@ -7,6 +7,7 @@ import {
   faRightFromBracket,
   faCirclePlus,
   faUserShield,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../services/auth/auth.service';
 
@@ -22,15 +23,18 @@ export class NavbarcompteAdminComponent {
   faAngleDown = faAngleDown;
   faSlidersH = faSlidersH;
   faRightFromBracket = faRightFromBracket;
-  faCirclePlus = faCirclePlus;
   faUserShield = faUserShield;
+  faTimes = faTimes;
 
   isProfileMenuOpen = false;
+  @Output() sidebarToggled = new EventEmitter<boolean>();
+  isSidebarOpen = false;
 
   constructor(private authService: AuthService) {}
 
   toggleSidebar() {
-    console.log('Sidebar toggled');
+    this.isSidebarOpen = !this.isSidebarOpen;
+    this.sidebarToggled.emit(this.isSidebarOpen);
   }
 
   toggleProfileMenu() {

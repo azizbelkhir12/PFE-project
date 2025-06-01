@@ -13,6 +13,26 @@
   z-index: 999;
 }
 
+/* Close button - hidden by default */
+.close-sidebar {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.close-sidebar:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 /* Style du logo */
 .sidebar .logo {
   color: #ffffff;
@@ -44,7 +64,7 @@
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Ajout d’un effet survol cohérent avec les cartes */
+/* Ajout d'un effet survol cohérent avec les cartes */
 .sidebar ul li a:hover {
   background: rgba(255, 193, 7, 0.8); /* Jaune semi-transparent */
   color: #ffffff;
@@ -80,6 +100,25 @@
 /* Style du chevron */
 .chevron {
   margin-left: auto;
+}
+
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.open {
+  display: block;
+  opacity: 1;
 }
 
 /* Contenu principal */
@@ -122,7 +161,6 @@
   color: #333;
 }
 
-
 /* Responsive styles */
 @media (max-width: 900px) {
   .sidebar {
@@ -149,16 +187,23 @@
     transition: transform 0.3s ease;
     box-shadow: 0 2px 10px rgba(0,0,0,0.15);
   }
+  
   .sidebar.open {
     transform: translateY(0);
   }
+  
+  /* Show close button only on mobile */
+  .close-sidebar {
+    display: block;
+  }
+  
   .main-content {
     margin-left: 0;
     padding: 10px;
     padding-top: 120px;
   }
+  
   .hamburger-menu {
-  display: block;
-}
-
+    display: block;
+  }
 }

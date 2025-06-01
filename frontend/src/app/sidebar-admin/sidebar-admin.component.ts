@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {
   faUsers,
   faHandHoldingHeart,
@@ -8,19 +8,9 @@ import {
   faNewspaper,
   faProjectDiagram,
   faComments,
-  faChevronUp,
-  faChevronDown,
-  faPlus,
-  faEdit,
-  faList,
-  faLink,
-  faEnvelope,
-  faDownload,
-  faUpload,
-  faTrash,
   faBars,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-sidebar-admin',
@@ -38,33 +28,32 @@ export class SidebarAdminComponent {
   faNewspaper = faNewspaper;
   faProjectDiagram = faProjectDiagram;
   faComments = faComments;
-  faTrash = faTrash;
   faBars = faBars;
+  faTimes = faTimes;
 
-  // Icônes pour les sous-menus
-  faChevronUp = faChevronUp;
-  faChevronDown = faChevronDown;
-  faPlus = faPlus;
-  faEdit = faEdit;
-  faList = faList;
-  faLink = faLink;
-  faEnvelope = faEnvelope;
-  faDownload = faDownload;
-  faUpload = faUpload;
+  @Input() isSidebarOpen = true;
+  @Output() sidebarToggled = new EventEmitter<void>();
 
-  // Fonctionnalité active
+  // Active functionality
   activeFunctionality: string | null = null;
 
-  // État de la sidebar (ouverte/fermée)
-  isSidebarOpen = true; // Par défaut, la sidebar est ouverte
-
-  // Définir la fonctionnalité active
   setActiveFunctionality(functionality: string) {
     this.activeFunctionality = functionality;
   }
 
-  // Basculer l'état de la sidebar
   toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
+    this.sidebarToggled.emit();
+  }
+
+  closeSidebar() {
+    if (this.isSidebarOpen) {
+      this.isSidebarOpen = false;
+      this.sidebarToggled.emit();
+      console.log('Sidebar closed');
+    }
   }
 }
+  
+
+
+
