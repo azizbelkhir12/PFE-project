@@ -190,11 +190,11 @@ a:hover, a:active, a:focus {
 /*******************************/
 /********** Banner CSS ***********/
 /*******************************/
-banner-container {
+.banner-container {
     position: relative;
     width: 100%;
     text-align: left;
-    margin-top: 20px;
+   
 }
 
 .banner-image {
@@ -580,11 +580,31 @@ banner-container {
 @media (max-width: 575.98px) {
     .contact .contact-form {
         max-width: 300px;
-    padding: 20px;
-    margin-top: -180px;
-    padding-bottom: 30px;
-    padding-top: 30px;
-    padding-left: 20px;
+        padding: 20px;
+        margin-top: -180px;
+        padding-bottom: 30px;
+        padding-top: 30px;
+        padding-left: 20px;
         padding-right: 20px;
     }
+    .banner-container {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
 }
+
+@media (max-width: 768px) {
+    .banner-caption {
+        top: 40%;
+        left: 5%;
+        max-width: 90%;
+    }
+
+    .banner-caption p.banner-text {
+        font-size: 16px;
+        top: 0;
+        margin-bottom: 40px;
+    }
+}
+
+

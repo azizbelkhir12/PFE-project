@@ -42,13 +42,15 @@ export class GestionBeneficiairesComponent {
 
   filtreNom: string = '';
   filtreAge: number | null = null;
-  donors: any[]=[] ;
+  donors: any[] = [];
+  parrainDonors: any[] = [];
 
   constructor(private beneficiaryService: BeneficiaryService, private donorService : DonorsService) {}
 
   ngOnInit(): void {
     this.getBeneficiaires();
     this.loadDonors();
+    
   }
 
   private updateStatistics(): void {
@@ -84,7 +86,8 @@ export class GestionBeneficiairesComponent {
     this.donorService.getDonors().subscribe({
       next: (data) => {
         console.log('Liste des donateurs:', data);
-        this.donors = data;
+        // Filtrer uniquement les donateurs avec le statut 'parrain'
+        this.donors = Array.isArray(data) ? data.filter((donor: any) => donor.status === 'parrain') : [];
       },
       error: (err) => {
         console.error('Erreur lors du chargement des donateurs :', err);
@@ -211,6 +214,11 @@ export class GestionBeneficiairesComponent {
       }
     });
   }
+
+  filterParrainDonors() {
+    this.parrainDonors = this.donors ? this.donors.filter(d => d.status === 'parrain') : [];
+  }
+
 
   filtrerBeneficiaires() {
     return this.beneficiaries.filter(b => {

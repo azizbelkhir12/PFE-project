@@ -174,7 +174,7 @@ export class AcceuilComponent {
   }
 initializeChat() {
   this.chatWidget = createChat({
-    webhookUrl: 'https://azizbenbelkhir.app.n8n.cloud/webhook/9a2a284e-92e0-4cd2-af6e-bc43b821ba6f/chat'
+    webhookUrl: 'https://azizbelkhir562.app.n8n.cloud/webhook/9a2a284e-92e0-4cd2-af6e-bc43b821ba6f/chat'
   });
 }
 ;

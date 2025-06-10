@@ -73,7 +73,7 @@ exports.verifyPayment = async (req, res) => {
 
 exports.createAbonnement = async (req, res) => {
   try {
-    const { volunteer, name, lastname, paymentMethod, amount, status, paymentType } = req.body;
+    const { volunteer, name, lastname, paymentMethod, amount, status } = req.body;
 
     // Validate required fields
     if (!volunteer || !name || !lastname || !paymentMethod || !amount) {
@@ -83,25 +83,13 @@ exports.createAbonnement = async (req, res) => {
       });
     }
 
-    // Set default status if not provided
-    let abonnementStatus = status || 'pending';
-
-    // Validate payment method
-    const validPaymentMethods = ['credit_card', 'bank_transfer', 'cash', 'flouci'];
-    if (!validPaymentMethods.includes(paymentMethod)) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Invalid payment method' 
-      });
-    }
-
     const newAbonnement = new Abonnement({
       volunteer,
       name,
       lastname,
       paymentMethod,
       amount,
-      status: abonnementStatus
+      status: status || 'pending'
     });
 
     await newAbonnement.save();

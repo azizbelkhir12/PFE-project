@@ -20,6 +20,13 @@ const AbonnementSchema = new mongoose.Schema({
       },
     amount: { type: Number, required: true },
     paymentDate: { type: Date, default: Date.now },
-},{ timestamps: true });
+    reference: {
+        type: String,
+        unique: true,
+        default: function() {
+            return `ABON-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        }
+    }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Abonnement', AbonnementSchema);
