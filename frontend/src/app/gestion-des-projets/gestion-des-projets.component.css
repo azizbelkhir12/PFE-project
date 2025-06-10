@@ -366,6 +366,12 @@ button:hover {
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }
+.stats-card p {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+  color: #00060c;
+}
 
 
 /* ✅ RESPONSIVE DESIGN */

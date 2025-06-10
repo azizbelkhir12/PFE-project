@@ -24,6 +24,13 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   border-top: 4px solid #0056b3; /* ✅ Bordure bleue foncée */
   transition: all 0.3s ease-in-out;
+
+}
+.stats-card p {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+  color: #00060c;
 }
 
 /* ✅ Effet au survol des cartes */
@@ -259,19 +266,19 @@ button:hover {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .form-toggle-container {
     flex-direction: column;
   }
-  
+
   .btn-toggle {
     width: 100%;
   }
-  
+
   .export-buttons {
     flex-direction: column;
   }
-  
+
   .export-btn {
     width: 100%;
   }
@@ -281,13 +288,13 @@ button:hover {
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
-  .data-table th, 
+
+  .data-table th,
   .data-table td {
     padding: 8px 5px;
     font-size: 12px;
   }
-  
+
   .form-card {
     padding: 15px;
   }
