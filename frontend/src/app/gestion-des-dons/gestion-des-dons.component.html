@@ -48,51 +48,64 @@
     <div class="col-lg-5 col-md-6 col-12" *ngIf="formulaireActif === 'don'">
       <div class="form-card">
         <h3>Ajouter un Don</h3>
-        <form #donForm="ngForm" >
-          <label>Donateur :</label>
-          <input type="text" [(ngModel)]="nouveauDon.guestName" name="donateur" required minlength="2" #guestNameInput="ngModel" />
-          <div *ngIf="guestNameInput.invalid && guestNameInput.touched" class="error-message">
+        <form [formGroup]="donForm" (ngSubmit)="ajouterDon()">
+          <div class="form-group">
+            <label>Nom</label>
+            <input type="text" class="form-control" formControlName="guestName" />
+          </div>
+          <div *ngIf="donForm.get('guestName')?.invalid && donForm.get('guestName')?.touched" class="error-message">
             Le nom doit contenir au moins 2 caractères.
           </div>
 
-          <label for="guestEmail">Email</label>
-          <input type="email" id="guestEmail" [(ngModel)]="nouveauDon.guestEmail" name="guestEmail" class="form-control" required #guestEmailInput="ngModel" />
-          <div *ngIf="guestEmailInput.invalid && guestEmailInput.touched" class="error-message">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" formControlName="guestEmail" />
+          </div>
+          <div *ngIf="donForm.get('guestEmail')?.invalid && donForm.get('guestEmail')?.touched" class="error-message">
             Veuillez entrer un email valide.
           </div>
 
-          <label>Montant :</label>
-          <input type="number" [(ngModel)]="nouveauDon.amount" name="montant" required min="1" #amountInput="ngModel" />
-          <div *ngIf="amountInput.invalid && amountInput.touched" class="error-message">
+          <div class="form-group">
+            <label>Montant (TND)</label>
+            <input type="number" class="form-control" formControlName="amount" />
+          </div>
+
+          <div *ngIf="donForm.get('amount')?.invalid && donForm.get('amount')?.touched" class="error-message">
             Veuillez entrer un montant valide.
           </div>
 
-          <label>Mode de Paiement :</label>
-          <select [(ngModel)]="nouveauDon.paymentMethod" name="modePaiement" required #paymentMethodInput="ngModel">
-            <option value="credit_card">Carte</option>
-            <option value="bank_transfer">Virement</option>
-            <option value="cash">Espèces</option>
-          </select>
-          <div *ngIf="paymentMethodInput.invalid && paymentMethodInput.touched" class="error-message">
+          <div class="form-group">
+            <label>Mode de Paiement</label>
+            <select class="form-control" formControlName="paymentMethod">
+              <option value="credit_card">Carte de Crédit</option>
+              <option value="paypal">PayPal</option>
+            </select>
+          </div>
+          <div *ngIf="donForm.get('paymentMethod')?.invalid && donForm.get('paymentMethod')?.touched" class="error-message">
             Veuillez sélectionner un mode de paiement.
           </div>
 
-          <label>Statut :</label>
-          <select [(ngModel)]="nouveauDon.status" name="statut" required #statusInput="ngModel">
-            <option value="pending">En Attente</option>
-            <option value="completed">Confirmé</option>
-          </select>
-          <div *ngIf="statusInput.invalid && statusInput.touched" class="error-message">
-            Veuillez sélectionner un mode de paiement.
+          <div class="form-group">
+            <label>Statut</label>
+            <select class="form-control" formControlName="status">
+              <option value="pending">En attente</option>
+              <option value="completed">Confirmé</option>
+            </select>
+          </div>
+          
+          <div *ngIf="donForm.get('status')?.invalid && donForm.get('status')?.touched" class="error-message">
+            Veuillez sélectionner un statut.
           </div>
 
           <!-- Ajout du champ "Type de Don" -->
-          <label>Type de Don :</label>
-          <select [(ngModel)]="nouveauDon.paymentType" name="typeDon" required #paymentTypeInput="ngModel">
-            <option value="Local">Local</option>
-            <option value="International">International</option>
-          </select>
-          <div *ngIf="paymentTypeInput.invalid && paymentTypeInput.touched" class="error-message">
+          <div class="form-group">
+            <label>Type de Don</label>
+            <select class="form-control" formControlName="paymentType">
+              <option value="Local">Local</option>
+              <option value="International">International</option>
+            </select>
+          </div>  
+          <div *ngIf="donForm.get('paymentType')?.invalid && donForm.get('paymentType')?.touched" class="error-message">
             Veuillez sélectionner un type de paiement.
           </div>
 

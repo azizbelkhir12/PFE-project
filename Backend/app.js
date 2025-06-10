@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
 const http = require('http'); 
 const socketIo = require('socket.io'); // 
 const connectDB = require('./config/db');
@@ -30,6 +31,9 @@ const io = socketIo(server, {
 
 
 dotenv.config(); 
+
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 //Middlewares
 app.use(cors());

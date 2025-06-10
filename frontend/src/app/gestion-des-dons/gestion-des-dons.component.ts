@@ -14,9 +14,7 @@ import * as XLSX from 'xlsx';
   standalone:false
 })
 export class GestionDesDonsComponent implements OnInit {
-modifierDon(_t144: any) {
-throw new Error('Method not implemented.');
-}
+
   @ViewChild('tableDonateurs', { static: false }) tableDonateurs!: ElementRef;
 
   totalDons: number = 0;
@@ -46,15 +44,28 @@ throw new Error('Method not implemented.');
 
 
   constructor(private donorsService: DonorsService, private donationService: DonationService) {
-    this.donForm = new FormGroup({
-    guestName: new FormControl('', [Validators.required]),
-    guestEmail: new FormControl('', [Validators.required, Validators.email]),
-    amount: new FormControl(null, [Validators.required, Validators.min(1)]),
-    paymentMethod: new FormControl('', [Validators.required]),
-    paymentType: new FormControl('', [Validators.required]),
-    status: new FormControl('', [Validators.required])
-  });
-  }
+  this.donForm = new FormGroup({
+  guestName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+  guestEmail: new FormControl('', [Validators.required, Validators.email]),
+  amount: new FormControl(null, [Validators.required, Validators.min(1)]),
+  paymentMethod: new FormControl('credit_card', [Validators.required]), // 🟢 par défaut
+  paymentType: new FormControl('Local', [Validators.required]), // 🟢 par défaut
+  status: new FormControl('pending', [Validators.required]) ,// 🟢 par défaut
+  project : new FormControl('don generale', [Validators.required]),
+});
+
+  
+  // Initialize nouveauDon with the same defaults
+  this.nouveauDon = {
+    guestName: '',
+    guestEmail: '',
+    amount: null,
+    paymentMethod: 'credit_card',
+    paymentType: 'Local',
+    status: 'pending',
+    paymentId: this.generatePaymentId()
+  };
+}
 
   ngOnInit() {
     this.createChart();
@@ -250,44 +261,44 @@ throw new Error('Method not implemented.');
       .reduce((total, don) => total + don.amount, 0);
   }
 
-  ajouterDon() {
+   ajouterDon() {
+    console.log('Form value:', this.donForm.value); // Debug
   if (this.donForm.invalid) {
     this.donForm.markAllAsTouched();
     return;
   }
 
   const donationData = {
-    amount: this.donForm.value.amount,
-    paymentMethod: this.donForm.value.paymentMethod,
-    paymentType: this.donForm.value.paymentType.toLowerCase(),
-    status: this.donForm.value.status,
-    guestName: this.donForm.value.guestName,
-    guestEmail: this.donForm.value.guestEmail,
+    ...this.donForm.value,
     paymentId: this.generatePaymentId()
   };
 
-    this.donationService.createDonation(donationData).subscribe({
-      next: (res) => {
-        console.log('Donation added:', res);
-        this.fetchDonations(); // Refresh the list
-        this.donForm.reset();
-        this.resetNouveauDon();
-        Swal.fire({
-          icon: 'success',
-          title: 'Succès',
-          text: 'Le don a été ajouté avec succès !'
-        });
-      },
-      error: (err) => {
-        console.error('Error adding donation:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Une erreur s\'est produite lors de l\'ajout du don.'
-        });
-      }
-    });
-  }
+  this.donationService.createDonation(donationData).subscribe({
+    next: (res) => {
+      this.fetchDonations(); // Refresh list
+      this.donForm.reset({
+        paymentMethod: 'credit_card',
+        paymentType: 'Local',
+        status: 'pending'
+      });
+      Swal.fire({
+        icon: 'success',
+        title: 'Succès',
+        text: 'Le don a été ajouté avec succès !'
+      });
+    },
+    error: (err) => {
+      console.error('Erreur:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Impossible d\'ajouter le don.'
+      });
+    }
+  });
+}
+
+
 
   generatePaymentId(): string {
     const array = new Uint8Array(16);

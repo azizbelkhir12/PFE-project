@@ -118,7 +118,7 @@ export class ModifierInfosBeneficiaireComponent implements OnInit {
       reader.onload = () => {
         const base64Image = reader.result as string;
   
-        this.beneficiaryService.updateBeneficiaire(this.utilisateur._id, { photoUrl: base64Image }).subscribe({
+        this.beneficiaryService.uploadPhoto(this.utilisateur._id, file).subscribe({
           next: (res) => {
             console.log('Photo updated:', res);
             this.utilisateur.photoUrl = base64Image;

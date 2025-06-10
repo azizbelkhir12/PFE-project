@@ -24,7 +24,7 @@ export class BeneficiaryService {
   }
 
   updateBeneficiaire(id: string, beneficiaireData: any): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/update/${id}`, beneficiaireData);
+    return this.http.put(`${this.apiUrl}/update/${id}`, beneficiaireData);
   }
 
   deleteBeneficiaire(id: string): Observable<any> {
