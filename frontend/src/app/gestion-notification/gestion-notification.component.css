@@ -25,6 +25,12 @@
   border-top: 4px solid #0056b3;
   transition: all 0.3s ease-in-out;
 }
+.stats-card p {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+  color: #00060c;
+}
 
 .stats-card:hover {
   transform: translateY(-5px);

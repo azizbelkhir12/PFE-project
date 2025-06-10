@@ -22,6 +22,12 @@
   border-radius: 5px;
   transition: background-color 0.3s;
 }
+.stats-card p {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+  color: #00060c;
+}
 
 .btn-supprimer:hover {
   background-color: #c0392b;
