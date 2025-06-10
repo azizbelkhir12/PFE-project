@@ -139,56 +139,56 @@
           <input type="number" placeholder="🔍 Rechercher par âge..." [(ngModel)]="filtreAge" />
         </div>
 
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Email</th>
-                <th>Âge</th>
-                <th>Téléphone</th>
-                <th>Adresse</th>
-                <th>Gouvernorat</th>
-                <th>Enfants</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let beneficiaire of filtrerBeneficiaires()">
-                <td>{{ beneficiaire.name }}</td>
-                <td>{{ beneficiaire.lastname }}</td>
-                <td>{{ beneficiaire.email }}</td>
-                <td>{{ beneficiaire.Age }}</td>
-                <td>{{ beneficiaire.phoneNumber }}</td>
-                <td>{{ beneficiaire.address }}</td>
-                <td>{{ beneficiaire.gouvernorat }}</td>
-                <td>
-                  <ul *ngIf="beneficiaire.children.length > 0; else noChildren">
-                    <li *ngFor="let child of beneficiaire.children">
-                      {{ child.name }} ({{ child.age }} ans)
-                    </li>
-                  </ul>
-                  <ng-template #noChildren>
-                    <em>Aucun enfant</em>
-                  </ng-template>
-                </td>
-                <td>
-                  <button class="btn btn-primary btn-sm"
-                    (click)="ouvrirModalModification(beneficiaire)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#updateBeneficiaryModal">
-                    <i class="fas fa-edit"></i> Modifier
-                  </button><br>
+       <div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th class="col-age">Âge</th>
+        <th>Téléphone</th>
+        <th>Adresse</th>
+        <th>Gouvernorat</th>
+        <th>Enfants</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let beneficiaire of filtrerBeneficiaires()">
+        <td>{{ beneficiaire.name }}</td>
+        <td>{{ beneficiaire.lastname }}</td>
+        <td>{{ beneficiaire.email }}</td>
+        <td class="col-age">{{ beneficiaire.Age }}</td>
+        <td>{{ beneficiaire.phoneNumber }}</td>
+        <td>{{ beneficiaire.address }}</td>
+        <td>{{ beneficiaire.gouvernorat }}</td>
+        <td>
+          <ul *ngIf="beneficiaire.children.length > 0; else noChildren">
+            <li *ngFor="let child of beneficiaire.children">
+              {{ child.name }} ({{ child.age }} ans)
+            </li>
+          </ul>
+          <ng-template #noChildren>
+            <em>Aucun enfant</em>
+          </ng-template>
+        </td>
+        <td>
+          <button class="btn btn-primary btn-sm"
+                  (click)="ouvrirModalModification(beneficiaire)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#updateBeneficiaryModal">
+            <i class="fas fa-edit"></i> Modifier
+          </button><br>
+          <button class="btn btn-danger btn-sm" (click)="deleteBeneficiaire(beneficiaire._id)">
+            <i class="fas fa-trash-alt"></i> Supprimer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-                  <button class="btn btn-danger btn-sm" (click)="deleteBeneficiaire(beneficiaire._id)">
-                    <i class="fas fa-trash-alt"></i> Supprimer
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
 
       <div class="export-buttons">

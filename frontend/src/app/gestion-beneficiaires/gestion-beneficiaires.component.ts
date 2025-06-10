@@ -227,44 +227,61 @@ export class GestionBeneficiairesComponent {
     XLSX.writeFile(workbook, 'beneficiaires.xlsx');
   }
 
-  exportToPDF() {
-    if (!this.beneficiaries || this.beneficiaries.length === 0) {
-      Swal.fire('Erreur', 'Aucun bénéficiaire à exporter.', 'error');
-      return;
+ exportToPDF() {
+  if (!this.beneficiaries || this.beneficiaries.length === 0) {
+    Swal.fire('Erreur', 'Aucun bénéficiaire à exporter.', 'error');
+    return;
+  }
+
+  const doc = new jsPDF();
+  doc.setFontSize(12);
+  let y = 20;
+  const pageHeight = 297; // hauteur A4 en mm
+  const bottomMargin = 20; // marge basse pour éviter d'écrire trop bas
+
+  doc.text('Liste des bénéficiaires', 20, y);
+  y += 10;
+
+  this.beneficiaries.forEach((beneficiaire: any, index: number) => {
+    // Vérifier si on doit passer à la page suivante avant d'écrire
+    if (y + 60 > pageHeight - bottomMargin) {
+      doc.addPage();
+      y = 20; // reset y en haut de la page
     }
 
-    const doc = new jsPDF();
-    doc.setFontSize(12);
-    let y = 20;
+    doc.text(`Nom: ${beneficiaire.name} ${beneficiaire.lastname}`, 20, y);
+    doc.text(`Email: ${beneficiaire.email}`, 20, y + 6);
+    y += 15;
+    doc.text(`Téléphone: ${beneficiaire.phoneNumber}`, 20, y);
+    doc.text(`Adresse: ${beneficiaire.address}`, 20, y + 6);
+    doc.text(`Gouvernorat: ${beneficiaire.gouvernorat}`, 20, y + 12);
+    doc.text(`Âge: ${beneficiaire.Age}`, 20, y + 18);
+    doc.text(`Enfants:`, 20, y + 24);
 
-    doc.text('Liste des bénéficiaires', 20, y);
-    y += 10;
-
-    this.beneficiaries.forEach((beneficiaire: any, index: number) => {
-      // Affichage des informations du bénéficiaire
-      doc.text(`Nom: ${beneficiaire.name} ${beneficiaire.lastname}`, 20, y);
-      doc.text(`Email: ${beneficiaire.email}`, 20, y + 6);
-      y += 15;
-      doc.text(`Téléphone: ${beneficiaire.phoneNumber}`, 20, y);
-      doc.text(`Adresse: ${beneficiaire.address}`, 20, y + 6);
-      doc.text(`Gouvernorat: ${beneficiaire.gouvernorat}`, 20, y + 12);
-      doc.text(`Âge: ${beneficiaire.Age}`, 20, y + 18);
-      doc.text(`Enfants:`, 20, y + 24);
-      // Affichage des enfants du bénéficiaire
-      beneficiaire.children.forEach((enfant: any, index: number) => {
-        doc.text(`Enfant ${index + 1}: ${enfant.name}, Âge: ${enfant.age}`, 20, y + 30 + (index * 6));
-      });
-      y += 30 + (beneficiaire.children.length * 6); // Ajuste la position Y pour le prochain bénéficiaire
-
-
-      // Ligne horizontale après chaque bénéficiaire
-      doc.line(20, y + 30, 200, y + 30);  // Ligne horizontale de 20 à 200 (ajuste la longueur selon la largeur de ta page)
-
-      // Ajouter un espacement entre les bénéficiaires
-      y += 35; // Espacement après chaque bénéficiaire, ajustable
+    // Affichage des enfants
+    beneficiaire.children.forEach((enfant: any, index: number) => {
+      if (y + 30 + (index * 6) > pageHeight - bottomMargin) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.text(`Enfant ${index + 1}: ${enfant.name}, Âge: ${enfant.age}`, 20, y + 30 + (index * 6));
     });
 
-    doc.save('beneficiaires.pdf');}
+    y += 30 + (beneficiaire.children.length * 6);
+
+    // Ligne horizontale après chaque bénéficiaire
+    if (y + 30 > pageHeight - bottomMargin) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.line(20, y + 30, 200, y + 30);
+
+    y += 35;
+  });
+
+  doc.save('beneficiaires.pdf');
+}
+
 
 
 

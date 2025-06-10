@@ -178,22 +178,62 @@ button:hover {
   box-shadow: 0 6px 14px rgba(0, 123, 255, 0.4);
 }
 
-/* ✅ Tableau modernisé */
-.benevoles-table {
+.table-responsive {
   margin-top: 40px;
   padding: 20px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
 }
 
-
-
-
-/* ✅ Effet au survol des lignes */
-.table tr:hover {
-  background: rgba(0, 123, 255, 0.1);
+/* Style général du tableau */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
 }
+
+.table thead th {
+  background-color: #0056b3;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+.table tbody td {
+  vertical-align: middle;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Réduire la taille des boutons */
+.table .btn {
+  padding: 4px 8px;
+  font-size: 13px;
+  margin: 2px 0;
+  width: 90px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Espacement entre les lignes */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f8f9fa;
+}
+
+/* Hover */
+.table tbody tr:hover {
+  background: rgba(0, 123, 255, 0.08);
+}
+
+/* Icônes dans les boutons */
+.table .btn i {
+  margin-right: 4px;
+}
+
 
 /* ✅ Boutons d’action modernisés */
 .btn-container {
@@ -516,6 +556,13 @@ button:hover {
   padding: 6px 10px;
   border-radius: 5px;
 }
+.btn-sm {
+  min-width: 100px; /* largeur minimale */
+  padding-left: 12px;
+  padding-right: 12px;
+  white-space: nowrap; /* empêcher le texte de passer à la ligne */
+}
+
 
 /* Submit Button */
 .btn-blue {
@@ -527,18 +574,46 @@ button:hover {
   border-radius: 5px;
 }
 
-/* Table */
+/* Table styling */
 .table-responsive {
+  width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Prevent text from wrapping */
-.table td,
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  background: white;
+}
+
 .table th {
-  white-space: nowrap;
+  background: #0056b3;
+  color: white;
+  padding: 15px 12px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #e9ecef;
+  text-align: center;
+  font-size: 14px;
   vertical-align: middle;
 }
+
+.table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
 
 
 /* Modal Responsive */
@@ -548,6 +623,14 @@ button:hover {
     margin: auto;
   }
 }
+/* Correction affichage de la colonne ÂGE */
+.table td.col-age,
+.table th.col-age {
+  width: 70px; /* ou adapte selon l’espace */
+  white-space: nowrap; /* empêche le retour à la ligne */
+  text-align: center;
+}
+
 
 
 
